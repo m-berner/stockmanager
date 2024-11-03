@@ -40,6 +40,7 @@ export const useFadeinstockStore: StoreDefinition<'fadeinstock', IFadeinstockSto
         const records = useRecordsStore()
         const modaldialog = useModaldialogStore()
         await records.updateStock(this._selected)
+        //TODO delete passive and add to active
         modaldialog.toggleVisibility()
         resolve()
       })
