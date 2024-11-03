@@ -210,7 +210,7 @@
   <ModalDialog
     v-if="modaldialog.fadeinStock"
     v-bind:title="t('dialogs.fadeinStock.title')"
-    v-bind:ok="fadeinstock.onOk"
+    v-bind:ok="async () => { await fadeinstock.onOk() }"
   >
     <FadeinStock></FadeinStock>
   </ModalDialog>

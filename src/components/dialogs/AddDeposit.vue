@@ -17,7 +17,7 @@
               type="date"
               density="compact"
               v-bind:rules="[validators.isoDate]"
-              v-bind:label="t('dialogs.adddeposit.date')"
+              v-bind:label="t('dialogs.addDeposit.date')"
               v-on:focus="resetValidation"
             ></v-text-field>
           </v-col>

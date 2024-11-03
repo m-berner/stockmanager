@@ -614,13 +614,19 @@ export const useRecordsStore = defineStore('records', {
             delete dbRecord.mValue;
             delete dbRecord.mChange;
             delete dbRecord.mEuroChange;
+            const indexOfPassiveStock = this._stocks.passive.findIndex((stock) => {
+                return stock.cID === data.cID;
+            });
             const indexOfActiveStock = this._stocks.active.findIndex((stock) => {
                 return stock.cID === data.cID;
             });
             return await new Promise((resolve, reject) => {
                 const onSuccess = () => {
                     requestUpdate.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
-                    this._stocks.active[indexOfActiveStock] = { ...data };
+                    if (indexOfPassiveStock > -1) {
+                        this._stocks.passive.splice(indexOfPassiveStock, 1);
+                    }
+                    this._stocks.active.splice(indexOfActiveStock, 0, data);
                     this._sortActiveStocks();
                     if (msg) {
                         notice(['sm_msg_updaterecord']);
