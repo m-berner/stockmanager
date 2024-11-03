@@ -1,0 +1,87 @@
+{
+  "include": [
+    "./src/**/*.js",
+    "./src/**/*.ts",
+    "./src/**/*.vue",
+    "./src/locales/*.json",
+    "./src/assets/**/*.png",
+    "./src/assets/**/*.css",
+    "./vite.config.ts",
+    "./src/**/*.css"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./build",
+    "./dist",
+    "./docs",
+    "./.yarn",
+    "./yarnrc.yml",
+    "./.idea",
+    "./public",
+    "./releases",
+    "./resources",
+    "./stockmanager@gmx.de"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "module": "esnext",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "outDir": "./src",
+    "removeComments": true,
+    "sourceMap": false,
+    "emitDeclarationOnly": false,
+    "declarationMap": false,
+    "declaration": false,
+    "downlevelIteration": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
+    "types": [
+      "node",
+      "@types/firefox-webext-browser",
+      "@intlify/unplugin-vue-i18n/messages",
+      "firefox",
+      "chrome"
+    ],
+    /* Bundler mode */
+    "composite": false,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": false,
+    "noEmitOnError": true,
+    "jsx": "preserve",
+    /* Linting */
+    "strict": false,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "vueCompilerOption": {
+    "target": 3.4
+  },
+  "typedocOptions": {
+    "name": "Stockmanager",
+    "entryPoints": [
+      "src/background.ts",
+      "src/app.ts"
+    ],
+    "out": "docs",
+    "readme": "README.md"
+  }
+}
