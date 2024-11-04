@@ -357,6 +357,7 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
           totalController.fees += transfer.cFees ?? 0
           totalController.taxes +=
             (transfer.cTax ?? 0) + (transfer.cFTax ?? 0) + (transfer.cSTax ?? 0) + (transfer.cSoli ?? 0)
+          console.error('transfer',transfer)
           switch (transfer.cType) {
             case CONS.DB.RECORD_TYPES.BUY:
               totalController.buy += (transfer.cUnitQuotation ?? 0) * (transfer.cCount ?? 0)
@@ -408,16 +409,21 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
       if (year === CONS.DEFAULTS.YEAR) {
         this._transfers.totalController = totalController
       }
+      console.error(totalController)
       return {...totalController}
     },
     updatePage(p: number): void {
       console.info('RECORDS: updatePage', p)
       const settings = useSettingsStore()
       const online = useOnlineStore()
+      const overPaged = this._stocks.active.filter((rec: IStock) => {
+        return (rec.mPortfolio ?? 0) > 0
+      }).length
+      console.error(overPaged)
       // TODO what if the portfolio consists out of more than 9 shares?
       for (
         let i = (this._stocks.active_page - 1) * settings.itemsPerPageStocks;
-        i < (this._stocks.active_page - 1) * settings.itemsPerPageStocks + this._stocks.active_page_count;
+        i < Math.max((this._stocks.active_page - 1) * settings.itemsPerPageStocks + this._stocks.active_page_count, overPaged);
         i++
       ) {
         const id = this._stocks.active[i].cID as number
@@ -869,13 +875,16 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
     },
     async onDeleteTransfer(): Promise<void> {
       console.log('RECORDS: onDeleteTransfer')
-      const modaldialog = useModaldialogStore()
-      if (this._transfers.index === 0) {
-        await this.deleteTransfer(this._transfers.all[0].cID ?? -1)
-        this.evaluateTransfers()
-        this.updateWrapper(this._stocks.active_page)
-      }
-      modaldialog.toggleVisibility('')
+      return await new Promise(async (resolve) => {
+        const modaldialog = useModaldialogStore()
+        if (this._transfers.index === 0) {
+          await this.deleteTransfer(this._transfers.all[0].cID ?? -1)
+          this.evaluateTransfers()
+          this.updateWrapper(this._stocks.active_page)
+        }
+        modaldialog.toggleVisibility('')
+        resolve()
+      })
     }
   }
 })
