@@ -493,9 +493,8 @@ if (window.location.href.includes('background')) {
                         let stopGm = false;
                         let stopQf = false;
                         const gmqfString = { gm: '01.01.1970', qf: '01.01.1970' };
-                        for (let j = 0; j < rows.length; j++) {
-                            const row = rows[j].cells[3].textContent?.replaceAll('(e)*', '').trim() ??
-                                '01.01.1970';
+                        for (let j = 0; j < rows.length && !!(rows[j].cells[3]); j++) {
+                            const row = rows[j].cells[3].textContent?.replaceAll('(e)*', '').trim() ?? '01.01.1970';
                             if (rows[j].cells[0].textContent === 'Quartalszahlen' &&
                                 row !== '01.01.1970' &&
                                 row.length === 10 &&
