@@ -71,26 +71,13 @@ export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockSto
   actions: {
     async configure(): Promise<void> {
       console.log('CONFIGSTOCK: configure')
-      return await new Promise(async (resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         const records = useRecordsStore()
         const modaldialog = useModaldialogStore()
         const {validators} = useVueLibrary()
-        // const stock: IStock = {
-        //   cID: records.stocks.active[records.stocks.active_index].cID,
-        //   cCompany: '',
-        //   cISIN: '',
-        //   cWKN: '',
-        //   cSym: '',
-        //   cQuarterDay: 0,
-        //   cMeetingDay: 0,
-        //   cFadeOut: 0,
-        //   cFirstPage: 0,
-        //   cURL: ''
-        // }
         const stock: IStock = {...records.stocks.active[records.stocks.active_index]}
-        if (records.stocks.active[records.stocks.active_index].mPortfolio > 0.9 && this._fade_out !== 0) {
-          this._fade_out = 0
-          throw new Error('Error: stock portfolio greater 0')
+        if ((stock.mPortfolio ?? 0) > 0.9 && this._fade_out !== '0') {
+          this._fade_out = '0'
         }
         if (
           validators.isin(this._isin) === true &&
@@ -111,8 +98,8 @@ export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockSto
           modaldialog.toggleVisibility()
           resolve()
         } else {
-          console.error('VALIDATION???')
-          reject('Error: validation failed!')
+          console.error('VALIDATION?')
+          reject('CONFIGSTOCK: validation failed!')
         }
       })
     }

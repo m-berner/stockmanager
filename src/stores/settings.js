@@ -47,62 +47,89 @@ export const useSettingsStore = defineStore('settings', {
     },
     actions: {
         async setService(value) {
-            this._service = value;
-            await browser.storage.local.set({ service: value });
+            return new Promise(async (resolve) => {
+                this._service = value;
+                await browser.storage.local.set({ service: value });
+                resolve();
+            });
         },
         setServiceStoreOnly(value) {
             this._service = value;
         },
         async setSkin(value, theme) {
-            theme.global.name.value = value;
-            this._skin = value;
-            await browser.storage.local.set({ skin: value });
+            return new Promise(async (resolve) => {
+                theme.global.name.value = value;
+                this._skin = value;
+                await browser.storage.local.set({ skin: value });
+                resolve();
+            });
         },
         setSkinStoreOnly(value) {
             this._skin = value;
         },
         async setIndexes(value) {
-            this._indexes = value;
-            await browser.storage.local.set({ indexes: value });
+            return new Promise(async (resolve) => {
+                this._indexes = value;
+                await browser.storage.local.set({ indexes: value });
+                resolve();
+            });
         },
         setIndexesStoreOnly(value) {
             this._indexes = value;
         },
         async setMaterials(value) {
-            this._materials = value;
-            await browser.storage.local.set({ materials: value });
+            return new Promise(async (resolve) => {
+                this._materials = value;
+                await browser.storage.local.set({ materials: value });
+                resolve();
+            });
         },
         setMaterialsStoreOnly(value) {
             this._materials = value;
         },
         async setMarkets(value) {
-            this._markets = value;
-            await browser.storage.local.set({ markets: value });
+            return new Promise(async (resolve) => {
+                this._markets = value;
+                await browser.storage.local.set({ markets: value });
+                resolve();
+            });
         },
         setMarketsStoreOnly(value) {
             this._markets = value;
         },
         async setExchanges(value) {
-            this._exchanges = value;
-            await browser.storage.local.set({ exchanges: value });
+            return new Promise(async (resolve) => {
+                this._exchanges = value;
+                await browser.storage.local.set({ exchanges: value });
+                resolve();
+            });
         },
         setExchangesStoreOnly(value) {
             this._exchanges = value;
         },
         async setPartner(value) {
-            this._partner = value;
-            await browser.storage.local.set({ partner: value });
+            return new Promise(async (resolve) => {
+                this._partner = value;
+                await browser.storage.local.set({ partner: value });
+                resolve();
+            });
         },
         setPartnerStoreOnly(value) {
             this._partner = value;
         },
         async setItemsPerPageTransfers(value) {
-            this._items_per_page_transfers = value;
-            await browser.storage.local.set({ itemsPerPageTransfers: value });
+            return new Promise(async (resolve) => {
+                this._items_per_page_transfers = value;
+                await browser.storage.local.set({ itemsPerPageTransfers: value });
+                resolve();
+            });
         },
         async setItemsPerPageStocks(value) {
-            this._items_per_page_stocks = value;
-            await browser.storage.local.set({ itemsPerPageStocks: value });
+            return new Promise(async (resolve) => {
+                this._items_per_page_stocks = value;
+                await browser.storage.local.set({ itemsPerPageStocks: value });
+                resolve();
+            });
         },
         setItemsPerPageTransfersStoreOnly(value) {
             this._items_per_page_transfers = value;
@@ -112,22 +139,28 @@ export const useSettingsStore = defineStore('settings', {
         },
         async loadStorageIntoStore(theme) {
             console.log('SETTINGS: loadStorageIntoStore');
-            const response = await browser.storage.local.get();
-            this.setServiceStoreOnly(response.service);
-            theme.global.name.value = response.skin ?? 'ocean';
-            this.setSkinStoreOnly(response.skin);
-            this.setIndexesStoreOnly(response.indexes);
-            this.setMaterialsStoreOnly(response.materials);
-            this.setMarketsStoreOnly(response.markets);
-            this.setExchangesStoreOnly(response.exchanges);
-            this.setPartnerStoreOnly(response.partner);
-            this.setItemsPerPageStocksStoreOnly(response.items_per_page_stocks);
-            this.setItemsPerPageTransfersStoreOnly(response.items_per_page_transfers);
+            return new Promise(async (resolve) => {
+                const response = await browser.storage.local.get();
+                this.setServiceStoreOnly(response.service);
+                theme.global.name.value = response.skin ?? 'ocean';
+                this.setSkinStoreOnly(response.skin);
+                this.setIndexesStoreOnly(response.indexes);
+                this.setMaterialsStoreOnly(response.materials);
+                this.setMarketsStoreOnly(response.markets);
+                this.setExchangesStoreOnly(response.exchanges);
+                this.setPartnerStoreOnly(response.partner);
+                this.setItemsPerPageStocksStoreOnly(response.items_per_page_stocks);
+                this.setItemsPerPageTransfersStoreOnly(response.items_per_page_transfers);
+                resolve();
+            });
         },
         async togglePartner() {
-            const currentPartner = this._partner;
-            this._partner = !currentPartner;
-            await browser.storage.local.set({ partner: !currentPartner });
+            return new Promise(async (resolve) => {
+                const currentPartner = this._partner;
+                this._partner = !currentPartner;
+                await browser.storage.local.set({ partner: !currentPartner });
+                resolve();
+            });
         },
         async mToggleIndexes(keys, n) {
             let ind;
@@ -139,7 +172,10 @@ export const useSettingsStore = defineStore('settings', {
                 ar.push(keys[n]);
             }
             this._indexes = ar;
-            await browser.storage.local.set({ indexes: ar });
+            return new Promise(async (resolve) => {
+                await browser.storage.local.set({ indexes: ar });
+                resolve();
+            });
         },
         async mToggleMaterials(keys, n) {
             let ind;
@@ -151,7 +187,10 @@ export const useSettingsStore = defineStore('settings', {
                 ar.push(keys[n]);
             }
             this._materials = ar;
-            await browser.storage.local.set({ materials: ar });
+            return new Promise(async (resolve) => {
+                await browser.storage.local.set({ materials: ar });
+                resolve();
+            });
         }
     }
 });

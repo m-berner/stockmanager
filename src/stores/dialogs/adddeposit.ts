@@ -57,11 +57,16 @@ export const useAdddepositStore: StoreDefinition<'adddeposit', IAdddepositStore>
       if (Object.values(CONS.RECORDS.TYPES).indexOf(this._type) === -1) {
         notice(['System Error'])
       }
-      if (validators.isoDate(this._date) === true && validators.positiveNumber(this._deposit) === true) {
-        await records.addTransfer(record)
-        records.evaluateTransfers()
-        modaldialog.toggleVisibility()
-      }
+      return new Promise(async (resolve, reject) => {
+        if (validators.isoDate(this._date) === true && validators.positiveNumber(this._deposit) === true) {
+          await records.addTransfer(record)
+          records.evaluateTransfers()
+          modaldialog.toggleVisibility()
+          resolve()
+        } else {
+          reject('ADDDEPOSIT: add error')
+        }
+      })
     }
   }
 })

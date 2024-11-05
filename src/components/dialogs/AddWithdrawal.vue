@@ -105,7 +105,6 @@ const {getUI} = useAppLibrary()
 const {validators, resetValidation} = useVueLibrary()
 const form = useTemplateRef('form-ref')
 
-// TODO check all dialogs and its reset? form
 onMounted(() => {
   console.log('ADDWITHDRAWAL: onMounted')
   form.value?.reset()  // NOTE: resets v-text-field but not CurrencyInput...

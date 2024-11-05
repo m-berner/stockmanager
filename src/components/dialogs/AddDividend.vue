@@ -114,6 +114,10 @@ const form = useTemplateRef('form-ref')
 onMounted(() => {
   console.log('ADDDIVIDEND: onMounted')
   form.value?.reset()
+  _unit_quotation.value = 0
+  _stax.value = 0
+  _tax.value = 0
+  _soli.value = 0
   modaldialog.setNoOk(false)
 })
 

@@ -229,50 +229,53 @@ export const useAppLibrary = (): IUseAppLibrary => {
   // },
   const initStorageLocal = async (): Promise<void> => {
     console.log('BACKGROUND: initStorageLocal')
-    const storageLocal: IStorageLocal = await browser.storage.local.get()
-    if (storageLocal.service === undefined) {
-      await browser.storage.local.set({
-        service: CONS.DEFAULTS.STORAGE.service
-      })
-    }
-    if (storageLocal.skin === undefined) {
-      await browser.storage.local.set({skin: CONS.DEFAULTS.STORAGE.skin})
-    }
-    if (storageLocal.indexes === undefined) {
-      await browser.storage.local.set({
-        indexes: CONS.DEFAULTS.STORAGE.indexes
-      })
-    }
-    if (storageLocal.materials === undefined) {
-      await browser.storage.local.set({
-        materials: CONS.DEFAULTS.STORAGE.materials
-      })
-    }
-    if (storageLocal.markets === undefined) {
-      await browser.storage.local.set({
-        markets: CONS.DEFAULTS.STORAGE.markets
-      })
-    }
-    if (storageLocal.exchanges === undefined) {
-      await browser.storage.local.set({
-        exchanges: CONS.DEFAULTS.STORAGE.exchanges
-      })
-    }
-    if (storageLocal.partner === undefined) {
-      await browser.storage.local.set({
-        partner: CONS.DEFAULTS.STORAGE.partner
-      })
-    }
-    if (storageLocal.items_per_page_stocks === undefined) {
-      await browser.storage.local.set({
-        items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
-      })
-    }
-    if (storageLocal.items_per_page_transfers === undefined) {
-      await browser.storage.local.set({
-        items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers
-      })
-    }
+    return new Promise(async (resolve) => {
+      const storageLocal: IStorageLocal = await browser.storage.local.get()
+      if (storageLocal.service === undefined) {
+        await browser.storage.local.set({
+          service: CONS.DEFAULTS.STORAGE.service
+        })
+      }
+      if (storageLocal.skin === undefined) {
+        await browser.storage.local.set({skin: CONS.DEFAULTS.STORAGE.skin})
+      }
+      if (storageLocal.indexes === undefined) {
+        await browser.storage.local.set({
+          indexes: CONS.DEFAULTS.STORAGE.indexes
+        })
+      }
+      if (storageLocal.materials === undefined) {
+        await browser.storage.local.set({
+          materials: CONS.DEFAULTS.STORAGE.materials
+        })
+      }
+      if (storageLocal.markets === undefined) {
+        await browser.storage.local.set({
+          markets: CONS.DEFAULTS.STORAGE.markets
+        })
+      }
+      if (storageLocal.exchanges === undefined) {
+        await browser.storage.local.set({
+          exchanges: CONS.DEFAULTS.STORAGE.exchanges
+        })
+      }
+      if (storageLocal.partner === undefined) {
+        await browser.storage.local.set({
+          partner: CONS.DEFAULTS.STORAGE.partner
+        })
+      }
+      if (storageLocal.items_per_page_stocks === undefined) {
+        await browser.storage.local.set({
+          items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
+        })
+      }
+      if (storageLocal.items_per_page_transfers === undefined) {
+        await browser.storage.local.set({
+          items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers
+        })
+      }
+      resolve()
+    })
   }
   return {
     CONS,

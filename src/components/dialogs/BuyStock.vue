@@ -98,6 +98,9 @@ const form = useTemplateRef('form-ref')
 onMounted(() => {
   console.log('BUYSTOCK: onMounted')
   form.value?.reset()
+  _unit_quotation.value = 0
+  _fees.value = 0
+  _ftax.value = 0
   modaldialog.setNoOk(false)
 })
 

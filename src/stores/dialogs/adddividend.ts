@@ -71,7 +71,7 @@ export const useAdddividendStore: StoreDefinition<'adddividend', IAdddividendSto
   actions: {
     async add(): Promise<void> {
       console.log('ADDDIVIDEND: add')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve, reject) => {
         const records = useRecordsStore()
         const modaldialog = useModaldialogStore()
         const {validators} = useVueLibrary()
@@ -110,6 +110,8 @@ export const useAdddividendStore: StoreDefinition<'adddividend', IAdddividendSto
           records.setDrawerDepot()
           modaldialog.toggleVisibility()
           resolve()
+        } else {
+          reject('ADDDIVIDEND: add error')
         }
       })
     }

@@ -405,7 +405,7 @@ if (window.location.href.includes('background')) {
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchMinRateMaxData')
       const _fnet = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
@@ -448,7 +448,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _ard = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const firstResponseText = await firstResponse.text()
@@ -508,7 +508,7 @@ if (window.location.href.includes('background')) {
         urls: IUrlWithId[],
         homeUrl: string
       ): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url)
             const firstResponseJson = await firstResponse.json()
@@ -545,7 +545,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _goyax = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
@@ -584,7 +584,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _acheck = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             let onlineCurrency = ''
@@ -629,7 +629,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _tgate = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url)
             const onlineCurrency = 'EUR'
@@ -661,7 +661,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _select = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await new Promise(async (resolve) => {
+        return new Promise(async (resolve) => {
           let mmr: TFetch[]
           switch (serviceName) {
             case 'fnet':
@@ -704,7 +704,7 @@ if (window.location.href.includes('background')) {
       mode = CONS.SERVICES.tgate.CHANGES.SMALL
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchDailyChangesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         let valuestr: string
         let company: string
         let sDocument: Document
@@ -789,7 +789,7 @@ if (window.location.href.includes('background')) {
       isin: string
     ): Promise<TFetch> => {
       console.log('BACKGROUND: fetchCompanyData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         let sDocument: Document
         let company = ''
         let child: ChildNode | undefined
@@ -864,7 +864,7 @@ if (window.location.href.includes('background')) {
       exchangeCodes: string[]
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchExchangesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const fExUrl = (code: string): string => {
           return `${CONS.SERVICES.fx.EXCHANGE}${code.substring(
             0,
@@ -901,7 +901,7 @@ if (window.location.href.includes('background')) {
     }
     const fetchMaterialData = async (): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchMaterialData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const materials: TFetch[] = []
         const firstResponse = await fetch(CONS.SERVICES.fnet.MATERIALS)
         if (
@@ -942,7 +942,7 @@ if (window.location.href.includes('background')) {
     }
     const fetchIndexData = async (): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchIndexData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const indexes: TFetch[] = []
         const indexesKeys = Object.keys(CONS.SETTINGS.INDEXES)
         const indexesValues: string[] = Object.values(CONS.SETTINGS.INDEXES)
@@ -983,7 +983,7 @@ if (window.location.href.includes('background')) {
       id: number
     }): Promise<TFetch> => {
       console.log('BACKGROUND: fetchDatesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const gmqf = {gm: 0, qf: 0}
         const parseGermanDate = (germanDateString: string): number => {
           const parts = germanDateString.match(/(\d+)/g) ?? ['01', '01', '1970']
@@ -1200,7 +1200,7 @@ if (window.location.href.includes('background')) {
                 false
               )
               const onSuccessTransfers = (ev: TIDBRequestEvent): void => {
-                console.error(
+                console.log(
                   'BACKGROUND: onUpgradeNeeded: fCreateDB: onSuccessTransfers'
                 )
                 const cursor: IDBCursorWithValue | null = ev.target.result

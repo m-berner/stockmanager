@@ -101,12 +101,9 @@ const createItems = (): void => {
       class: records.transfers.totalController[elem] < 0 ? elem + '_minus' : elem
     })
   }
-  // if (runtime.showPartialDrawer === true) {
-  //   drawerItems.value.shift()
-  //   drawerItems.value.pop()
-  // }
 }
 
+watch(() => records.transfers.totalController.account, createItems)
 watch(() => records.transfers.totalController.depot, createItems)
 watch(() => records.transfers.totalController.dividends, createItems)
 createItems()
@@ -114,32 +111,18 @@ createItems()
 console.log('--- InfoBar.vue setup ---')
 </script>
 
-<!--<style scoped>-->
-<!--.winloss {-->
-<!--  font-weight: bold;-->
-<!--  color: green;-->
-<!--}-->
+<style scoped>
+.winloss {
+  font-weight: bold;
+  color: green;
+}
 
-<!--.winloss_minus,-->
-<!--.fees_minus,-->
-<!--.taxes_minus,-->
-<!--.withdrawals_minus,-->
-<!--.account_minus,-->
-<!--.earnings_minus {-->
-<!--  color: red;-->
-<!--}-->
-
-<!--.loader {-->
-<!--  width: 60px;-->
-<!--  aspect-ratio: 8;-->
-<!--  background: radial-gradient(circle closest-side, #000 90%, #0000) 0 / calc(100% / 3) 100% space;-->
-<!--  clip-path: inset(0 100% 0 0);-->
-<!--  animation: l1 1s steps(4) infinite;-->
-<!--}-->
-
-<!--@keyframes l1 {-->
-<!--  to {-->
-<!--    clip-path: inset(0 -34% 0 0);-->
-<!--  }-->
-<!--}-->
-<!--</style>-->
+.winloss_minus,
+.fees_minus,
+.taxes_minus,
+.withdrawals_minus,
+.account_minus,
+.earnings_minus {
+  color: red;
+}
+</style>

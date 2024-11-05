@@ -293,7 +293,6 @@ export const useRecordsStore = defineStore('records', {
                     totalController.fees += transfer.cFees ?? 0;
                     totalController.taxes +=
                         (transfer.cTax ?? 0) + (transfer.cFTax ?? 0) + (transfer.cSTax ?? 0) + (transfer.cSoli ?? 0);
-                    console.error('transfer', transfer);
                     switch (transfer.cType) {
                         case CONS.DB.RECORD_TYPES.BUY:
                             totalController.buy += (transfer.cUnitQuotation ?? 0) * (transfer.cCount ?? 0);
@@ -345,7 +344,6 @@ export const useRecordsStore = defineStore('records', {
             if (year === CONS.DEFAULTS.YEAR) {
                 this._transfers.totalController = totalController;
             }
-            console.error(totalController);
             return { ...totalController };
         },
         updatePage(p) {
@@ -355,7 +353,6 @@ export const useRecordsStore = defineStore('records', {
             const overPaged = this._stocks.active.filter((rec) => {
                 return (rec.mPortfolio ?? 0) > 0;
             }).length;
-            console.error(overPaged);
             for (let i = (this._stocks.active_page - 1) * settings.itemsPerPageStocks; i < Math.max((this._stocks.active_page - 1) * settings.itemsPerPageStocks + this._stocks.active_page_count, overPaged); i++) {
                 const id = this._stocks.active[i].cID;
                 const { rate, min, max } = online.minRateMax.get(id) ?? { rate: 0, min: 0, max: 0 };
@@ -413,7 +410,7 @@ export const useRecordsStore = defineStore('records', {
             this._transfers.totalController = CONS.RECORDS.CONTROLLER.TOTAL;
             this._transfers.stockController = new Map();
             this._transfers.all.splice(0, this._transfers.all.length);
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onError = (ev) => {
                     requestTransaction.removeEventListener(CONS.EVENTS.ERR, onError, false);
                     reject(ev.message);
@@ -440,7 +437,7 @@ export const useRecordsStore = defineStore('records', {
             });
         },
         async openDatabase() {
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onError = (err) => {
                     reject(err.message);
                 };
@@ -460,7 +457,7 @@ export const useRecordsStore = defineStore('records', {
             this._stocks.active.splice(0, this._stocks.active.length);
             this._stocks.passive.splice(0, this._stocks.passive.length);
             this._transfers.all.splice(0, this._transfers.all.length);
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const requestTransaction = this._dbi.transaction([CONS.DB.STORES.S, CONS.DB.STORES.T], 'readonly');
                 const onComplete = () => {
                     console.info('RECORDS: loadDatabaseIntoStore: all records loaded!');
@@ -513,7 +510,7 @@ export const useRecordsStore = defineStore('records', {
         },
         async loadStoreIntoDatabase() {
             console.log('RECORDS: loadStoreIntoDatabase');
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 let requestAddStock;
                 let requestAddTransfer;
                 const onComplete = () => {
@@ -568,7 +565,7 @@ export const useRecordsStore = defineStore('records', {
             });
         },
         async addStock(record) {
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onSuccess = (ev) => {
                     requestAdd.addEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     const memRecord = {
@@ -626,13 +623,21 @@ export const useRecordsStore = defineStore('records', {
             const indexOfActiveStock = this._stocks.active.findIndex((stock) => {
                 return stock.cID === data.cID;
             });
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onSuccess = () => {
                     requestUpdate.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     if (indexOfPassiveStock > -1) {
                         this._stocks.passive.splice(indexOfPassiveStock, 1);
                     }
-                    this._stocks.active.splice(indexOfActiveStock, 0, data);
+                    else {
+                        this._stocks.passive.splice(indexOfPassiveStock, 0, data);
+                    }
+                    if (indexOfActiveStock > -1) {
+                        this._stocks.active.splice(indexOfActiveStock, 1);
+                    }
+                    else {
+                        this._stocks.active.splice(indexOfActiveStock, 0, data);
+                    }
                     this._sortActiveStocks();
                     if (msg) {
                         notice(['sm_msg_updaterecord']);
@@ -656,7 +661,7 @@ export const useRecordsStore = defineStore('records', {
             const indexOfStock = this._stocks.all.findIndex((stock) => {
                 return stock.cID === ident;
             });
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onSuccess = () => {
                     requestTransaction.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     this._stocks.active.splice(this._stocks.active_index, 1);
@@ -676,7 +681,7 @@ export const useRecordsStore = defineStore('records', {
             });
         },
         async addTransfer(record) {
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const transfer = { ...record };
                 transfer.cDate = record.cDate + offset();
                 transfer.cExDay = record.cExDay + offset();
@@ -722,7 +727,7 @@ export const useRecordsStore = defineStore('records', {
             delete dbRecord.mSortDate;
             dbRecord.cDate = dbRecord.cDate > 0 ? data.cDate + offset() : 0;
             dbRecord.cExDay = dbRecord.cExDay > 0 ? data.cExDay + offset() : 0;
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onSuccess = () => {
                     requestUpdate.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     this._transfers.all[this._transfers.index] = { ...data };
@@ -745,7 +750,7 @@ export const useRecordsStore = defineStore('records', {
             });
         },
         async deleteTransfer(ident, msg = false) {
-            return await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 const onSuccess = () => {
                     requestTransaction.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     this._transfers.all.splice(0, 1);
@@ -768,7 +773,7 @@ export const useRecordsStore = defineStore('records', {
         },
         async onDeleteTransfer() {
             console.log('RECORDS: onDeleteTransfer');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 const modaldialog = useModaldialogStore();
                 if (this._transfers.index === 0) {
                     await this.deleteTransfer(this._transfers.all[0].cID ?? -1);
