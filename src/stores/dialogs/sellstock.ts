@@ -7,9 +7,8 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useVueLibrary} from '@/libraries/useVue'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useComponents} from '@/components/lib/useComponents'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 interface ISellstockStore {
@@ -23,8 +22,8 @@ interface ISellstockStore {
   _market_place: string
 }
 
-const CONS = useConstants()
-const {toNumber} = useAppLibrary()
+const { CONS } = useApp()
+const {toNumber} = useApp()
 
 export const useSellstockStore: StoreDefinition<'sellstock', ISellstockStore> = defineStore('sellstock', {
   state: (): ISellstockStore => {
@@ -70,7 +69,7 @@ export const useSellstockStore: StoreDefinition<'sellstock', ISellstockStore> = 
       console.log('SELLSTOCK: sell')
       const records = useRecordsStore()
       const modaldialog = useModaldialogStore()
-      const {validators} = useVueLibrary()
+      const {validators} = useComponents()
       const transfer = {
         cStockID: records.stocks.active[records.stocks.active_index].cID,
         cDate: new Date(this._date).getTime(),

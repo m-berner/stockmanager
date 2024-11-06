@@ -115,10 +115,10 @@ import {useRecordsStore} from '@/stores/records'
 import {storeToRefs} from 'pinia'
 import {onMounted} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useApp} from '@/useApp'
 
 const {n, t} = useI18n()
-const {getUI} = useAppLibrary()
+const {getUI} = useApp()
 const modaldialog = useModaldialogStore()
 const showaccounting = useShowaccountingStore()
 const records = useRecordsStore()

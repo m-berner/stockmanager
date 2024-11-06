@@ -16,8 +16,7 @@ import {useOnlineStore} from '@/stores/online'
 import {useAddstockStore} from '@/stores/dialogs/addstock'
 import {onBeforeMount, toRaw} from 'vue'
 import {useTheme} from 'vuetify'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useDailychangesStore} from '@/stores/dialogs/dailychanges'
 
@@ -26,12 +25,12 @@ const records = useRecordsStore()
 const online = useOnlineStore()
 const runtime = useRuntimeStore()
 const theme = useTheme()
-const CONS = useConstants()
+const { CONS } = useApp()
 
 onBeforeMount(() => {
   console.log('APP: onBeforeMount')
   return new Promise(async (resolve): Promise<void> => {
-    const {notice} = useAppLibrary()
+    const {notice} = useApp()
     // NOTE: set app instance or background instance
     const onStorageChange = async (
       change: Record<string, browser.storage.StorageChange>

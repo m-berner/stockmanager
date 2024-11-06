@@ -39,15 +39,14 @@
 </template>
 
 <script lang="ts" setup>
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useRecordsStore} from '@/stores/records'
 import {useModaldialogStore} from '@/stores/modaldialog'
 import {useI18n} from 'vue-i18n'
 
 const {rt} = useI18n()
-const CONS = useConstants()
-const {notice} = useAppLibrary()
+const { CONS } = useApp()
+const {notice} = useApp()
 const records = useRecordsStore()
 const modaldialog = useModaldialogStore()
 

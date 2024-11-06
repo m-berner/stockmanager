@@ -88,10 +88,10 @@ import {useModaldialogStore} from '@/stores/modaldialog'
 import {useUpdatetransferStore} from '@/stores/dialogs/updatetransfer'
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 const {d, n, rt, t, tm} = useI18n()
-const CONS = useConstants()
+const { CONS } = useApp()
 const records = useRecordsStore()
 const settings = useSettingsStore()
 const modaldialog = useModaldialogStore()

@@ -58,9 +58,9 @@ import {
   mdiMagnify
 } from '@mdi/js'
 import messages from '@intlify/unplugin-vue-i18n/messages'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useApp} from '@/useApp'
 
-const {getUI} = useAppLibrary()
+const {getUI} = useApp()
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [

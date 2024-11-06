@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { useAppLibrary } from '@/libraries/useApp';
-const { toNumber } = useAppLibrary();
+import { useApp } from '@/useApp';
+const { toNumber } = useApp();
 export const useOnlineStore = defineStore('online', {
     state: () => {
         return {

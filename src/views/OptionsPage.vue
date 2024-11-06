@@ -152,13 +152,12 @@ import {useOptionsPageStore} from '@/stores/optionspage'
 import {storeToRefs} from 'pinia'
 import {useI18n} from 'vue-i18n'
 import {useTheme} from 'vuetify'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {onMounted, toRaw} from 'vue'
 
 const {t, tm} = useI18n()
-const CONS = useConstants()
-const {group} = useAppLibrary()
+const { CONS } = useApp()
+const {group} = useApp()
 const settings = useSettingsStore()
 const optionspage = useOptionsPageStore()
 /* NOTE: the destructured variables are reactive! */

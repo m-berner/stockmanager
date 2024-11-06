@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import {} from 'vuetify';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 export const useSettingsStore = defineStore('settings', {
     state: () => {
-        const CONS = useConstants();
+        const { CONS } = useApp();
         return {
             _service: CONS.DEFAULTS.STORAGE.service,
             _skin: CONS.DEFAULTS.STORAGE.skin,

@@ -8,7 +8,7 @@
 import type {StoreDefinition} from 'pinia'
 import {defineStore} from 'pinia'
 import {useOnlineStore} from '@/stores/online'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 interface IDailychangesStore {
   _progress: boolean
@@ -17,7 +17,7 @@ interface IDailychangesStore {
   _tmpChangesWithNoDuplicates: IChange[];
 }
 
-const CONS = useConstants()
+const { CONS } = useApp()
 
 export const useDailychangesStore: StoreDefinition<'dailychanges', IDailychangesStore> = defineStore('dailychanges', {
   state: (): IDailychangesStore => {

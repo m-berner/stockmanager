@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import {useSettingsStore} from '@/stores/settings'
 import {reactive, ref, toRaw} from 'vue'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useOnlineStore} from '@/stores/online'
 
 interface PropsDynamicList {
@@ -57,7 +57,7 @@ interface PropsDynamicList {
   toUpperCase?: boolean
 }
 
-const CONS = useConstants()
+const { CONS } = useApp()
 const settings = useSettingsStore()
 const online = useOnlineStore()
 const _props = defineProps<PropsDynamicList>()

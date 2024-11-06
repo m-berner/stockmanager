@@ -90,21 +90,20 @@
 <script lang="ts" setup>
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import {useAdddepositStore} from '@/stores/dialogs/adddeposit'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useApp} from '@/useApp'
+import {useComponents} from '@/components/lib/useComponents'
 import {storeToRefs} from 'pinia'
 import {onMounted, useTemplateRef} from 'vue'
 import {useModaldialogStore} from '@/stores/modaldialog'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
-const CONS = useConstants()
+const { CONS } = useApp()
 const adddeposit = useAdddepositStore()
 const modaldialog = useModaldialogStore()
 const {_date, _type, _deposit, _description} = storeToRefs(adddeposit)
-const {getUI} = useAppLibrary()
-const {validators, resetValidation} = useVueLibrary()
+const {getUI} = useApp()
+const {validators, resetValidation} = useComponents()
 const form = useTemplateRef('form-ref')
 
 onMounted(() => {

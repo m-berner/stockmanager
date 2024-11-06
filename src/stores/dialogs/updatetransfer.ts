@@ -6,10 +6,10 @@
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
 import {defineStore, type StoreDefinition} from 'pinia'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useApp} from '@/useApp'
 import {useRecordsStore} from '@/stores/records'
 import {useModaldialogStore} from '@/stores/modaldialog'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useComponents} from '@/components/lib/useComponents'
 
 interface IUpdatetransferStore {
   _date: string
@@ -28,7 +28,7 @@ interface IUpdatetransferStore {
   _description: string
 }
 
-const {toNumber, dateToISO} = useAppLibrary()
+const {toNumber, dateToISO} = useApp()
 
 export const useUpdatetransferStore: StoreDefinition<'updatetransfer', IUpdatetransferStore> = defineStore(
   'updatetransfer',
@@ -71,7 +71,7 @@ export const useUpdatetransferStore: StoreDefinition<'updatetransfer', IUpdatetr
       },
       async onUpdate(): Promise<void> {
         console.log('UPDATETRANSFER: update')
-        const {validators} = useVueLibrary()
+        const {validators} = useComponents()
         const records = useRecordsStore()
         const modaldialog = useModaldialogStore()
         const currentTransfer = {...records.transfers.all[records.transfers.index]}

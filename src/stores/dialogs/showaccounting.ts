@@ -6,7 +6,7 @@
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
 import {defineStore, type StoreDefinition} from 'pinia'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useRecordsStore} from '@/stores/records'
 
 interface IShowaccountingStore {
@@ -21,7 +21,7 @@ interface IShowaccountingStore {
   _earnings: number
 }
 
-const CONS = useConstants()
+const { CONS } = useApp()
 
 export const useShowaccountingStore: StoreDefinition<'showaccounting', IShowaccountingStore> = defineStore(
   'showaccounting',

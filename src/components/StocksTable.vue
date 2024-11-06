@@ -141,13 +141,12 @@ import {onBeforeMount} from 'vue'
 // import { useRuntimeStore } from '@/stores/runtime'
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 const {d, n, rt, t, tm} = useI18n()
-const CONS = useConstants()
-const {toNumber} = useAppLibrary()
+const { CONS } = useApp()
+const {toNumber} = useApp()
 const modaldialog = useModaldialogStore()
 const deletestock = useDeletestockStore()
 const adddividend = useAdddividendStore()

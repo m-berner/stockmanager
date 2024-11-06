@@ -5,8 +5,7 @@
  *
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserve
  */
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 declare global {
   type TIDBRequestEvent = Event & { target: IDBRequest }
@@ -193,7 +192,7 @@ declare global {
     items_per_page_transfers?: number
   }
 
-  interface IUseConstants {
+  interface IConstants {
     CURRENCIES: {
       EUR: string
       USD: string
@@ -376,8 +375,8 @@ declare global {
     fetchMinRateMaxData: (serviceName: string, storageonline: TFetch[]) => Promise<TFetch[]>
   }
 
-  interface IUseAppLibrary {
-    CONS: IUseConstants
+  interface IUseApp {
+    CONS: IConstants
     migrateStock: (stock: IStock) => IStock
     migrateTransfer: (transfer: ITransfer) => ITransfer
     notice: (messages: string[]) => void
@@ -397,8 +396,8 @@ declare global {
 // TODO what is required???
 if (window.location.href.includes('background')) {
   const useFetchApi = (): IUseFetchApi => {
-    const CONS = useConstants()
-    const {mean, notice, toNumber} = useAppLibrary()
+    const { CONS } = useApp()
+    const {mean, notice, toNumber} = useApp()
     const fetchMinRateMaxData = async (
       serviceName: string,
       storageOnline: TFetch[]
@@ -1069,14 +1068,14 @@ if (window.location.href.includes('background')) {
     }
   }
   const useListener = (): IUseListener => {
-    const CONS = useConstants()
+    const { CONS } = useApp()
     const appUrls = {url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*'}
     let storageService = CONS.DEFAULTS.STORAGE.service
     const onClick = async (): Promise<void> => {
       console.log('BACKGROUND: onClick')
       return await new Promise(async (resolve): Promise<void> => {
-        const CONS = useConstants()
-        const {notice} = useAppLibrary()
+        const { CONS } = useApp()
+        const {notice} = useApp()
         const start = async (): Promise<void> => {
           console.log('BACKGROUND: onClick: start')
           const textDetailOn = {text: 'on'}
@@ -1124,14 +1123,14 @@ if (window.location.href.includes('background')) {
     }
     const onRemove = (permissions: browser.permissions.Permissions): void => {
       console.warn('BACKGROUND: onRemove')
-      const {notice} = useAppLibrary()
+      const {notice} = useApp()
       notice(['Some online data might not be available!', JSON.stringify(permissions)])
     }
     // TODO: onInstall runs at install addon, update addon, firefox update
     const onInstall = (): void => {
       console.log('BACKGROUND: onInstall')
-      const CONS = useConstants()
-      const {migrateStock, migrateTransfer} = useAppLibrary()
+      const { CONS } = useApp()
+      const {migrateStock, migrateTransfer} = useApp()
       const onSuccess = (ev: TIDBRequestEvent): void => {
         console.log('BACKGROUND onInstall: onSuccess')
         const onVersionChange = (ev: TIDBRequestEvent): void => {
@@ -1275,7 +1274,7 @@ if (window.location.href.includes('background')) {
           }
         }
         const initStorage = async () => {
-          const CONS = useConstants()
+          const { CONS } = useApp()
           const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE)
           const storageValues = Object.values(CONS.DEFAULTS.STORAGE)
           const storage: IStorageLocal = await browser.storage.local.get(
@@ -1326,7 +1325,7 @@ if (window.location.href.includes('background')) {
     const onMessage = async (ev: MessageEvent): Promise<void> => {
       console.info('BACKGROUND: onMessage', ev)
       return await new Promise(async (resolve, reject) => {
-        const CONS = useConstants()
+        const { CONS } = useApp()
         const {
           fetchMinRateMaxData,
           fetchDailyChangesData,
@@ -1429,7 +1428,7 @@ if (window.location.href.includes('background')) {
     }
     return {onClick, onRemove, onInstall, onMessage}
   }
-  const {initStorageLocal} = useAppLibrary()
+  const {initStorageLocal} = useApp()
   const {onClick, onRemove, onInstall, onMessage} = useListener()
   if (!browser.permissions.onRemoved.hasListener(onRemove)) {
     // noinspection JSDeprecatedSymbols

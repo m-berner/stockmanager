@@ -7,14 +7,14 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 interface IFadeinstockStore {
   _selected: IStock
 }
 
-const CONS = useConstants()
+const { CONS } = useApp()
 
 export const useFadeinstockStore: StoreDefinition<'fadeinstock', IFadeinstockStore> = defineStore('fadeinstock', {
   state: (): IFadeinstockStore => {

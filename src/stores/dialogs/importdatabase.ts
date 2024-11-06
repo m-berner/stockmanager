@@ -7,16 +7,15 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '../modaldialog'
 
 interface IImportdatabaseStore {
   _file_name: File[]
 }
 
-const CONS = useConstants()
-const {notice} = useAppLibrary()
+const { CONS } = useApp()
+const {notice} = useApp()
 
 export const useImportdatabaseStore: StoreDefinition<'importdatabase', IImportdatabaseStore> = defineStore('importdatabase', {
   state: (): IImportdatabaseStore => {

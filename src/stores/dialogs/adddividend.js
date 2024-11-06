@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useVueLibrary } from '@/libraries/useVue';
-import { useAppLibrary } from '@/libraries/useApp';
+import { useComponents } from '@/components/lib/useComponents';
+import { useApp } from '@/useApp';
 import { useRecordsStore } from '@/stores/records';
-const { CONS, toNumber } = useAppLibrary();
+const { CONS, toNumber } = useApp();
 export const useAdddividendStore = defineStore('adddividend', {
     state: () => {
         return {
@@ -53,7 +53,7 @@ export const useAdddividendStore = defineStore('adddividend', {
             return new Promise(async (resolve, reject) => {
                 const records = useRecordsStore();
                 const modaldialog = useModaldialogStore();
-                const { validators } = useVueLibrary();
+                const { validators } = useComponents();
                 const transfer = {
                     cStockID: records.stocks.active[records.stocks.active_index].cID,
                     cDate: new Date(this._date).getTime(),

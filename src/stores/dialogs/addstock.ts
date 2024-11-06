@@ -8,7 +8,7 @@
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
 import {useModaldialogStore} from '@/stores/modaldialog'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useApp} from '@/useApp'
 
 interface IAddstockStore {
   _isin: string
@@ -18,7 +18,7 @@ interface IAddstockStore {
   _auto: boolean
 }
 
-const {CONS} = useAppLibrary()
+const {CONS} = useApp()
 
 export const useAddstockStore: StoreDefinition<'addstock', IAddstockStore> = defineStore('addstock', {
   state: (): IAddstockStore => {

@@ -28,12 +28,12 @@
 
 <script lang="ts" setup>
 import {useI18n} from 'vue-i18n'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useRuntimeStore} from '@/stores/runtime'
 import {ref} from 'vue'
 
 const {t} = useI18n()
-const CONS = useConstants()
+const { CONS } = useApp()
 const value = ref('')
 const runtime = useRuntimeStore()
 

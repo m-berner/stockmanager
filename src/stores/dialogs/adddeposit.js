@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useAppLibrary } from '@/libraries/useApp';
-import { useVueLibrary } from '@/libraries/useVue';
-const { CONS, notice, isoDatePlusSeconds } = useAppLibrary();
+import { useApp } from '@/useApp';
+import { useComponents } from '@/components/lib/useComponents';
+const { CONS, notice, isoDatePlusSeconds } = useApp();
 export const useAdddepositStore = defineStore('adddeposit', {
     state: () => {
         return {
@@ -17,7 +17,7 @@ export const useAdddepositStore = defineStore('adddeposit', {
     actions: {
         async add() {
             console.log('ADDDEPOSIT: add');
-            const { validators } = useVueLibrary();
+            const { validators } = useComponents();
             const records = useRecordsStore();
             const modaldialog = useModaldialogStore();
             const record = {

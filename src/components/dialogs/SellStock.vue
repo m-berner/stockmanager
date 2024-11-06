@@ -96,8 +96,8 @@ import CurrencyInput from '@/components/CurrencyInput.vue'
 import {useModaldialogStore} from '@/stores/modaldialog'
 import {useSellstockStore} from '@/stores/dialogs/sellstock'
 import {useSettingsStore} from '@/stores/settings'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useApp} from '@/useApp'
+import {useComponents} from '@/components/lib/useComponents'
 import {storeToRefs} from 'pinia'
 import {onMounted, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
@@ -106,8 +106,8 @@ const {t} = useI18n()
 const modaldialog = useModaldialogStore()
 const settings = useSettingsStore()
 const sellstock = useSellstockStore()
-const {getUI} = useAppLibrary()
-const {validators, resetValidation} = useVueLibrary()
+const {getUI} = useApp()
+const {validators, resetValidation} = useComponents()
 const {_date, _count, _unit_quotation, _fees, _stax, _tax, _soli, _market_place} = storeToRefs(sellstock)
 const form = useTemplateRef('form-ref')
 

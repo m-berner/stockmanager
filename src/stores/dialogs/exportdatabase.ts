@@ -7,16 +7,15 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '../modaldialog'
 
 interface IExportdatabaseStore {
   _file_name: string
 }
 
-const CONS = useConstants()
-const {notice, getUI, offset} = useAppLibrary()
+const { CONS } = useApp()
+const {notice, getUI, offset} = useApp()
 const prefix = new Date().toISOString().substring(0, 10)
 const fn = `${prefix}_${CONS.DB.VERSION}_${CONS.DB.BKFN}`
 

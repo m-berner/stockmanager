@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useAppLibrary } from '@/libraries/useApp';
-const { CONS } = useAppLibrary();
+import { useApp } from '@/useApp';
+const { CONS } = useApp();
 export const useAddstockStore = defineStore('addstock', {
     state: () => {
         return {

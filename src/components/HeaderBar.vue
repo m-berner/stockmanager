@@ -275,11 +275,11 @@ import {useAddwithdrawalStore} from '@/stores/dialogs/addwithdrawal'
 import {useExportdatabaseStore} from '@/stores/dialogs/exportdatabase'
 import {useImportdatabaseStore} from '@/stores/dialogs/importdatabase'
 import {useI18n} from 'vue-i18n'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 const {t} = useI18n()
-const CONS = useConstants()
+const { CONS } = useApp()
 const runtime = useRuntimeStore()
 const records = useRecordsStore()
 const addstock = useAddstockStore()

@@ -6,7 +6,7 @@
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
 import {defineStore, type StoreDefinition} from 'pinia'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useApp} from '@/useApp'
 
 interface IOnlineStore {
   _min_rate_max: Map<number, IOnlineData>
@@ -26,7 +26,7 @@ interface IOnlineData {
   cur: string
 }
 
-const {toNumber} = useAppLibrary()
+const {toNumber} = useApp()
 
 export const useOnlineStore: StoreDefinition<'online', IOnlineStore> = defineStore('online', {
   state: (): IOnlineStore => {

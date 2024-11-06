@@ -8,24 +8,9 @@
 <template>
   <v-navigation-drawer color="secondary" height="100%" v-model="show" width="180" v-bind:floating="true" app>
     <v-card color="secondary" height="100%">
-      <v-list v-if="runtime.showPartialDrawer" lines="two">
-        <v-list-item>
-          <v-list-item-title>{{ t('infoBar.drawer.winloss') }}</v-list-item-title>
-        </v-list-item>
+      <v-list lines="two">
         <v-list-item
-          v-for="item in drawerItems"
-          v-bind:key="item.title"
-          v-bind:title="item.title"
-          v-bind:subtitle="item.value"
-          v-bind:class="item.class"
-        ></v-list-item>
-        <v-list-item>
-          <v-list-item-title>{{ t('infoBar.drawer.depot') }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-      <v-list v-else lines="two">
-        <v-list-item
-          v-for="item in drawerItems"
+          v-for="item in infobar.drawerItems"
           v-bind:key="item.title"
           v-bind:title="item.title"
           v-bind:subtitle="item.value"
@@ -60,24 +45,24 @@
 </template>
 
 <script lang="ts" setup>
-import {type Ref, ref, type UnwrapRef, watch} from 'vue'
+//import {type Ref, ref, type UnwrapRef, watch} from 'vue'
+import {ref} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useOnlineStore} from '@/stores/online'
 import {useSettingsStore} from '@/stores/settings'
-import {useRecordsStore} from '@/stores/records'
-import {useRuntimeStore} from '@/stores/runtime'
+//import {useRecordsStore} from '@/stores/records'
+import {useInfobarStore} from '@/stores/infobar'
 import {storeToRefs} from 'pinia'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
-const {n, t, tm} = useI18n()
-const CONS = useConstants()
-const {getUI, toNumber} = useAppLibrary()
+const {n, t} = useI18n()
+const { CONS } = useApp()
+const {getUI, toNumber} = useApp()
 const online = useOnlineStore()
 const settings = useSettingsStore()
-const records = useRecordsStore()
-const runtime = useRuntimeStore()
-const drawerItems: Ref<UnwrapRef<{ value: string, class: string, title: string }[]>> = ref([])
+//const records = useRecordsStore()
+const infobar = useInfobarStore()
+//const drawerItems: Ref<UnwrapRef<{ value: string, class: string, title: string }[]>> = ref([])
 const {_exchanges, _indexes, _materials} = storeToRefs(settings)
 const show = ref(true)
 const usd = (mat: string, usd = true): number => {
@@ -87,30 +72,35 @@ const usd = (mat: string, usd = true): number => {
     return (online.materials.get(mat) ?? 0) / (online.exchanges.get(getUI().curusd) ?? 1)
   }
 }
-const createItems = (): void => {
-  console.log('INFOBAR: createItems', tm('infoBar.drawer'))
-  const drawerData: Record<string, string> = tm('infoBar.drawer')
-  const drawerKeys = Object.keys(drawerData)
-  drawerItems.value = []
-  for (const elem of drawerKeys) {
-    const percent =
-      elem === 'winloss' ? ' / ' + n(records.transfers.totalController.winlossPercent ?? 0, 'percent') : ''
-    drawerItems.value.push({
-      title: t(`infoBar.drawer.${elem}`),
-      value: n(records.transfers.totalController[elem], 'currency') + percent,
-      class: records.transfers.totalController[elem] < 0 ? elem + '_minus' : elem
-    })
-  }
-}
+// const createItems = (): void => {
+//   console.log('INFOBAR: createItems', tm('infoBar.drawer'))
+//   const drawerData: Record<string, string> = tm('infoBar.drawer')
+//   const drawerKeys = Object.keys(drawerData)
+//   drawerItems.value = []
+//   for (const elem of drawerKeys) {
+//     const percent =
+//       elem === 'winloss' ? ' / ' + n(records.transfers.totalController.winlossPercent ?? 0, 'percent') : ''
+//     drawerItems.value.push({
+//       title: t(`infoBar.drawer.${elem}`),
+//       value: n(records.transfers.totalController[elem], 'currency') + percent,
+//       class: records.transfers.totalController[elem] < 0 ? elem + '_minus' : elem
+//     })
+//   }
+// }
 
-watch(() => records.transfers.totalController.account, createItems)
-watch(() => records.transfers.totalController.depot, createItems)
-watch(() => records.transfers.totalController.dividends, createItems)
-createItems()
+// watch(() => records.transfers.totalController.account, createItems)
+// watch(() => records.transfers.totalController.depot, createItems)
+// watch(() => records.transfers.totalController.dividends, createItems)
+// createItems()
+// onUpdated(() => {
+//   records.setDrawerDepot()
+//   infobar.createDrawerItems()
+// })
 
 console.log('--- InfoBar.vue setup ---')
 </script>
 
+<!--suppress CssUnusedSymbol -->
 <style scoped>
 .winloss {
   font-weight: bold;

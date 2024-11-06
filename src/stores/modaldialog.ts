@@ -6,7 +6,7 @@
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
 import {defineStore, type StoreDefinition} from 'pinia'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {ref, type Ref} from 'vue'
 import {VForm} from 'vuetify/components'
 
@@ -33,7 +33,7 @@ interface IModaldialogStore {
   _config_stock: boolean
 }
 
-const CONS = useConstants()
+const { CONS } = useApp()
 
 export const useModaldialogStore: StoreDefinition<'modaldialog', IModaldialogStore> = defineStore('modaldialog', {
   state: () => {

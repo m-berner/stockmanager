@@ -7,7 +7,7 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {type ThemeInstance} from 'vuetify'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 interface ISettingsStore {
   _service: IUrlWithName
@@ -23,7 +23,7 @@ interface ISettingsStore {
 
 export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = defineStore('settings', {
   state: (): ISettingsStore => {
-    const CONS = useConstants()
+    const { CONS } = useApp()
     return {
       _service: CONS.DEFAULTS.STORAGE.service,
       _skin: CONS.DEFAULTS.STORAGE.skin,

@@ -123,8 +123,8 @@
 <script lang="ts" setup>
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import {useUpdatetransferStore} from '@/stores/dialogs/updatetransfer'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useApp} from '@/useApp'
+import {useComponents} from '@/components/lib/useComponents'
 import {onMounted} from 'vue'
 import {storeToRefs} from 'pinia'
 import {useModaldialogStore} from '@/stores/modaldialog'
@@ -138,8 +138,8 @@ const {t} = useI18n()
 const _props = defineProps<PropsUpdateTransfer>()
 const modaldialog = useModaldialogStore()
 const updatetransfer = useUpdatetransferStore()
-const {getUI} = useAppLibrary()
-const {validators, resetValidation} = useVueLibrary()
+const {getUI} = useApp()
+const {validators, resetValidation} = useComponents()
 const {
   _date,
   _ex_day,

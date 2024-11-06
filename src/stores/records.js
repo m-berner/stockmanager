@@ -3,11 +3,11 @@ import { useOnlineStore } from '@/stores/online';
 import { useRuntimeStore } from '@/stores/runtime';
 import { useSettingsStore } from '@/stores/settings';
 import { useModaldialogStore } from '@/stores/modaldialog';
+import { useInfobarStore } from '@/stores/infobar';
 import { toRaw } from 'vue';
-import { useAppLibrary } from '@/libraries/useApp';
-import { useConstants } from '@/libraries/useConstants';
-const CONS = useConstants();
-const { notice, offset, migrateStock, migrateTransfer } = useAppLibrary();
+import { useApp } from '@/useApp';
+const { CONS } = useApp();
+const { notice, offset, migrateStock, migrateTransfer } = useApp();
 export const useRecordsStore = defineStore('records', {
     state: () => {
         return {
@@ -273,6 +273,8 @@ export const useRecordsStore = defineStore('records', {
         },
         evaluateTransfers(year = CONS.DEFAULTS.YEAR) {
             console.info('RECORDS: evaluateTransfers', year);
+            const infobar = useInfobarStore();
+            const records = useRecordsStore();
             const oldestTransferFirst = [...this._transfers.all];
             oldestTransferFirst.sort((a, b) => {
                 return (a.mSortDate ?? 0) - (b.mSortDate ?? 0);
@@ -344,6 +346,8 @@ export const useRecordsStore = defineStore('records', {
             if (year === CONS.DEFAULTS.YEAR) {
                 this._transfers.totalController = totalController;
             }
+            records.setDrawerDepot();
+            infobar.createDrawerItems();
             return { ...totalController };
         },
         updatePage(p) {

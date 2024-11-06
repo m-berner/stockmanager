@@ -7,8 +7,8 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useApp} from '@/useApp'
+import {useComponents} from '@/components/lib/useComponents'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 interface IAddwithdrawalStore {
@@ -19,7 +19,7 @@ interface IAddwithdrawalStore {
   //_visibility: boolean
 }
 
-const {CONS, notice, isoDatePlusSeconds} = useAppLibrary()
+const {CONS, notice, isoDatePlusSeconds} = useApp()
 
 export const useAddwithdrawalStore: StoreDefinition<'addwithdrawal', IAddwithdrawalStore> = defineStore(
   'addwithdrawal',
@@ -42,7 +42,7 @@ export const useAddwithdrawalStore: StoreDefinition<'addwithdrawal', IAddwithdra
       async add(): Promise<void> {
         console.log('ADDWITHDRAWAL: add')
         return new Promise(async (resolve, reject) => {
-          const {validators} = useVueLibrary()
+          const {validators} = useComponents()
           const records = useRecordsStore()
           const modaldialog = useModaldialogStore()
           const record: IAddTransfer = {

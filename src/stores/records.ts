@@ -10,9 +10,9 @@ import {useOnlineStore} from '@/stores/online'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {useModaldialogStore} from '@/stores/modaldialog'
+import {useInfobarStore} from '@/stores/infobar'
 import {toRaw} from 'vue'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 interface IDividend {
   year: number
@@ -44,8 +44,8 @@ interface IRecordStoreStocks {
   active_portfolio_count: number
 }
 
-const CONS = useConstants()
-const {notice, offset, migrateStock, migrateTransfer} = useAppLibrary()
+const { CONS } = useApp()
+const {notice, offset, migrateStock, migrateTransfer} = useApp()
 
 export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = defineStore('records', {
   state: (): IRecordsStore => {
@@ -336,6 +336,8 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
     },
     evaluateTransfers(year = CONS.DEFAULTS.YEAR): ITotalController {
       console.info('RECORDS: evaluateTransfers', year)
+      const infobar = useInfobarStore()
+      const records = useRecordsStore()
       const oldestTransferFirst = [...this._transfers.all]
       oldestTransferFirst.sort((a: ITransfer, b: ITransfer): number => {
         return (a.mSortDate ?? 0) - (b.mSortDate ?? 0)
@@ -408,6 +410,8 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
       if (year === CONS.DEFAULTS.YEAR) {
         this._transfers.totalController = totalController
       }
+      records.setDrawerDepot()
+      infobar.createDrawerItems()
       return {...totalController}
     },
     updatePage(p: number): void {

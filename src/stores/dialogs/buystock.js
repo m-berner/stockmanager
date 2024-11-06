@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useVueLibrary } from '@/libraries/useVue';
-import { useAppLibrary } from '@/libraries/useApp';
-import { useConstants } from '@/libraries/useConstants';
-const CONS = useConstants();
-const { toNumber } = useAppLibrary();
+import { useComponents } from '@/components/lib/useComponents';
+import { useApp } from '@/useApp';
+const { CONS } = useApp();
+const { toNumber } = useApp();
 export const useBuystockStore = defineStore('buystock', {
     state: () => {
         return {
@@ -43,7 +42,7 @@ export const useBuystockStore = defineStore('buystock', {
             return new Promise(async (resolve, reject) => {
                 const records = useRecordsStore();
                 const modaldialog = useModaldialogStore();
-                const { validators } = useVueLibrary();
+                const { validators } = useComponents();
                 const transfer = {
                     cStockID: records.stocks.active[records.stocks.active_index].cID,
                     cDate: new Date(this._date).getTime(),

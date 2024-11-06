@@ -1,9 +1,8 @@
-import { useAppLibrary } from '@/libraries/useApp';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 if (window.location.href.includes('background')) {
     const useFetchApi = () => {
-        const CONS = useConstants();
-        const { mean, notice, toNumber } = useAppLibrary();
+        const { CONS } = useApp();
+        const { mean, notice, toNumber } = useApp();
         const fetchMinRateMaxData = async (serviceName, storageOnline) => {
             console.log('BACKGROUND: fetchMinRateMaxData');
             const _fnet = async (urls) => {
@@ -536,14 +535,14 @@ if (window.location.href.includes('background')) {
         };
     };
     const useListener = () => {
-        const CONS = useConstants();
+        const { CONS } = useApp();
         const appUrls = { url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*' };
         let storageService = CONS.DEFAULTS.STORAGE.service;
         const onClick = async () => {
             console.log('BACKGROUND: onClick');
             return await new Promise(async (resolve) => {
-                const CONS = useConstants();
-                const { notice } = useAppLibrary();
+                const { CONS } = useApp();
+                const { notice } = useApp();
                 const start = async () => {
                     console.log('BACKGROUND: onClick: start');
                     const textDetailOn = { text: 'on' };
@@ -591,13 +590,13 @@ if (window.location.href.includes('background')) {
         };
         const onRemove = (permissions) => {
             console.warn('BACKGROUND: onRemove');
-            const { notice } = useAppLibrary();
+            const { notice } = useApp();
             notice(['Some online data might not be available!', JSON.stringify(permissions)]);
         };
         const onInstall = () => {
             console.log('BACKGROUND: onInstall');
-            const CONS = useConstants();
-            const { migrateStock, migrateTransfer } = useAppLibrary();
+            const { CONS } = useApp();
+            const { migrateStock, migrateTransfer } = useApp();
             const onSuccess = (ev) => {
                 console.log('BACKGROUND onInstall: onSuccess');
                 const onVersionChange = (ev) => {
@@ -683,7 +682,7 @@ if (window.location.href.includes('background')) {
                     }
                 };
                 const initStorage = async () => {
-                    const CONS = useConstants();
+                    const { CONS } = useApp();
                     const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE);
                     const storageValues = Object.values(CONS.DEFAULTS.STORAGE);
                     const storage = await browser.storage.local.get(storageKeys);
@@ -723,7 +722,7 @@ if (window.location.href.includes('background')) {
         const onMessage = async (ev) => {
             console.info('BACKGROUND: onMessage', ev);
             return await new Promise(async (resolve, reject) => {
-                const CONS = useConstants();
+                const { CONS } = useApp();
                 const { fetchMinRateMaxData, fetchDailyChangesData, fetchCompanyData, fetchExchangesData, fetchMaterialData, fetchIndexData, fetchDatesData } = useFetchApi();
                 const foundTabs = await browser.tabs.query(appUrls);
                 if (foundTabs.length > 0) {
@@ -813,7 +812,7 @@ if (window.location.href.includes('background')) {
         };
         return { onClick, onRemove, onInstall, onMessage };
     };
-    const { initStorageLocal } = useAppLibrary();
+    const { initStorageLocal } = useApp();
     const { onClick, onRemove, onInstall, onMessage } = useListener();
     if (!browser.permissions.onRemoved.hasListener(onRemove)) {
         browser.permissions.onRemoved.addListener(onRemove);

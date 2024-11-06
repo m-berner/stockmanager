@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import { useAppLibrary } from '@/libraries/useApp';
+import { useApp } from '@/useApp';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useVueLibrary } from '@/libraries/useVue';
-const { toNumber, dateToISO } = useAppLibrary();
+import { useComponents } from '@/components/lib/useComponents';
+const { toNumber, dateToISO } = useApp();
 export const useUpdatetransferStore = defineStore('updatetransfer', {
     state: () => {
         return {
@@ -41,7 +41,7 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
         },
         async onUpdate() {
             console.log('UPDATETRANSFER: update');
-            const { validators } = useVueLibrary();
+            const { validators } = useComponents();
             const records = useRecordsStore();
             const modaldialog = useModaldialogStore();
             const currentTransfer = { ...records.transfers.all[records.transfers.index] };

@@ -89,20 +89,19 @@
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import {useAddwithdrawalStore} from '@/stores/dialogs/addwithdrawal'
 import {useModaldialogStore} from '@/stores/modaldialog'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useApp} from '@/useApp'
+import {useComponents} from '@/components/lib/useComponents'
 import {storeToRefs} from 'pinia'
 import {onMounted, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
-const CONS = useConstants()
+const { CONS } = useApp()
 const modaldialog = useModaldialogStore()
 const addwithdrawal = useAddwithdrawalStore()
 const {_date, _type, _withdrawal, _description} = storeToRefs(addwithdrawal)
-const {getUI} = useAppLibrary()
-const {validators, resetValidation} = useVueLibrary()
+const {getUI} = useApp()
+const {validators, resetValidation} = useComponents()
 const form = useTemplateRef('form-ref')
 
 onMounted(() => {

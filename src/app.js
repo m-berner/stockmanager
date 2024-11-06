@@ -14,8 +14,8 @@ import 'vuetify/styles';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { mdiImage, mdiHome, mdiCurrencyEur, mdiReload, mdiDomainPlus, mdiDomainRemove, mdiDomain, mdiCashPlus, mdiCashMinus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiDatabaseExport, mdiDatabaseImport, mdiTransfer, mdiCalculator, mdiCog, mdiCopyright, mdiBasketPlus, mdiBasketMinus, mdiBasketFill, mdiGiftOutline, mdiInfinity, mdiClose, mdiDelete, mdiPlus, mdiCheck, mdiDotsVertical, mdiTableLargeRemove, mdiFileDocumentMinus, mdiFileDocumentEdit, mdiHelpCircle, mdiShieldAccount, mdiHandshake, mdiFileCog, mdiEmail, mdiMagnify } from '@mdi/js';
 import messages from '@intlify/unplugin-vue-i18n/messages';
-import { useAppLibrary } from '@/libraries/useApp';
-const { getUI } = useAppLibrary();
+import { useApp } from '@/useApp';
+const { getUI } = useApp();
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
