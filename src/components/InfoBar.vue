@@ -86,8 +86,9 @@ const updateDrawerControls = (): void => {
   }
 }
 
-//watch(() => [records.transfers.totalController.depot, records.transfers.totalController.account, records.transfers.totalController.dividends], updateDrawerControls)
+watch(() => records.transfers.totalController.dividends, updateDrawerControls)
 watch(() => records.transfers.totalController.depot, updateDrawerControls)
+watch(() => records.transfers.totalController.account, updateDrawerControls)
 
 console.log('--- InfoBar.vue setup ---')
 </script>
