@@ -76,7 +76,6 @@ export const useConfigstockStore = defineStore('configstock', {
                     resolve();
                 }
                 else {
-                    console.error('VALIDATION?');
                     reject('CONFIGSTOCK: validation failed!');
                 }
             });
