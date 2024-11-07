@@ -98,7 +98,6 @@ export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockSto
           modaldialog.toggleVisibility()
           resolve()
         } else {
-          console.error('VALIDATION?')
           reject('CONFIGSTOCK: validation failed!')
         }
       })

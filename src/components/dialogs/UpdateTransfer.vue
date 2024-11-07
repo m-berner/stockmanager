@@ -156,7 +156,7 @@ const {
 } = storeToRefs(updatetransfer)
 
 onMounted(() => {
-  console.log('UPDATETRANSFER: onMounted')
+  console.log('UPDATETRANSFER: onMounted', _props.initialTransfer)
   updatetransfer.setInitialTransfer(_props.initialTransfer)
   modaldialog.setNoOk(false)
 })

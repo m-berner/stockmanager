@@ -26,6 +26,7 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
     getters: {},
     actions: {
         setInitialTransfer(value) {
+            console.error('transfer', value);
             this._date = dateToISO(value.cDate);
             this._ex_day = dateToISO(value.cExDay);
             this._count = value.cCount;
@@ -38,12 +39,14 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
             this._soli = value.cSoli;
             this._market_place = value.cMarketPlace;
             this._description = value.cDescription;
+            console.error('this', this);
         },
         async onUpdate() {
             console.log('UPDATETRANSFER: update');
             const { validators } = useComponents();
             const records = useRecordsStore();
             const modaldialog = useModaldialogStore();
+            console.error(records.transfers.index);
             const currentTransfer = { ...records.transfers.all[records.transfers.index] };
             currentTransfer.cDate = new Date(this._date).getTime();
             currentTransfer.cExDay = new Date(this._ex_day).getTime();
