@@ -1,6 +1,6 @@
 import { useModaldialogStore } from '@/stores/modaldialog';
 import { storeToRefs } from 'pinia';
-export const useVueLibrary = () => {
+export const useComponents = () => {
     const validators = {
         dottedPositiveNumber2: (vstr) => {
             const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,2})$/g);

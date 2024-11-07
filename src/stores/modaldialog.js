@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 import { ref } from 'vue';
 import { VForm } from 'vuetify/components';
-const CONS = useConstants();
+const { CONS } = useApp();
 export const useModaldialogStore = defineStore('modaldialog', {
     state: () => {
         return {

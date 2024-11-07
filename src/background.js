@@ -1,13 +1,12 @@
-import { useAppLibrary } from '@/libraries/useApp';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 if (window.location.href.includes('background')) {
     const useFetchApi = () => {
-        const CONS = useConstants();
-        const { mean, notice, toNumber } = useAppLibrary();
+        const { CONS } = useApp();
+        const { mean, notice, toNumber } = useApp();
         const fetchMinRateMaxData = async (serviceName, storageOnline) => {
             console.log('BACKGROUND: fetchMinRateMaxData');
             const _fnet = async (urls) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const secondResponse = await fetch(firstResponse.url);
                     const secondResponseText = await secondResponse.text();
@@ -40,7 +39,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _ard = async (urls) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const firstResponseText = await firstResponse.text();
                     const firstResponseDocument = new DOMParser().parseFromString(firstResponseText, 'text/html');
@@ -77,7 +76,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _wstreet = async (urls, homeUrl) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const firstResponseJson = await firstResponse.json();
                     const url2 = homeUrl + firstResponseJson.result[0].link;
@@ -106,7 +105,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _goyax = async (urls) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const secondResponse = await fetch(firstResponse.url);
                     const secondResponseText = await secondResponse.text();
@@ -134,7 +133,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _acheck = async (urls) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     let onlineCurrency = '';
                     const secondResponse = await fetch(firstResponse.url);
@@ -170,7 +169,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _tgate = async (urls) => {
-                return await Promise.all(urls.map(async (urlObj) => {
+                return Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const onlineCurrency = 'EUR';
                     const onlineMax = '0';
@@ -195,7 +194,7 @@ if (window.location.href.includes('background')) {
                 }));
             };
             const _select = async (urls) => {
-                return await new Promise(async (resolve) => {
+                return new Promise(async (resolve) => {
                     let mmr;
                     switch (serviceName) {
                         case 'fnet':
@@ -235,7 +234,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchDailyChangesData = async (table, mode = CONS.SERVICES.tgate.CHANGES.SMALL) => {
             console.log('BACKGROUND: fetchDailyChangesData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 let valuestr;
                 let company;
                 let sDocument;
@@ -312,7 +311,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchCompanyData = async (isin) => {
             console.log('BACKGROUND: fetchCompanyData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 let sDocument;
                 let company = '';
                 let child;
@@ -379,7 +378,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchExchangesData = async (exchangeCodes) => {
             console.log('BACKGROUND: fetchExchangesData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 const fExUrl = (code) => {
                     return `${CONS.SERVICES.fx.EXCHANGE}${code.substring(0, 3)}&cp_input=${code.substring(3, 6)}&amount_from=1`;
                 };
@@ -405,7 +404,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchMaterialData = async () => {
             console.log('BACKGROUND: fetchMaterialData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 const materials = [];
                 const firstResponse = await fetch(CONS.SERVICES.fnet.MATERIALS);
                 if (!firstResponse.ok ||
@@ -430,7 +429,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchIndexData = async () => {
             console.log('BACKGROUND: fetchIndexData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 const indexes = [];
                 const indexesKeys = Object.keys(CONS.SETTINGS.INDEXES);
                 const indexesValues = Object.values(CONS.SETTINGS.INDEXES);
@@ -459,7 +458,7 @@ if (window.location.href.includes('background')) {
         };
         const fetchDatesData = async (obj) => {
             console.log('BACKGROUND: fetchDatesData');
-            return await new Promise(async (resolve) => {
+            return new Promise(async (resolve) => {
                 const gmqf = { gm: 0, qf: 0 };
                 const parseGermanDate = (germanDateString) => {
                     const parts = germanDateString.match(/(\d+)/g) ?? ['01', '01', '1970'];
@@ -536,14 +535,14 @@ if (window.location.href.includes('background')) {
         };
     };
     const useListener = () => {
-        const CONS = useConstants();
+        const { CONS } = useApp();
         const appUrls = { url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*' };
         let storageService = CONS.DEFAULTS.STORAGE.service;
         const onClick = async () => {
             console.log('BACKGROUND: onClick');
             return await new Promise(async (resolve) => {
-                const CONS = useConstants();
-                const { notice } = useAppLibrary();
+                const { CONS } = useApp();
+                const { notice } = useApp();
                 const start = async () => {
                     console.log('BACKGROUND: onClick: start');
                     const textDetailOn = { text: 'on' };
@@ -591,13 +590,13 @@ if (window.location.href.includes('background')) {
         };
         const onRemove = (permissions) => {
             console.warn('BACKGROUND: onRemove');
-            const { notice } = useAppLibrary();
+            const { notice } = useApp();
             notice(['Some online data might not be available!', JSON.stringify(permissions)]);
         };
         const onInstall = () => {
             console.log('BACKGROUND: onInstall');
-            const CONS = useConstants();
-            const { migrateStock, migrateTransfer } = useAppLibrary();
+            const { CONS } = useApp();
+            const { migrateStock, migrateTransfer } = useApp();
             const onSuccess = (ev) => {
                 console.log('BACKGROUND onInstall: onSuccess');
                 const onVersionChange = (ev) => {
@@ -643,7 +642,7 @@ if (window.location.href.includes('background')) {
                         else {
                             stocksOpenCursorRequest?.removeEventListener(CONS.EVENTS.SUC, onSuccessStocks, false);
                             const onSuccessTransfers = (ev) => {
-                                console.error('BACKGROUND: onUpgradeNeeded: fCreateDB: onSuccessTransfers');
+                                console.log('BACKGROUND: onUpgradeNeeded: fCreateDB: onSuccessTransfers');
                                 const cursor = ev.target.result;
                                 if (cursor !== null) {
                                     const transfer = cursor.value;
@@ -683,7 +682,7 @@ if (window.location.href.includes('background')) {
                     }
                 };
                 const initStorage = async () => {
-                    const CONS = useConstants();
+                    const { CONS } = useApp();
                     const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE);
                     const storageValues = Object.values(CONS.DEFAULTS.STORAGE);
                     const storage = await browser.storage.local.get(storageKeys);
@@ -723,7 +722,7 @@ if (window.location.href.includes('background')) {
         const onMessage = async (ev) => {
             console.info('BACKGROUND: onMessage', ev);
             return await new Promise(async (resolve, reject) => {
-                const CONS = useConstants();
+                const { CONS } = useApp();
                 const { fetchMinRateMaxData, fetchDailyChangesData, fetchCompanyData, fetchExchangesData, fetchMaterialData, fetchIndexData, fetchDatesData } = useFetchApi();
                 const foundTabs = await browser.tabs.query(appUrls);
                 if (foundTabs.length > 0) {
@@ -813,7 +812,7 @@ if (window.location.href.includes('background')) {
         };
         return { onClick, onRemove, onInstall, onMessage };
     };
-    const { initStorageLocal } = useAppLibrary();
+    const { initStorageLocal } = useApp();
     const { onClick, onRemove, onInstall, onMessage } = useListener();
     if (!browser.permissions.onRemoved.hasListener(onRemove)) {
         browser.permissions.onRemoved.addListener(onRemove);

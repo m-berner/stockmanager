@@ -8,9 +8,8 @@
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
 import {useModaldialogStore} from '@/stores/modaldialog'
-import {useVueLibrary} from '@/libraries/useVue'
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useComponents} from '@/components/lib/useComponents'
+import {useApp} from '@/useApp'
 
 interface IBuystockStore {
   _date: string
@@ -21,8 +20,8 @@ interface IBuystockStore {
   _market_place: string
 }
 
-const CONS = useConstants()
-const {toNumber} = useAppLibrary()
+const {CONS} = useApp()
+const {toNumber} = useApp()
 
 export const useBuystockStore: StoreDefinition<'buystock', IBuystockStore> = defineStore('buystock', {
   state: (): IBuystockStore => {
@@ -58,39 +57,44 @@ export const useBuystockStore: StoreDefinition<'buystock', IBuystockStore> = def
   actions: {
     async buy(): Promise<void> {
       console.log('BUYSTOCK: buy')
-      const records = useRecordsStore()
-      const modaldialog = useModaldialogStore()
-      const {validators} = useVueLibrary()
-      const transfer = {
-        cStockID: records.stocks.active[records.stocks.active_index].cID,
-        cDate: new Date(this._date).getTime(),
-        cExDay: 0,
-        cUnitQuotation: this._unit_quotation,
-        cAmount: 0,
-        cCount: toNumber(this._count),
-        cFees: -this._fees,
-        cSTax: -0,
-        cFTax: -this._ftax,
-        cTax: -0,
-        cSoli: -0,
-        cType: CONS.DB.RECORD_TYPES.BUY,
-        cMarketPlace: this._market_place,
-        cDescription: ''
-      }
-      if (validators.isoDate(this._date) !== true) {
-        this._date = '0000-00-00'
-      }
-      if (validators.positiveInteger(this._count) !== true) {
-        this._count = '0'
-      }
+      return new Promise(async (resolve, reject) => {
+        const records = useRecordsStore()
+        const modaldialog = useModaldialogStore()
+        const {validators} = useComponents()
+        const transfer = {
+          cStockID: records.stocks.active[records.stocks.active_index].cID,
+          cDate: new Date(this._date).getTime(),
+          cExDay: 0,
+          cUnitQuotation: this._unit_quotation,
+          cAmount: 0,
+          cCount: toNumber(this._count),
+          cFees: -this._fees,
+          cSTax: -0,
+          cFTax: -this._ftax,
+          cTax: -0,
+          cSoli: -0,
+          cType: CONS.DB.RECORD_TYPES.BUY,
+          cMarketPlace: this._market_place,
+          cDescription: ''
+        }
+        if (validators.isoDate(this._date) !== true) {
+          this._date = '0000-00-00'
+        }
+        if (validators.positiveInteger(this._count) !== true) {
+          this._count = '0'
+        }
 
-      if (validators.positiveInteger(this._count) === true && validators.isoDate(this._date) === true) {
-        await records.addTransfer(transfer)
-        records.evaluateTransfers()
-        records.updatePage(records.stocks.activePage)
-        records.setDrawerDepot()
-        modaldialog.toggleVisibility()
-      }
+        if (validators.positiveInteger(this._count) === true && validators.isoDate(this._date) === true) {
+          await records.addTransfer(transfer)
+          records.evaluateTransfers()
+          records.updatePage(records.stocks.activePage)
+          records.setDrawerDepot()
+          modaldialog.toggleVisibility()
+          resolve()
+        } else {
+          reject('BUYSTOCK: invalid error')
+        }
+      })
     }
   }
 })

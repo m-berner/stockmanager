@@ -7,8 +7,8 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
-import {useVueLibrary} from '@/libraries/useVue'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useComponents} from '@/components/lib/useComponents'
+import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 interface IConfigstockStore {
@@ -23,7 +23,7 @@ interface IConfigstockStore {
   _url: string
 }
 
-const {toNumber} = useAppLibrary()
+const {toNumber} = useApp()
 
 export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockStore> = defineStore('configstock', {
   state: (): IConfigstockStore => {
@@ -71,26 +71,13 @@ export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockSto
   actions: {
     async configure(): Promise<void> {
       console.log('CONFIGSTOCK: configure')
-      return await new Promise(async (resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         const records = useRecordsStore()
         const modaldialog = useModaldialogStore()
-        const {validators} = useVueLibrary()
-        // const stock: IStock = {
-        //   cID: records.stocks.active[records.stocks.active_index].cID,
-        //   cCompany: '',
-        //   cISIN: '',
-        //   cWKN: '',
-        //   cSym: '',
-        //   cQuarterDay: 0,
-        //   cMeetingDay: 0,
-        //   cFadeOut: 0,
-        //   cFirstPage: 0,
-        //   cURL: ''
-        // }
+        const {validators} = useComponents()
         const stock: IStock = {...records.stocks.active[records.stocks.active_index]}
-        if (records.stocks.active[records.stocks.active_index].mPortfolio > 0.9 && this._fade_out !== 0) {
-          this._fade_out = 0
-          throw new Error('Error: stock portfolio greater 0')
+        if ((stock.mPortfolio ?? 0) > 0.9 && this._fade_out !== '0') {
+          this._fade_out = '0'
         }
         if (
           validators.isin(this._isin) === true &&
@@ -111,8 +98,7 @@ export const useConfigstockStore: StoreDefinition<'configstock', IConfigstockSto
           modaldialog.toggleVisibility()
           resolve()
         } else {
-          console.error('VALIDATION???')
-          reject('Error: validation failed!')
+          reject('CONFIGSTOCK: validation failed!')
         }
       })
     }

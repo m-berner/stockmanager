@@ -108,8 +108,8 @@
 
 <script lang="ts" setup>
 import {useConfigstockStore} from '@/stores/dialogs/configstock'
-import {useVueLibrary} from '@/libraries/useVue'
-import {useAppLibrary} from '@/libraries/useApp'
+import {useComponents} from '@/components/lib/useComponents'
+import {useApp} from '@/useApp'
 import {storeToRefs} from 'pinia'
 import {onMounted, useTemplateRef} from 'vue'
 import {useModaldialogStore} from '@/stores/modaldialog'
@@ -120,8 +120,8 @@ const {t} = useI18n()
 const modaldialog = useModaldialogStore()
 const configstock = useConfigstockStore()
 const records = useRecordsStore()
-const {dateToISO} = useAppLibrary()
-const {validators, resetValidation} = useVueLibrary()
+const {dateToISO} = useApp()
+const {validators, resetValidation} = useComponents()
 const {_company, _isin, _wkn, _sym, _first_page, _fade_out, _quarter_day, _meeting_day, _url} =
   storeToRefs(configstock)
 const form = useTemplateRef('form-ref')

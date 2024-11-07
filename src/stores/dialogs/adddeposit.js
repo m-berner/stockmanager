@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useAppLibrary } from '@/libraries/useApp';
-import { useVueLibrary } from '@/libraries/useVue';
-const { CONS, notice, isoDatePlusSeconds } = useAppLibrary();
+import { useApp } from '@/useApp';
+import { useComponents } from '@/components/lib/useComponents';
+const { CONS, notice, isoDatePlusSeconds } = useApp();
 export const useAdddepositStore = defineStore('adddeposit', {
     state: () => {
         return {
@@ -17,7 +17,7 @@ export const useAdddepositStore = defineStore('adddeposit', {
     actions: {
         async add() {
             console.log('ADDDEPOSIT: add');
-            const { validators } = useVueLibrary();
+            const { validators } = useComponents();
             const records = useRecordsStore();
             const modaldialog = useModaldialogStore();
             const record = {
@@ -39,11 +39,17 @@ export const useAdddepositStore = defineStore('adddeposit', {
             if (Object.values(CONS.RECORDS.TYPES).indexOf(this._type) === -1) {
                 notice(['System Error']);
             }
-            if (validators.isoDate(this._date) === true && validators.positiveNumber(this._deposit) === true) {
-                await records.addTransfer(record);
-                records.evaluateTransfers();
-                modaldialog.toggleVisibility();
-            }
+            return new Promise(async (resolve, reject) => {
+                if (validators.isoDate(this._date) === true && validators.positiveNumber(this._deposit) === true) {
+                    await records.addTransfer(record);
+                    records.evaluateTransfers();
+                    modaldialog.toggleVisibility();
+                    resolve();
+                }
+                else {
+                    reject('ADDDEPOSIT: add error');
+                }
+            });
         }
     }
 });

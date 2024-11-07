@@ -5,8 +5,7 @@
  *
  * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserve
  */
-import {useAppLibrary} from '@/libraries/useApp'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 
 declare global {
   type TIDBRequestEvent = Event & { target: IDBRequest }
@@ -167,6 +166,13 @@ declare global {
     mDeleteable?: boolean
   }
 
+  interface IDrawerControls {
+    id: number
+    title: string
+    value: string
+    class: string
+  }
+
   interface IBackupSm {
     cVersion: number
     cDBVersion: number
@@ -193,7 +199,7 @@ declare global {
     items_per_page_transfers?: number
   }
 
-  interface IUseConstants {
+  interface IConstants {
     CURRENCIES: {
       EUR: string
       USD: string
@@ -246,7 +252,9 @@ declare global {
         partner: boolean
         items_per_page_stocks: number
         items_per_page_transfers: number
-      }
+      },
+      DRAWER_KEYS: string[]
+      DRAWER_CONTROLS: IDrawerControls[]
     }
     DIALOGS: Record<string, string>
     EVENTS: Record<string, string>
@@ -376,8 +384,8 @@ declare global {
     fetchMinRateMaxData: (serviceName: string, storageonline: TFetch[]) => Promise<TFetch[]>
   }
 
-  interface IUseAppLibrary {
-    CONS: IUseConstants
+  interface IUseApp {
+    CONS: IConstants
     migrateStock: (stock: IStock) => IStock
     migrateTransfer: (transfer: ITransfer) => ITransfer
     notice: (messages: string[]) => void
@@ -397,15 +405,15 @@ declare global {
 // TODO what is required???
 if (window.location.href.includes('background')) {
   const useFetchApi = (): IUseFetchApi => {
-    const CONS = useConstants()
-    const {mean, notice, toNumber} = useAppLibrary()
+    const {CONS} = useApp()
+    const {mean, notice, toNumber} = useApp()
     const fetchMinRateMaxData = async (
       serviceName: string,
       storageOnline: TFetch[]
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchMinRateMaxData')
       const _fnet = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
@@ -448,7 +456,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _ard = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const firstResponseText = await firstResponse.text()
@@ -508,7 +516,7 @@ if (window.location.href.includes('background')) {
         urls: IUrlWithId[],
         homeUrl: string
       ): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url)
             const firstResponseJson = await firstResponse.json()
@@ -545,7 +553,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _goyax = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
@@ -584,7 +592,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _acheck = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             let onlineCurrency = ''
@@ -629,7 +637,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _tgate = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await Promise.all(
+        return Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url)
             const onlineCurrency = 'EUR'
@@ -661,7 +669,7 @@ if (window.location.href.includes('background')) {
         )
       }
       const _select = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
-        return await new Promise(async (resolve) => {
+        return new Promise(async (resolve) => {
           let mmr: TFetch[]
           switch (serviceName) {
             case 'fnet':
@@ -704,7 +712,7 @@ if (window.location.href.includes('background')) {
       mode = CONS.SERVICES.tgate.CHANGES.SMALL
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchDailyChangesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         let valuestr: string
         let company: string
         let sDocument: Document
@@ -789,7 +797,7 @@ if (window.location.href.includes('background')) {
       isin: string
     ): Promise<TFetch> => {
       console.log('BACKGROUND: fetchCompanyData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         let sDocument: Document
         let company = ''
         let child: ChildNode | undefined
@@ -864,7 +872,7 @@ if (window.location.href.includes('background')) {
       exchangeCodes: string[]
     ): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchExchangesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const fExUrl = (code: string): string => {
           return `${CONS.SERVICES.fx.EXCHANGE}${code.substring(
             0,
@@ -901,7 +909,7 @@ if (window.location.href.includes('background')) {
     }
     const fetchMaterialData = async (): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchMaterialData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const materials: TFetch[] = []
         const firstResponse = await fetch(CONS.SERVICES.fnet.MATERIALS)
         if (
@@ -942,7 +950,7 @@ if (window.location.href.includes('background')) {
     }
     const fetchIndexData = async (): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchIndexData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const indexes: TFetch[] = []
         const indexesKeys = Object.keys(CONS.SETTINGS.INDEXES)
         const indexesValues: string[] = Object.values(CONS.SETTINGS.INDEXES)
@@ -983,7 +991,7 @@ if (window.location.href.includes('background')) {
       id: number
     }): Promise<TFetch> => {
       console.log('BACKGROUND: fetchDatesData')
-      return await new Promise(async (resolve) => {
+      return new Promise(async (resolve) => {
         const gmqf = {gm: 0, qf: 0}
         const parseGermanDate = (germanDateString: string): number => {
           const parts = germanDateString.match(/(\d+)/g) ?? ['01', '01', '1970']
@@ -1069,14 +1077,14 @@ if (window.location.href.includes('background')) {
     }
   }
   const useListener = (): IUseListener => {
-    const CONS = useConstants()
+    const {CONS} = useApp()
     const appUrls = {url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*'}
     let storageService = CONS.DEFAULTS.STORAGE.service
     const onClick = async (): Promise<void> => {
       console.log('BACKGROUND: onClick')
       return await new Promise(async (resolve): Promise<void> => {
-        const CONS = useConstants()
-        const {notice} = useAppLibrary()
+        const {CONS} = useApp()
+        const {notice} = useApp()
         const start = async (): Promise<void> => {
           console.log('BACKGROUND: onClick: start')
           const textDetailOn = {text: 'on'}
@@ -1124,14 +1132,14 @@ if (window.location.href.includes('background')) {
     }
     const onRemove = (permissions: browser.permissions.Permissions): void => {
       console.warn('BACKGROUND: onRemove')
-      const {notice} = useAppLibrary()
+      const {notice} = useApp()
       notice(['Some online data might not be available!', JSON.stringify(permissions)])
     }
     // TODO: onInstall runs at install addon, update addon, firefox update
     const onInstall = (): void => {
       console.log('BACKGROUND: onInstall')
-      const CONS = useConstants()
-      const {migrateStock, migrateTransfer} = useAppLibrary()
+      const {CONS} = useApp()
+      const {migrateStock, migrateTransfer} = useApp()
       const onSuccess = (ev: TIDBRequestEvent): void => {
         console.log('BACKGROUND onInstall: onSuccess')
         const onVersionChange = (ev: TIDBRequestEvent): void => {
@@ -1200,7 +1208,7 @@ if (window.location.href.includes('background')) {
                 false
               )
               const onSuccessTransfers = (ev: TIDBRequestEvent): void => {
-                console.error(
+                console.log(
                   'BACKGROUND: onUpgradeNeeded: fCreateDB: onSuccessTransfers'
                 )
                 const cursor: IDBCursorWithValue | null = ev.target.result
@@ -1275,7 +1283,7 @@ if (window.location.href.includes('background')) {
           }
         }
         const initStorage = async () => {
-          const CONS = useConstants()
+          const {CONS} = useApp()
           const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE)
           const storageValues = Object.values(CONS.DEFAULTS.STORAGE)
           const storage: IStorageLocal = await browser.storage.local.get(
@@ -1326,7 +1334,7 @@ if (window.location.href.includes('background')) {
     const onMessage = async (ev: MessageEvent): Promise<void> => {
       console.info('BACKGROUND: onMessage', ev)
       return await new Promise(async (resolve, reject) => {
-        const CONS = useConstants()
+        const {CONS} = useApp()
         const {
           fetchMinRateMaxData,
           fetchDailyChangesData,
@@ -1429,7 +1437,7 @@ if (window.location.href.includes('background')) {
     }
     return {onClick, onRemove, onInstall, onMessage}
   }
-  const {initStorageLocal} = useAppLibrary()
+  const {initStorageLocal} = useApp()
   const {onClick, onRemove, onInstall, onMessage} = useListener()
   if (!browser.permissions.onRemoved.hasListener(onRemove)) {
     // noinspection JSDeprecatedSymbols

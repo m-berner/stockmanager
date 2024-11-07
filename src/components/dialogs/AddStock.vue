@@ -48,7 +48,7 @@
 <script lang="ts" setup>
 import {useModaldialogStore} from '@/stores/modaldialog'
 import {useAddstockStore} from '@/stores/dialogs/addstock'
-import {useVueLibrary} from '@/libraries/useVue'
+import {useComponents} from '@/components/lib/useComponents'
 import {storeToRefs} from 'pinia'
 import {onMounted, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
@@ -56,7 +56,7 @@ import {useI18n} from 'vue-i18n'
 const {t} = useI18n()
 const modaldialog = useModaldialogStore()
 const addstock = useAddstockStore()
-const {validators, resetValidation} = useVueLibrary()
+const {validators, resetValidation} = useComponents()
 const {_isin, _company, _wkn, _sym, _auto} = storeToRefs(addstock)
 const form = useTemplateRef('form-ref')
 

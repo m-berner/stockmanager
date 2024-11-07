@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 import { useRecordsStore } from '@/stores/records';
-const CONS = useConstants();
+const { CONS } = useApp();
 export const useShowaccountingStore = defineStore('showaccounting', {
     state: () => {
         return {

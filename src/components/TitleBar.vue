@@ -43,11 +43,10 @@
 import CustomIcon from '@/components/CustomIcon.vue'
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
-import {useI18n} from 'vue-i18n'
+import {useI18n, type VueMessageType} from 'vue-i18n'
 import {watch} from 'vue'
-import {type VueMessageType} from 'vue-i18n'
 
-const { rt, t, tm } = useI18n()
+const {rt, t, tm} = useI18n()
 const settings = useSettingsStore()
 const records = useRecordsStore()
 

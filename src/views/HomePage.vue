@@ -27,7 +27,7 @@ import TitleBar from '@/components/TitleBar.vue'
 import HeaderBar from '@/components/HeaderBar.vue'
 import InfoBar from '@/components/InfoBar.vue'
 import FooterBar from '@/components/FooterBar.vue'
-
+// TODO rename useRuntimeStore to useHomepageStore, create homepage.ts store
 const runtime = useRuntimeStore()
 
 console.log('--- HomePage.vue setup ---')

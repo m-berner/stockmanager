@@ -8,7 +8,7 @@
 import {useModaldialogStore} from '@/stores/modaldialog'
 import {storeToRefs} from 'pinia'
 
-export const useVueLibrary = () => {
+export const useComponents = () => {
   const validators = {
     // commaCurrencyString2: (v: string) => {
     //   const found = v.match(/^0$|^\d*(,?\d{1,2})\s[€|$]$/g)

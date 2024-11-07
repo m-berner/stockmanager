@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import {useSettingsStore} from '@/stores/settings'
 import {reactive, ref, toRaw} from 'vue'
-import {useConstants} from '@/libraries/useConstants'
+import {useApp} from '@/useApp'
 import {useOnlineStore} from '@/stores/online'
 
 interface PropsDynamicList {
@@ -57,7 +57,7 @@ interface PropsDynamicList {
   toUpperCase?: boolean
 }
 
-const CONS = useConstants()
+const {CONS} = useApp()
 const settings = useSettingsStore()
 const online = useOnlineStore()
 const _props = defineProps<PropsDynamicList>()
@@ -66,7 +66,7 @@ const props = reactive({..._props})
 
 const mAddItem = async (item: string): Promise<void> => {
   console.log('DYNAMICLIST: mAddItem')
-  return await new Promise(async (resolve) => {
+  return new Promise(async (resolve) => {
     if (!_props.list.includes(item)) {
       if (_props.toUpperCase) {
         props.list.push(item.toUpperCase())
@@ -88,7 +88,7 @@ const mAddItem = async (item: string): Promise<void> => {
 }
 const mRemoveItem = async (n: number): Promise<void> => {
   console.log('DYNAMICLIST: mRemoveItem')
-  return await new Promise(async (resolve)=>{
+  return new Promise(async (resolve) => {
     if (n > 0) {
       if (_props.store === CONS.SETTINGS.EX) {
         const toRemove = _props.list[n]

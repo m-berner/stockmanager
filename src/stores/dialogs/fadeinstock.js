@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { useRecordsStore } from '@/stores/records';
-import { useConstants } from '@/libraries/useConstants';
+import { useApp } from '@/useApp';
 import { useModaldialogStore } from '@/stores/modaldialog';
-const CONS = useConstants();
+const { CONS } = useApp();
 export const useFadeinstockStore = defineStore('fadeinstock', {
     state: () => {
         return {

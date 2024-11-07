@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import { useAppLibrary } from '@/libraries/useApp';
+import { useApp } from '@/useApp';
 import { useRecordsStore } from '@/stores/records';
 import { useModaldialogStore } from '@/stores/modaldialog';
-import { useVueLibrary } from '@/libraries/useVue';
-const { toNumber, dateToISO } = useAppLibrary();
+import { useComponents } from '@/components/lib/useComponents';
+const { toNumber, dateToISO } = useApp();
 export const useUpdatetransferStore = defineStore('updatetransfer', {
     state: () => {
         return {
@@ -26,6 +26,7 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
     getters: {},
     actions: {
         setInitialTransfer(value) {
+            console.error('transfer', value);
             this._date = dateToISO(value.cDate);
             this._ex_day = dateToISO(value.cExDay);
             this._count = value.cCount;
@@ -38,12 +39,14 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
             this._soli = value.cSoli;
             this._market_place = value.cMarketPlace;
             this._description = value.cDescription;
+            console.error('this', this);
         },
         async onUpdate() {
             console.log('UPDATETRANSFER: update');
-            const { validators } = useVueLibrary();
+            const { validators } = useComponents();
             const records = useRecordsStore();
             const modaldialog = useModaldialogStore();
+            console.error(records.transfers.index);
             const currentTransfer = { ...records.transfers.all[records.transfers.index] };
             currentTransfer.cDate = new Date(this._date).getTime();
             currentTransfer.cExDay = new Date(this._ex_day).getTime();
@@ -58,7 +61,6 @@ export const useUpdatetransferStore = defineStore('updatetransfer', {
             currentTransfer.cMarketPlace = this._market_place;
             currentTransfer.cDescription = this._description;
             if (validators.isoDate(this._date) === true) {
-                records.evaluateTransfers();
                 await records.updateTransfer(currentTransfer);
                 records.evaluateTransfers();
                 records.updateWrapper(records.stocks.active_page);
