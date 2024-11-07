@@ -145,7 +145,7 @@ import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 const {d, n, rt, t, tm} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {toNumber} = useApp()
 const modaldialog = useModaldialogStore()
 const deletestock = useDeletestockStore()

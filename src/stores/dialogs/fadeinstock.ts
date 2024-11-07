@@ -14,7 +14,7 @@ interface IFadeinstockStore {
   _selected: IStock
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 
 export const useFadeinstockStore: StoreDefinition<'fadeinstock', IFadeinstockStore> = defineStore('fadeinstock', {
   state: (): IFadeinstockStore => {

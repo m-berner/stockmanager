@@ -63,7 +63,7 @@
     "settings": "Einstellungen"
   },
   "infoBar": {
-    "drawer": {
+    "drawerTitles": {
       "winloss": "Gewinn/Verlust",
       "earnings": "Aktien-Erlös",
       "deposits": "Einzahlung",
@@ -300,7 +300,9 @@
       "company": "Unternehmen",
       "wkn": "WKN",
       "symbol": "Kürzel",
-      "errors": ["ISIN ist bereits vorhanden!"]
+      "errors": [
+        "ISIN ist bereits vorhanden!"
+      ]
     },
     "fadeinStock": {
       "title": "Ausgeblendetes Unternehmen einblenden",
@@ -363,7 +365,11 @@
     },
     "deleteTransfer": {
       "title": "Buchung löschen",
-      "message": ["Soll die Buchung vom", "wirklich gelöscht werden?", "Es kann nur die erste Buchung gelöscht werden."]
+      "message": [
+        "Soll die Buchung vom",
+        "wirklich gelöscht werden?",
+        "Es kann nur die erste Buchung gelöscht werden."
+      ]
     },
     "updateTransfer": {
       "title": "Buchung bearbeiten",

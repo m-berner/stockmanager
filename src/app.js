@@ -12,7 +12,7 @@ import { createI18n } from 'vue-i18n';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import { mdiImage, mdiHome, mdiCurrencyEur, mdiReload, mdiDomainPlus, mdiDomainRemove, mdiDomain, mdiCashPlus, mdiCashMinus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiDatabaseExport, mdiDatabaseImport, mdiTransfer, mdiCalculator, mdiCog, mdiCopyright, mdiBasketPlus, mdiBasketMinus, mdiBasketFill, mdiGiftOutline, mdiInfinity, mdiClose, mdiDelete, mdiPlus, mdiCheck, mdiDotsVertical, mdiTableLargeRemove, mdiFileDocumentMinus, mdiFileDocumentEdit, mdiHelpCircle, mdiShieldAccount, mdiHandshake, mdiFileCog, mdiEmail, mdiMagnify } from '@mdi/js';
+import { mdiBasketFill, mdiBasketMinus, mdiBasketPlus, mdiCalculator, mdiCashMinus, mdiCashPlus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiCheck, mdiClose, mdiCog, mdiCopyright, mdiCurrencyEur, mdiDatabaseExport, mdiDatabaseImport, mdiDelete, mdiDomain, mdiDomainPlus, mdiDomainRemove, mdiDotsVertical, mdiEmail, mdiFileCog, mdiFileDocumentEdit, mdiFileDocumentMinus, mdiGiftOutline, mdiHandshake, mdiHelpCircle, mdiHome, mdiImage, mdiInfinity, mdiMagnify, mdiPlus, mdiReload, mdiShieldAccount, mdiTableLargeRemove, mdiTransfer } from '@mdi/js';
 import messages from '@intlify/unplugin-vue-i18n/messages';
 import { useApp } from '@/useApp';
 const { getUI } = useApp();

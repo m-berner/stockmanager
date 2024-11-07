@@ -10,7 +10,6 @@ import {useOnlineStore} from '@/stores/online'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {useModaldialogStore} from '@/stores/modaldialog'
-import {useInfobarStore} from '@/stores/infobar'
 import {toRaw} from 'vue'
 import {useApp} from '@/useApp'
 
@@ -44,7 +43,7 @@ interface IRecordStoreStocks {
   active_portfolio_count: number
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {notice, offset, migrateStock, migrateTransfer} = useApp()
 
 export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = defineStore('records', {
@@ -336,8 +335,7 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
     },
     evaluateTransfers(year = CONS.DEFAULTS.YEAR): ITotalController {
       console.info('RECORDS: evaluateTransfers', year)
-      const infobar = useInfobarStore()
-      const records = useRecordsStore()
+      //const records = useRecordsStore()
       const oldestTransferFirst = [...this._transfers.all]
       oldestTransferFirst.sort((a: ITransfer, b: ITransfer): number => {
         return (a.mSortDate ?? 0) - (b.mSortDate ?? 0)
@@ -407,11 +405,11 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
         totalController.fees +
         totalController.taxes
       totalController.earnings = totalController.depotBuyValue - totalController.sell - totalController.buy
+      totalController.winloss = totalController.winloss === undefined ? 0 : totalController.winloss
+      totalController.depot = totalController.depot === undefined ? 0 : totalController.depot
       if (year === CONS.DEFAULTS.YEAR) {
         this._transfers.totalController = totalController
       }
-      records.setDrawerDepot()
-      infobar.createDrawerItems()
       return {...totalController}
     },
     updatePage(p: number): void {

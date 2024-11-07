@@ -96,7 +96,7 @@ import {onMounted, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const modaldialog = useModaldialogStore()
 const addwithdrawal = useAddwithdrawalStore()
 const {_date, _type, _withdrawal, _description} = storeToRefs(addwithdrawal)

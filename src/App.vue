@@ -25,7 +25,7 @@ const records = useRecordsStore()
 const online = useOnlineStore()
 const runtime = useRuntimeStore()
 const theme = useTheme()
-const { CONS } = useApp()
+const {CONS} = useApp()
 
 onBeforeMount(() => {
   console.log('APP: onBeforeMount')

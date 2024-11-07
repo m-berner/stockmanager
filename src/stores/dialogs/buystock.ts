@@ -20,7 +20,7 @@ interface IBuystockStore {
   _market_place: string
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {toNumber} = useApp()
 
 export const useBuystockStore: StoreDefinition<'buystock', IBuystockStore> = defineStore('buystock', {

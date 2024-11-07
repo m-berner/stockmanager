@@ -91,7 +91,7 @@ import {useSettingsStore} from '@/stores/settings'
 import {useApp} from '@/useApp'
 
 const {d, n, rt, t, tm} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const records = useRecordsStore()
 const settings = useSettingsStore()
 const modaldialog = useModaldialogStore()

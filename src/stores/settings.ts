@@ -23,7 +23,7 @@ interface ISettingsStore {
 
 export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = defineStore('settings', {
   state: (): ISettingsStore => {
-    const { CONS } = useApp()
+    const {CONS} = useApp()
     return {
       _service: CONS.DEFAULTS.STORAGE.service,
       _skin: CONS.DEFAULTS.STORAGE.skin,

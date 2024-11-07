@@ -21,7 +21,7 @@ interface IShowaccountingStore {
   _earnings: number
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 
 export const useShowaccountingStore: StoreDefinition<'showaccounting', IShowaccountingStore> = defineStore(
   'showaccounting',

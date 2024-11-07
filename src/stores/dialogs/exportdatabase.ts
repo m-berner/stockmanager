@@ -14,7 +14,7 @@ interface IExportdatabaseStore {
   _file_name: string
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {notice, getUI, offset} = useApp()
 const prefix = new Date().toISOString().substring(0, 10)
 const fn = `${prefix}_${CONS.DB.VERSION}_${CONS.DB.BKFN}`

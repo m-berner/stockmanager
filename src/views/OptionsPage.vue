@@ -156,7 +156,7 @@ import {useApp} from '@/useApp'
 import {onMounted, toRaw} from 'vue'
 
 const {t, tm} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {group} = useApp()
 const settings = useSettingsStore()
 const optionspage = useOptionsPageStore()

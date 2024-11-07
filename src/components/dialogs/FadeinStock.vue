@@ -35,7 +35,7 @@ const {t} = useI18n()
 const modaldialog = useModaldialogStore()
 const records = useRecordsStore()
 const fadeinstock = useFadeinstockStore()
-const { _selected } = storeToRefs(fadeinstock)
+const {_selected} = storeToRefs(fadeinstock)
 
 onMounted(() => {
   console.log('FADEINSTOCK: onMounted')

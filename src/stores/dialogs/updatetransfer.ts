@@ -88,7 +88,6 @@ export const useUpdatetransferStore: StoreDefinition<'updatetransfer', IUpdatetr
         currentTransfer.cMarketPlace = this._market_place
         currentTransfer.cDescription = this._description
         if (validators.isoDate(this._date) === true) {
-          records.evaluateTransfers()
           await records.updateTransfer(currentTransfer)
           records.evaluateTransfers()
           records.updateWrapper(records.stocks.active_page)

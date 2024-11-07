@@ -63,13 +63,13 @@
     "settings": "Settings"
   },
   "infoBar": {
-    "drawer": {
+    "drawerTitles": {
       "winloss": "Profit/loss",
       "earnings": "Stock Proceeds",
       "deposits": "Deposit",
       "dividends": "dividend",
       "withdrawals": "Payout",
-      "fees": "fee",
+      "fees": "Fee",
       "taxes": "Tax",
       "account": "Trading account",
       "depot": "Depot account"

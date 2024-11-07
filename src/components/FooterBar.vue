@@ -33,7 +33,7 @@ import {useRuntimeStore} from '@/stores/runtime'
 import {ref} from 'vue'
 
 const {t} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const value = ref('')
 const runtime = useRuntimeStore()
 

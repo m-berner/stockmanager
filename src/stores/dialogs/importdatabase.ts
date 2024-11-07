@@ -14,7 +14,7 @@ interface IImportdatabaseStore {
   _file_name: File[]
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {notice} = useApp()
 
 export const useImportdatabaseStore: StoreDefinition<'importdatabase', IImportdatabaseStore> = defineStore('importdatabase', {

@@ -98,7 +98,7 @@ import {useModaldialogStore} from '@/stores/modaldialog'
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const adddeposit = useAdddepositStore()
 const modaldialog = useModaldialogStore()
 const {_date, _type, _deposit, _description} = storeToRefs(adddeposit)

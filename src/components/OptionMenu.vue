@@ -45,7 +45,7 @@ import {useModaldialogStore} from '@/stores/modaldialog'
 import {useI18n} from 'vue-i18n'
 
 const {rt} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const {notice} = useApp()
 const records = useRecordsStore()
 const modaldialog = useModaldialogStore()

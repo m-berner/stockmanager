@@ -33,7 +33,7 @@ interface IModaldialogStore {
   _config_stock: boolean
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 
 export const useModaldialogStore: StoreDefinition<'modaldialog', IModaldialogStore> = defineStore('modaldialog', {
   state: () => {

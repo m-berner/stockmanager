@@ -17,7 +17,7 @@ interface IDailychangesStore {
   _tmpChangesWithNoDuplicates: IChange[];
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 
 export const useDailychangesStore: StoreDefinition<'dailychanges', IDailychangesStore> = defineStore('dailychanges', {
   state: (): IDailychangesStore => {

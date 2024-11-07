@@ -57,7 +57,7 @@ interface PropsDynamicList {
   toUpperCase?: boolean
 }
 
-const { CONS } = useApp()
+const {CONS} = useApp()
 const settings = useSettingsStore()
 const online = useOnlineStore()
 const _props = defineProps<PropsDynamicList>()
@@ -88,7 +88,7 @@ const mAddItem = async (item: string): Promise<void> => {
 }
 const mRemoveItem = async (n: number): Promise<void> => {
   console.log('DYNAMICLIST: mRemoveItem')
-  return new Promise(async (resolve)=>{
+  return new Promise(async (resolve) => {
     if (n > 0) {
       if (_props.store === CONS.SETTINGS.EX) {
         const toRemove = _props.list[n]

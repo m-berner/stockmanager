@@ -279,7 +279,7 @@ import {useApp} from '@/useApp'
 import {useModaldialogStore} from '@/stores/modaldialog'
 
 const {t} = useI18n()
-const { CONS } = useApp()
+const {CONS} = useApp()
 const runtime = useRuntimeStore()
 const records = useRecordsStore()
 const addstock = useAddstockStore()

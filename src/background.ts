@@ -166,6 +166,13 @@ declare global {
     mDeleteable?: boolean
   }
 
+  interface IDrawerControls {
+    id: number
+    title: string
+    value: string
+    class: string
+  }
+
   interface IBackupSm {
     cVersion: number
     cDBVersion: number
@@ -245,7 +252,9 @@ declare global {
         partner: boolean
         items_per_page_stocks: number
         items_per_page_transfers: number
-      }
+      },
+      DRAWER_KEYS: string[]
+      DRAWER_CONTROLS: IDrawerControls[]
     }
     DIALOGS: Record<string, string>
     EVENTS: Record<string, string>
@@ -396,7 +405,7 @@ declare global {
 // TODO what is required???
 if (window.location.href.includes('background')) {
   const useFetchApi = (): IUseFetchApi => {
-    const { CONS } = useApp()
+    const {CONS} = useApp()
     const {mean, notice, toNumber} = useApp()
     const fetchMinRateMaxData = async (
       serviceName: string,
@@ -1068,13 +1077,13 @@ if (window.location.href.includes('background')) {
     }
   }
   const useListener = (): IUseListener => {
-    const { CONS } = useApp()
+    const {CONS} = useApp()
     const appUrls = {url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*'}
     let storageService = CONS.DEFAULTS.STORAGE.service
     const onClick = async (): Promise<void> => {
       console.log('BACKGROUND: onClick')
       return await new Promise(async (resolve): Promise<void> => {
-        const { CONS } = useApp()
+        const {CONS} = useApp()
         const {notice} = useApp()
         const start = async (): Promise<void> => {
           console.log('BACKGROUND: onClick: start')
@@ -1129,7 +1138,7 @@ if (window.location.href.includes('background')) {
     // TODO: onInstall runs at install addon, update addon, firefox update
     const onInstall = (): void => {
       console.log('BACKGROUND: onInstall')
-      const { CONS } = useApp()
+      const {CONS} = useApp()
       const {migrateStock, migrateTransfer} = useApp()
       const onSuccess = (ev: TIDBRequestEvent): void => {
         console.log('BACKGROUND onInstall: onSuccess')
@@ -1274,7 +1283,7 @@ if (window.location.href.includes('background')) {
           }
         }
         const initStorage = async () => {
-          const { CONS } = useApp()
+          const {CONS} = useApp()
           const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE)
           const storageValues = Object.values(CONS.DEFAULTS.STORAGE)
           const storage: IStorageLocal = await browser.storage.local.get(
@@ -1325,7 +1334,7 @@ if (window.location.href.includes('background')) {
     const onMessage = async (ev: MessageEvent): Promise<void> => {
       console.info('BACKGROUND: onMessage', ev)
       return await new Promise(async (resolve, reject) => {
-        const { CONS } = useApp()
+        const {CONS} = useApp()
         const {
           fetchMinRateMaxData,
           fetchDailyChangesData,
