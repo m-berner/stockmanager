@@ -1,0 +1,782 @@
+{
+  "titleBar": {
+    "title": "Stock management with near real-time prices from:",
+    "linkData": [
+      {
+        "title": "finance.net",
+        "content": "Price data, index data, material data",
+        "url": "https://www.finanzen.net/",
+        "icon": "fnet"
+      },
+      {
+        "title": "fx rate",
+        "content": "Exchange rate data",
+        "url": "https://fx-rate.net/",
+        "icon": "fx"
+      },
+      {
+        "title": "daily changes",
+        "content": "Course dates",
+        "url": "https://www.tagesschau.de/wirtschaft/boersenkurs/",
+        "icon": "ard"
+      },
+      {
+        "title": "tradegatexchange",
+        "content": "New share data",
+        "url": "https://www.tradegate.de/",
+        "icon": "tgate"
+      },
+      {
+        "title": "wall street online",
+        "content": "Course dates",
+        "url": "https://www.wallstreet-online.de/",
+        "icon": "wstreet"
+      },
+      {
+        "title": "Stock check",
+        "content": "Price data, 52 week high/low data",
+        "url": "https://www.aktiencheck.de/",
+        "icon": "acheck"
+      },
+      {
+        "title": "GOYAX",
+        "content": "Course dates",
+        "url": "https://www.goyax.de/",
+        "icon": "goyax"
+      }
+    ]
+  },
+  "headerBar": {
+    "home": "Home page",
+    "transfersTable": "Bookings",
+    "reload": "Update courses",
+    "addStock": "Add company",
+    "deleteStock": "Remove company",
+    "fadeinStock": "Show company",
+    "cashPlus": "Deposit",
+    "cashMinus": "Payout",
+    "dailyChanges": "Daily changes",
+    "dailyChangesAll": "Daily changes (all)",
+    "exportDatabase": "Export database",
+    "importDatabase": "Import database",
+    "showAccounting": "Annual calculations",
+    "settings": "Settings"
+  },
+  "infoBar": {
+    "drawerTitles": {
+      "winloss": "Profit/loss",
+      "earnings": "Stock Proceeds",
+      "deposits": "Deposit",
+      "dividends": "Dividend",
+      "withdrawals": "Payout",
+      "fees": "Fee",
+      "taxes": "Tax",
+      "account": "Trading account",
+      "depot": "Depot account"
+    }
+  },
+  "stocksTable": {
+    "headers": [
+      {
+        "title": "ID",
+        "align": " d-none",
+        "sortable": false,
+        "key": "cID"
+      },
+      {
+        "title": "Actions",
+        "align": "start",
+        "sortable": false,
+        "key": "mAction"
+      },
+      {
+        "title": "Pursue",
+        "align": "start",
+        "sortable": true,
+        "key": "cCompany"
+      },
+      {
+        "title": "ISIN",
+        "align": "start",
+        "sortable": false,
+        "key": "cISIN"
+      },
+      {
+        "title": "Quarterly figures",
+        "align": "start",
+        "sortable": false,
+        "key": "cQuarterDay"
+      },
+      {
+        "title": "general meeting",
+        "align": "start",
+        "sortable": false,
+        "key": "cMeetingDay"
+      },
+      {
+        "title": "Portfolio",
+        "align": "start",
+        "sortable": true,
+        "key": "mPortfolio"
+      },
+      {
+        "title": "Purchase price",
+        "align": "start",
+        "sortable": false,
+        "key": "mBuyValue"
+      },
+      {
+        "title": "Win-loss",
+        "align": "start",
+        "sortable": false,
+        "key": "mEuroChange"
+      },
+      {
+        "title": "52-week low",
+        "align": "start",
+        "sortable": false,
+        "key": "mmin"
+      },
+      {
+        "title": "Course",
+        "align": "start",
+        "sortable": false,
+        "key": "mValue"
+      },
+      {
+        "title": "52-week high",
+        "align": "start",
+        "sortable": false,
+        "key": "mMax"
+      }
+    ],
+    "menuItems": [
+      {
+        "title": "Delete company",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Buy stocks",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Sell stocks",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "New dividend",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Dividend overview",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Configure company",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Open external link",
+        "icon": "$tableRemove",
+        "url": ""
+      }
+    ],
+    "noDataText": "No entries found. ",
+    "itemsPerPageText": "Entries per page:"
+  },
+  "transfersTable": {
+    "search": "Seek",
+    "headers": [
+      {
+        "title": "ID",
+        "align": " d-none",
+        "sortable": false,
+        "key": "cID"
+      },
+      {
+        "title": "Actions",
+        "align": "start",
+        "sortable": false,
+        "key": "mAction"
+      },
+      {
+        "title": "Pursue",
+        "align": "start",
+        "sortable": false,
+        "key": "mCompany"
+      },
+      {
+        "title": "Date",
+        "align": "start",
+        "sortable": false,
+        "key": "cDate"
+      },
+      {
+        "title": "ex-day",
+        "align": "start",
+        "sortable": false,
+        "key": "cExDay"
+      },
+      {
+        "title": "Price",
+        "align": "start",
+        "sortable": false,
+        "key": "cUnitQuotation"
+      },
+      {
+        "title": "Deposit/Withdrawal",
+        "align": "start",
+        "sortable": false,
+        "key": "cAmount"
+      },
+      {
+        "title": "Number",
+        "align": "start",
+        "sortable": false,
+        "key": "cCount"
+      },
+      {
+        "title": "fee",
+        "align": "start",
+        "sortable": false,
+        "key": "cFees"
+      },
+      {
+        "title": "Q tax",
+        "align": "start",
+        "sortable": false,
+        "key": "cSTax"
+      },
+      {
+        "title": "FT tax",
+        "align": "start",
+        "sortable": false,
+        "key": "cFTax"
+      },
+      {
+        "title": "Tax",
+        "align": "start",
+        "sortable": false,
+        "key": "cTax"
+      },
+      {
+        "title": "Solos",
+        "align": "start",
+        "sortable": false,
+        "key": "cSoli"
+      },
+      {
+        "title": "trading place",
+        "align": "start",
+        "sortable": false,
+        "key": "cMarketPlace"
+      },
+      {
+        "title": "remark",
+        "align": "start",
+        "sortable": false,
+        "key": "cDescription"
+      }
+    ],
+    "menuItems": [
+      {
+        "title": "Delete booking",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Correct booking",
+        "icon": "$close"
+      }
+    ],
+    "noDataText": "No entries found.",
+    "itemsPerPageText": "Entries per page:"
+  },
+  "dialogs": {
+    "cancel": "Cancel",
+    "ok": "OK",
+    "addStock": {
+      "title": "Add company",
+      "isin": "ISIN",
+      "company": "Pursue",
+      "wkn": "WKN",
+      "symbol": "abbreviation",
+      "errors": [
+        "ISIN already exists!"
+      ]
+    },
+    "fadeinStock": {
+      "title": "Show hidden company",
+      "company": "Pursue"
+    },
+    "addDeposit": {
+      "title": "Deposit",
+      "amount": "Amount",
+      "date": "Date",
+      "description": "remark",
+      "types": {
+        "transfer": "transfer",
+        "fee": "fee",
+        "stax": "Withholding tax",
+        "ftax": "Transaction tax",
+        "tax": "Tax",
+        "soli": "Solidarity surcharge"
+      }
+    },
+    "addWithdrawal": {
+      "title": "Payout",
+      "amount": "Amount",
+      "date": "Date",
+      "description": "remark",
+      "types": {
+        "transfer": "transfer",
+        "fee": "fee",
+        "stax": "Withholding tax",
+        "ftax": "Transaction tax",
+        "tax": "Tax",
+        "soli": "Solidarity surcharge"
+      }
+    },
+    "showAccounting": {
+      "title": "Annual invoice",
+      "returnRate": "Return",
+      "efficiency": "Efficiency",
+      "year": "Year",
+      "deposits": "Deposit",
+      "withdrawals": "Payout",
+      "dividends": "dividend",
+      "taxes": "Taxes/Soli",
+      "fees": "Fees",
+      "earnings": "Stock Proceeds"
+    },
+    "dailyChanges": {
+      "title": "Daily changes"
+    },
+    "dailyChangesAll": {
+      "title": "All daily changes"
+    },
+    "exportDatabase": {
+      "title": "Export database",
+      "filename": "filename"
+    },
+    "importDatabase": {
+      "title": "Import database",
+      "filename": "filename",
+      "label": "from file"
+    },
+    "deleteTransfer": {
+      "title": "Delete booking",
+      "message": [
+        "Should the booking be from",
+        "really be deleted?",
+        "Only the first booking can be deleted."
+      ]
+    },
+    "updateTransfer": {
+      "title": "Edit booking",
+      "bookDay": "Booking day",
+      "exDay": "ex-day",
+      "unitQuotation": "Price",
+      "amount": "Amount",
+      "number": "Number",
+      "fees": "Fees",
+      "sTax": "Withholding tax",
+      "fTax": "Transaction tax",
+      "tax": "Tax",
+      "soli": "Solidarity surcharge",
+      "marketPlace": "trading place",
+      "description": "remark",
+      "validationError": "The booking cannot be validated."
+    },
+    "deleteStock": {
+      "title": "Delete company",
+      "messageA": "Should the company {company} really be deleted?",
+      "messageB": "There are bookings from {company}. ",
+      "msgPortfolio": "The share is included in the portfolio and cannot be hidden."
+    },
+    "addDividend": {
+      "title": "New dividend - {company}",
+      "bookDay": "Booking day",
+      "exDay": "ex-day",
+      "count": "Number",
+      "unitQuotation": "Price",
+      "stax": "Withholding tax",
+      "tax": "Steer",
+      "soli": "Solidarity surcharge",
+      "description": "remark",
+      "validationError": "The dividend cannot be validated."
+    },
+    "viewDividend": {
+      "title": "Dividend Overview - {company}"
+    },
+    "sellStock": {
+      "title": "Sell ​​shares - {company}",
+      "bookDay": "Booking day",
+      "count": "Number",
+      "unitQuotation": "Price",
+      "fees": "Fees",
+      "stax": "Withholding tax",
+      "tax": "Steer",
+      "soli": "Solos",
+      "marketplace": "trading place",
+      "validationError": "The share cannot be validated.",
+      "loss": "with loss"
+    },
+    "configStock": {
+      "title": "Configure share - {company}",
+      "company": "Pursue",
+      "isin": "ISIN",
+      "wkn": "WKN",
+      "symbol": "abbreviation",
+      "firstPage": "First page",
+      "fadeOut": "Hide",
+      "qf": "Quarterly figures",
+      "gm": "general meeting",
+      "url": "Link to stock page",
+      "validationError": "The configuration cannot be validated."
+    },
+    "exportDialog": "When backed up, the file {filename} is created and saved in the user's Downloaded Files folder. ",
+    "buyStock": {
+      "title": "Buy shares - {company}",
+      "bookDay": "Booking day",
+      "count": "Number",
+      "unitQuotation": "Price",
+      "fees": "Fees",
+      "ftax": "Transaction tax",
+      "tax": "Steer",
+      "soli": "Solidarity surcharge",
+      "marketplace": "trading place",
+      "validationError": "The share cannot be validated.",
+      "hint": "Information is required"
+    },
+    "validators": {
+      "standard": "Input is required",
+      "positiveInteger": "An integer is required",
+      "isoDate": "Date is required",
+      "isin": "ISIN format must be observed"
+    }
+  },
+  "footer": {
+    "help": "Help",
+    "privacy": "Data protection",
+    "partner": "partner",
+    "mail": "E-mail"
+  },
+  "header": {
+    "titleExample": "Stock management with almost real-time prices from: {service}",
+    "toolbar": {
+      "home": "Home page",
+      "transfersTable": "Bookings",
+      "reload": "Update courses",
+      "addStock": "Add company",
+      "deleteStock": "Remove company",
+      "fadeinStock": "Show company",
+      "cashPlus": "Deposit",
+      "cashMinus": "Payout",
+      "dailyChanges": "Daily changes",
+      "dailyChangesAll": "Daily changes (all)",
+      "exportDatabase": "Export database",
+      "importDatabase": "Import database",
+      "showAccounting": "Annual calculations",
+      "settings": "Settings"
+    },
+    "drawer": {
+      "winloss": "Profit/loss",
+      "earnings": "Stock Proceeds",
+      "deposits": "Deposit",
+      "dividends": "dividend",
+      "withdrawals": "Payout",
+      "fees": "fee",
+      "taxes": "Tax",
+      "account": "Trading account",
+      "depot": "Depot account"
+    }
+  },
+  "helpPage": {
+    "title": "Stock manager help",
+    "requestsTitle": "Requirements",
+    "requests": [
+      {
+        "title": "Settings - Privacy - History",
+        "content": "StockManager does not work in private mode. ",
+        "icon": ""
+      },
+      {
+        "title": "Start stock manager",
+        "content": "The symbol shown appears in the Firefox toolbar after installation. ",
+        "icon": "$sm"
+      }
+    ],
+    "toolBarTitle": "Toolbar",
+    "toolBar": [
+      {
+        "title": "Home page",
+        "content": "Click to return to the home page.",
+        "icon": "$home"
+      },
+      {
+        "title": "Bookings",
+        "content": "Click to go to the booking page.",
+        "icon": "$transfersTable"
+      },
+      {
+        "title": "Update courses",
+        "content": "Click to update courses.",
+        "icon": "$reload"
+      },
+      {
+        "title": "Add company",
+        "content": "Click to open the required dialog.",
+        "icon": "$addStock"
+      },
+      {
+        "title": "Remove company",
+        "content": "Click to open the required dialog.",
+        "icon": "$deleteStock"
+      },
+      {
+        "title": "Show company",
+        "content": "Click to open the required dialog.",
+        "icon": "$faintstock"
+      },
+      {
+        "title": "Deposit",
+        "content": "Click to open the required dialog.",
+        "icon": "$cashPlus"
+      },
+      {
+        "title": "Payout",
+        "content": "Click to open the required dialog.",
+        "icon": "$cashMinus"
+      },
+      {
+        "title": "Daily changes",
+        "content": "Click to see daily changes.",
+        "icon": "$dailyChanges"
+      },
+      {
+        "title": "Daily changes (all)",
+        "content": "Click to see all daily changes.",
+        "icon": "$dailyChangesAll"
+      },
+      {
+        "title": "Export database",
+        "content": "Click to export the required dialog.",
+        "icon": "$exportDatabase"
+      },
+      {
+        "title": "Import database",
+        "content": "Click to import the required dialog.",
+        "icon": "$importDatabase"
+      },
+      {
+        "title": "Bookings",
+        "content": "Click to view bookings.",
+        "icon": "$transfersTable"
+      },
+      {
+        "title": "Annual calculations",
+        "content": "Click to view annual calculations.",
+        "icon": "$showAccounting"
+      },
+      {
+        "title": "Settings",
+        "content": "Click to display the Stock Manager Settings tab.",
+        "icon": "$settings"
+      }
+    ],
+    "companyBarTitle": "Company promotions",
+    "companyBarSubtitle": "Dialogues and links",
+    "companyBar": [
+      {
+        "title": "Buy stocks",
+        "subtitle": "",
+        "icon": "$addStock"
+      },
+      {
+        "title": "Sell ​​stocks",
+        "subtitle": "",
+        "icon": "$sellStock"
+      },
+      {
+        "title": "Dividend income",
+        "subtitle": "",
+        "icon": "$addDividend"
+      },
+      {
+        "title": "Dividend overview",
+        "subtitle": "",
+        "icon": "$showDividend"
+      },
+      {
+        "title": "Configure company",
+        "subtitle": "",
+        "icon": "$configs"
+      },
+      {
+        "title": "Company broker site",
+        "subtitle": "",
+        "icon": "$link"
+      }
+    ],
+    "transferBarTitle": "Bookings promotions",
+    "transferBar": [
+      {
+        "title": "Delete booking",
+        "subtitle": "",
+        "icon": "$removeDocument"
+      },
+      {
+        "title": "Correct booking",
+        "subtitle": "",
+        "icon": "$editDocument"
+      }
+    ],
+    "footerBarTitle": "footer",
+    "footerBarSubtitle": "Open other pages",
+    "footerBar": [
+      {
+        "title": "Help",
+        "content": "Click to view this help page.",
+        "icon": "$help"
+      },
+      {
+        "title": "Data protection",
+        "content": "Click to view the data protection page.",
+        "icon": "$privacy"
+      },
+      {
+        "title": "partner",
+        "content": "Click to view the partner page.",
+        "icon": "$partner"
+      }
+    ]
+  },
+  "privacyPage": {
+    "title": "Stockmanager data protection guidelines",
+    "local": {
+      "title": "Local data",
+      "content": "StockManager saves all data locally in the browser. "
+    },
+    "public": {
+      "title": "Public data",
+      "content": "StockManager uses price data from public price providers. "
+    },
+    "connections": {
+      "title": "Internet connections",
+      "content": "to the course providers are made to receive:",
+      "dataList": [
+        "Course dates",
+        "Raw material data",
+        "Index data",
+        "Daily deltas",
+        "52 week high/low data",
+        "exchange rates"
+      ]
+    }
+  },
+  "partnerPage": {
+    "title": "Stock manager partner",
+    "buttonText": "Open",
+    "linkData": [
+      {
+        "title": "finance.net",
+        "content": "Price data, index data, material data",
+        "url": "https://www.finanzen.net/",
+        "icon": "fnet"
+      },
+      {
+        "title": "fx rate",
+        "content": "Exchange rate data",
+        "url": "https://fx-rate.net/",
+        "icon": "fx"
+      },
+      {
+        "title": "daily news",
+        "content": "Course dates",
+        "url": "https://www.tagesschau.de/wirtschaft/boersenkurs/",
+        "icon": "ard"
+      },
+      {
+        "title": "tradegatexchange",
+        "content": "New share data",
+        "url": "https://www.tradegate.de/",
+        "icon": "tgate"
+      },
+      {
+        "title": "wall street online",
+        "content": "Course dates",
+        "url": "https://www.wallstreet-online.de/",
+        "icon": "wstreet"
+      },
+      {
+        "title": "Stock check",
+        "content": "Price data, 52 week high/low data",
+        "url": "https://www.aktiencheck.de/",
+        "icon": "acheck"
+      },
+      {
+        "title": "GOYAX",
+        "content": "Course dates",
+        "url": "https://www.goyax.de/",
+        "icon": "goyax"
+      }
+    ]
+  },
+  "optionsPage": {
+    "tabs": [
+      {
+        "title": "Generally",
+        "id": "register_ge"
+      },
+      {
+        "title": "Marketplace",
+        "id": "register_mp"
+      },
+      {
+        "title": "Indices",
+        "id": "register_ind"
+      },
+      {
+        "title": "raw materials",
+        "id": "register_mat"
+      },
+      {
+        "title": "Currencies",
+        "id": "register_ex"
+      }
+    ],
+    "capitals": {
+      "skins": "Topics",
+      "services": "Course provider"
+    },
+    "themeNames": {
+      "earth": "Earth",
+      "ocean": "ocean",
+      "sky": "Heaven",
+      "meadow": "Meadow",
+      "dark": "Dark",
+      "light": "Bright"
+    },
+    "materials": {
+      "au": "Gold",
+      "ag": "Silver",
+      "brent": "Oil (Brent)",
+      "cu": "copper",
+      "pt": "platinum",
+      "al": "aluminum",
+      "ni": "nickel",
+      "sn": "tin",
+      "pb": "Lead"
+    },
+    "exchanges": {
+      "title": "Exchange rate abbreviation",
+      "label": "abbreviation",
+      "error": "The abbreviation is invalid."
+    },
+    "markets": {
+      "title": "trading venues",
+      "label": "trading place",
+      "error": "The trading venue is invalid."
+    }
+  }
+}

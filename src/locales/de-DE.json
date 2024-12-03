@@ -1,0 +1,782 @@
+{
+  "titleBar": {
+    "title": "Aktienverwaltung mit Fast-Echtzeit-Kursen von:",
+    "linkData": [
+      {
+        "title": "finanzen.net",
+        "content": "Kursdaten, Indexdaten, Materialdaten",
+        "url": "https://www.finanzen.net/",
+        "icon": "fnet"
+      },
+      {
+        "title": "fx-rate",
+        "content": "Wechselkurs-Daten",
+        "url": "https://fx-rate.net/",
+        "icon": "fx"
+      },
+      {
+        "title": "tagesschau",
+        "content": "Kursdaten",
+        "url": "https://www.tagesschau.de/wirtschaft/boersenkurse/",
+        "icon": "ard"
+      },
+      {
+        "title": "tradegatexchange",
+        "content": "Neue Aktie Daten",
+        "url": "https://www.tradegate.de/",
+        "icon": "tgate"
+      },
+      {
+        "title": "wallstreet Online",
+        "content": "Kursdaten",
+        "url": "https://www.wallstreet-online.de/",
+        "icon": "wstreet"
+      },
+      {
+        "title": "Aktien Check",
+        "content": "Kursdaten, 52Wochen Hoch/Tief Daten",
+        "url": "https://www.aktiencheck.de/",
+        "icon": "acheck"
+      },
+      {
+        "title": "GOYAX",
+        "content": "Kursdaten",
+        "url": "https://www.goyax.de/",
+        "icon": "goyax"
+      }
+    ]
+  },
+  "headerBar": {
+    "home": "Startseite",
+    "transfersTable": "Buchungen",
+    "reload": "Kurse aktualisieren",
+    "addStock": "Unternehmen hinzufügen",
+    "deleteStock": "Unternehmen entfernen",
+    "fadeinStock": "Unternehmen einblenden",
+    "cashPlus": "Einzahlung",
+    "cashMinus": "Auszahlung",
+    "dailyChanges": "Tagesveränderungen",
+    "dailyChangesAll": "Tagesveränderungen (alle)",
+    "exportDatabase": "Datenbank exportieren",
+    "importDatabase": "Datenbank importieren",
+    "showAccounting": "Jahres-Berechnungen",
+    "settings": "Einstellungen"
+  },
+  "infoBar": {
+    "drawerTitles": {
+      "winloss": "Gewinn/Verlust",
+      "earnings": "Aktien-Erlös",
+      "deposits": "Einzahlung",
+      "dividends": "Dividende",
+      "withdrawals": "Auszahlung",
+      "fees": "Gebühr",
+      "taxes": "Steuer",
+      "account": "Handelskonto",
+      "depot": "Depotkonto"
+    }
+  },
+  "stocksTable": {
+    "headers": [
+      {
+        "title": "ID",
+        "align": " d-none",
+        "sortable": false,
+        "key": "cID"
+      },
+      {
+        "title": "Aktionen",
+        "align": "start",
+        "sortable": false,
+        "key": "mAction"
+      },
+      {
+        "title": "Unternehmen",
+        "align": "start",
+        "sortable": true,
+        "key": "cCompany"
+      },
+      {
+        "title": "ISIN",
+        "align": "start",
+        "sortable": false,
+        "key": "cISIN"
+      },
+      {
+        "title": "Quartals-Zahlen",
+        "align": "start",
+        "sortable": false,
+        "key": "cQuarterDay"
+      },
+      {
+        "title": "Hauptversammlung",
+        "align": "start",
+        "sortable": false,
+        "key": "cMeetingDay"
+      },
+      {
+        "title": "Portfolio",
+        "align": "start",
+        "sortable": true,
+        "key": "mPortfolio"
+      },
+      {
+        "title": "Kaufpreis",
+        "align": "start",
+        "sortable": false,
+        "key": "mBuyValue"
+      },
+      {
+        "title": "Gewinn-Verlust",
+        "align": "start",
+        "sortable": false,
+        "key": "mEuroChange"
+      },
+      {
+        "title": "52-Wochen Tief",
+        "align": "start",
+        "sortable": false,
+        "key": "mMin"
+      },
+      {
+        "title": "Kurs",
+        "align": "start",
+        "sortable": false,
+        "key": "mValue"
+      },
+      {
+        "title": "52-Wochen Hoch",
+        "align": "start",
+        "sortable": false,
+        "key": "mMax"
+      }
+    ],
+    "menuItems": [
+      {
+        "title": "Unternehmen löschen",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Aktien kaufen",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Aktien verkaufen",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Neue Dividende",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Dividenden Übersicht",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Unternehmen konfigurieren",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Externen Link öffnen",
+        "icon": "$tableRemove",
+        "url": ""
+      }
+    ],
+    "noDataText": "Keine Einträge gefunden. Importieren Sie eine Datenbank oder legen Sie manuell neue Einträge an.",
+    "itemsPerPageText": "Einträge pro Seite:"
+  },
+  "transfersTable": {
+    "search": "Suchen",
+    "headers": [
+      {
+        "title": "ID",
+        "align": " d-none",
+        "sortable": false,
+        "key": "cID"
+      },
+      {
+        "title": "Aktionen",
+        "align": "start",
+        "sortable": false,
+        "key": "mAction"
+      },
+      {
+        "title": "Unternehmen",
+        "align": "start",
+        "sortable": false,
+        "key": "mCompany"
+      },
+      {
+        "title": "Datum",
+        "align": "start",
+        "sortable": false,
+        "key": "cDate"
+      },
+      {
+        "title": "Ex-Tag",
+        "align": "start",
+        "sortable": false,
+        "key": "cExDay"
+      },
+      {
+        "title": "Preis",
+        "align": "start",
+        "sortable": false,
+        "key": "cUnitQuotation"
+      },
+      {
+        "title": "Ein/Auszahlung",
+        "align": "start",
+        "sortable": false,
+        "key": "cAmount"
+      },
+      {
+        "title": "Anzahl",
+        "align": "start",
+        "sortable": false,
+        "key": "cCount"
+      },
+      {
+        "title": "Gebühr",
+        "align": "start",
+        "sortable": false,
+        "key": "cFees"
+      },
+      {
+        "title": "Q-Steuer",
+        "align": "start",
+        "sortable": false,
+        "key": "cSTax"
+      },
+      {
+        "title": "FT-Steuer",
+        "align": "start",
+        "sortable": false,
+        "key": "cFTax"
+      },
+      {
+        "title": "Steuer",
+        "align": "start",
+        "sortable": false,
+        "key": "cTax"
+      },
+      {
+        "title": "Soli",
+        "align": "start",
+        "sortable": false,
+        "key": "cSoli"
+      },
+      {
+        "title": "Handelsplatz",
+        "align": "start",
+        "sortable": false,
+        "key": "cMarketPlace"
+      },
+      {
+        "title": "Bemerkung",
+        "align": "start",
+        "sortable": false,
+        "key": "cDescription"
+      }
+    ],
+    "menuItems": [
+      {
+        "title": "Buchung löschen",
+        "icon": "$tableRemove"
+      },
+      {
+        "title": "Buchung korrigieren",
+        "icon": "$close"
+      }
+    ],
+    "noDataText": "Keine Einträge gefunden.",
+    "itemsPerPageText": "Einträge pro Seite:"
+  },
+  "dialogs": {
+    "cancel": "Abbrechen",
+    "ok": "OK",
+    "addStock": {
+      "title": "Unternehmen hinzufügen",
+      "isin": "ISIN",
+      "company": "Unternehmen",
+      "wkn": "WKN",
+      "symbol": "Kürzel",
+      "errors": [
+        "ISIN ist bereits vorhanden!"
+      ]
+    },
+    "fadeinStock": {
+      "title": "Ausgeblendetes Unternehmen einblenden",
+      "company": "Unternehmen"
+    },
+    "addDeposit": {
+      "title": "Einzahlung",
+      "amount": "Betrag",
+      "date": "Datum",
+      "description": "Bemerkung",
+      "types": {
+        "transfer": "Transfer",
+        "fee": "Gebühr",
+        "stax": "Quellensteuer",
+        "ftax": "Transaktionssteuer",
+        "tax": "Steuer",
+        "soli": "Solidaritätszuschlag"
+      }
+    },
+    "addWithdrawal": {
+      "title": "Auszahlung",
+      "amount": "Betrag",
+      "date": "Datum",
+      "description": "Bemerkung",
+      "types": {
+        "transfer": "Transfer",
+        "fee": "Gebühr",
+        "stax": "Quellensteuer",
+        "ftax": "Transaktionssteuer",
+        "tax": "Steuer",
+        "soli": "Solidaritätszuschlag"
+      }
+    },
+    "showAccounting": {
+      "title": "Jahres-Rechnung",
+      "returnRate": "Rendite",
+      "efficiency": "Effizienz",
+      "year": "Jahr",
+      "deposits": "Einzahlung",
+      "withdrawals": "Auszahlung",
+      "dividends": "Dividende",
+      "taxes": "Steuern/Soli",
+      "fees": "Gebühren",
+      "earnings": "Aktien-Erlös"
+    },
+    "dailyChanges": {
+      "title": "Tagesveränderungen"
+    },
+    "dailyChangesAll": {
+      "title": "Alle Tagesveränderungen"
+    },
+    "exportDatabase": {
+      "title": "Datenbank exportieren",
+      "filename": "Dateiname"
+    },
+    "importDatabase": {
+      "title": "Datenbank importieren",
+      "filename": "Dateiname",
+      "label": "aus Datei"
+    },
+    "deleteTransfer": {
+      "title": "Buchung löschen",
+      "message": [
+        "Soll die Buchung vom",
+        "wirklich gelöscht werden?",
+        "Es kann nur die erste Buchung gelöscht werden."
+      ]
+    },
+    "updateTransfer": {
+      "title": "Buchung bearbeiten",
+      "bookDay": "Buchungstag",
+      "exDay": "Ex-Tag",
+      "unitQuotation": "Preis",
+      "amount": "Betrag",
+      "number": "Anzahl",
+      "fees": "Gebühren",
+      "sTax": "Quellensteuer",
+      "fTax": "Transaktionssteuer",
+      "tax": "Steuer",
+      "soli": "Solidaritätszuschlag",
+      "marketPlace": "Handelsplatz",
+      "description": "Bemerkung",
+      "validationError": "Die Buchung kann nicht validiert werden."
+    },
+    "deleteStock": {
+      "title": "Unternehmen löschen",
+      "messageA": "Soll das Unternehmen {company} wirklich gelöscht werden?",
+      "messageB": "Es gibt Buchungen von {company}. {company} kann nicht gelöscht werden.",
+      "msgPortfolio": "Die Aktie ist im Portfolio enthalten und kann nicht ausgeblendet werden."
+    },
+    "addDividend": {
+      "title": "Neue Dividende - {company}",
+      "bookDay": "Buchungstag",
+      "exDay": "Ex-Tag",
+      "count": "Anzahl",
+      "unitQuotation": "Preis",
+      "stax": "Quellensteuer",
+      "tax": "Steuern",
+      "soli": "Solidaritätszuschlag",
+      "description": "Bemerkung",
+      "validationError": "Die Dividende kann nicht validiert werden."
+    },
+    "viewDividend": {
+      "title": "Dividenden Übersicht - {company}"
+    },
+    "sellStock": {
+      "title": "Aktien verkaufen - {company}",
+      "bookDay": "Buchungstag",
+      "count": "Anzahl",
+      "unitQuotation": "Preis",
+      "fees": "Gebühren",
+      "stax": "Quellensteuer",
+      "tax": "Steuern",
+      "soli": "Soli",
+      "marketplace": "Handelsplatz",
+      "validationError": "Die Aktie kann nicht validiert werden.",
+      "loss": "mit Verlust"
+    },
+    "configStock": {
+      "title": "Aktie konfigurieren - {company}",
+      "company": "Unternehmen",
+      "isin": "ISIN",
+      "wkn": "WKN",
+      "symbol": "Kürzel",
+      "firstPage": "Erste Seite",
+      "fadeOut": "Ausblenden",
+      "qf": "Quartalszahlen",
+      "gm": "Hauptversammlung",
+      "url": "Link zur Aktienseite",
+      "validationError": "Die Konfiguration kann nicht validiert werden."
+    },
+    "exportDialog": "Beim Sichern wird die Datei {filename} erzeugt und im Ordner - Heruntergeladene Dateien - des Benutzers gespeichert. (Diese Datei kann zur Datenbank-Wiederherstellung verwendet werden).",
+    "buyStock": {
+      "title": "Aktien kaufen - {company}",
+      "bookDay": "Buchungstag",
+      "count": "Anzahl",
+      "unitQuotation": "Preis",
+      "fees": "Gebühren",
+      "ftax": "Transaktionssteuer",
+      "tax": "Steuern",
+      "soli": "Solidaritätszuschlag",
+      "marketplace": "Handelsplatz",
+      "validationError": "Die Aktie kann nicht validiert werden.",
+      "hint": "Angabe ist erforderlich"
+    },
+    "validators": {
+      "standard": "Eingabe ist erforderlich",
+      "positiveInteger": "Eine ganze Zahl ist erforderlich",
+      "isoDate": "Datum ist erforderlich",
+      "isin": "ISIN Format ist zu beachten"
+    }
+  },
+  "footer": {
+    "help": "Hilfe",
+    "privacy": "Datenschutz",
+    "partner": "Partner",
+    "mail": "Email"
+  },
+  "header": {
+    "titleExample": "Aktienverwaltung mit Fast-Echtzeit-Kursen von: {service}",
+    "toolbar": {
+      "home": "Startseite",
+      "transfersTable": "Buchungen",
+      "reload": "Kurse aktualisieren",
+      "addStock": "Unternehmen hinzufügen",
+      "deleteStock": "Unternehmen entfernen",
+      "fadeinStock": "Unternehmen einblenden",
+      "cashPlus": "Einzahlung",
+      "cashMinus": "Auszahlung",
+      "dailyChanges": "Tagesveränderungen",
+      "dailyChangesAll": "Tagesveränderungen (alle)",
+      "exportDatabase": "Datenbank exportieren",
+      "importDatabase": "Datenbank importieren",
+      "showAccounting": "Jahres-Berechnungen",
+      "settings": "Einstellungen"
+    },
+    "drawer": {
+      "winloss": "Gewinn/Verlust",
+      "earnings": "Aktien-Erlös",
+      "deposits": "Einzahlung",
+      "dividends": "Dividende",
+      "withdrawals": "Auszahlung",
+      "fees": "Gebühr",
+      "taxes": "Steuer",
+      "account": "Handelskonto",
+      "depot": "Depotkonto"
+    }
+  },
+  "helpPage": {
+    "title": "Stockmanager Hilfe",
+    "requestsTitle": "Anforderungen",
+    "requests": [
+      {
+        "title": "Einstellungen - Datenschutz - Chronik",
+        "content": "StockManager funktioniert im privaten Modus nicht. Grund ist die permanente Datenbank. Im privaten Modus sind nur temporäre Datenbanken erlaubt.",
+        "icon": ""
+      },
+      {
+        "title": "Stockmanager starten",
+        "content": "In der Firefox Symbolleiste erscheint nach der Installation das gezeigte Symbol. Falls dieses Symbol nicht installiert bzw. vom Benutzer aus der Symbolleiste verbannt wurde, kann es dorthin durch den Firefox 'Symbolleiste anpassen' Dialog zurückgebracht werden.",
+        "icon": "$sm"
+      }
+    ],
+    "toolBarTitle": "Werkzeugleiste",
+    "toolBar": [
+      {
+        "title": "Startseite",
+        "content": "Klicken um zur Startseite zurückzukehren.",
+        "icon": "$home"
+      },
+      {
+        "title": "Buchungen",
+        "content": "Klicken um auf die Buchungsseite zu gelangen.",
+        "icon": "$transfersTable"
+      },
+      {
+        "title": "Kurse aktualisieren",
+        "content": "Klicken um die Kurse zu aktualisieren.",
+        "icon": "$reload"
+      },
+      {
+        "title": "Unternehmen hinzufügen",
+        "content": "Klicken um den erforderlichen Dialog zu öffnen.",
+        "icon": "$addStock"
+      },
+      {
+        "title": "Unternehmen entfernen",
+        "content": "Klicken um den erforderlichen Dialog zu öffnen.",
+        "icon": "$deleteStock"
+      },
+      {
+        "title": "Unternehmen einblenden",
+        "content": "Klicken um den erforderlichen Dialog zu öffnen.",
+        "icon": "$fadeinStock"
+      },
+      {
+        "title": "Einzahlung",
+        "content": "Klicken um den erforderlichen Dialog zu öffner.",
+        "icon": "$cashPlus"
+      },
+      {
+        "title": "Auszahlung",
+        "content": "Klicken um den erforderlichen Dialog zu öffnen.",
+        "icon": "$cashMinus"
+      },
+      {
+        "title": "Tagesveränderungen",
+        "content": "Klicken um die Tagesveränderungen anzuzeigen.",
+        "icon": "$dailyChanges"
+      },
+      {
+        "title": "Tagesveränderungen (alle)",
+        "content": "Klicken um alle Tagesveränderungen anzuzeigen.",
+        "icon": "$dailyChangesAll"
+      },
+      {
+        "title": "Datenbank exportieren",
+        "content": "Klicken um den erforderlichen Dialog zu exportieren.",
+        "icon": "$exportDatabase"
+      },
+      {
+        "title": "Datenbank importieren",
+        "content": "Klicken um den erforderlichen Dialog zu importieren.",
+        "icon": "$importDatabase"
+      },
+      {
+        "title": "Buchungen",
+        "content": "Klicken um die Buchungen anzuzeigen.",
+        "icon": "$transfersTable"
+      },
+      {
+        "title": "Jahres-Berechnungen",
+        "content": "Klicken um die Jahres-Berechnungen anzuzeigen.",
+        "icon": "$showAccounting"
+      },
+      {
+        "title": "Einstellungen",
+        "content": "Klicken um das Stockmanager Einstellungen-Tab anzuzeigen.",
+        "icon": "$settings"
+      }
+    ],
+    "companyBarTitle": "Unternehmen Aktionen",
+    "companyBarSubtitle": "Dialoge und Link",
+    "companyBar": [
+      {
+        "title": "Aktien kaufen",
+        "subtitle": "",
+        "icon": "$addStock"
+      },
+      {
+        "title": "Aktien verkaufen",
+        "subtitle": "",
+        "icon": "$sellStock"
+      },
+      {
+        "title": "Dividenden Einnahmen",
+        "subtitle": "",
+        "icon": "$addDividend"
+      },
+      {
+        "title": "Dividenden-Übersicht",
+        "subtitle": "",
+        "icon": "$showDividend"
+      },
+      {
+        "title": "Unternehmen konfigurieren",
+        "subtitle": "",
+        "icon": "$configs"
+      },
+      {
+        "title": "Unternehmen-Brokerseite",
+        "subtitle": "",
+        "icon": "$link"
+      }
+    ],
+    "transferBarTitle": "Buchungen Aktionen",
+    "transferBar": [
+      {
+        "title": "Buchung löschen",
+        "subtitle": "",
+        "icon": "$removeDocument"
+      },
+      {
+        "title": "Buchung korrigieren",
+        "subtitle": "",
+        "icon": "$editDocument"
+      }
+    ],
+    "footerBarTitle": "Fußzeile",
+    "footerBarSubtitle": "Andere Seiten öffnen",
+    "footerBar": [
+      {
+        "title": "Hilfe",
+        "content": "Klicken um diese Hilfe-Seite anzuzeigen.",
+        "icon": "$help"
+      },
+      {
+        "title": "Datenschutz",
+        "content": "Klicken um die Datenschutz-Seite anzuzeigen.",
+        "icon": "$privacy"
+      },
+      {
+        "title": "Partner",
+        "content": "Klicken um die Partner-Seite anzuzeigen.",
+        "icon": "$partner"
+      }
+    ]
+  },
+  "privacyPage": {
+    "title": "Stockmanager Datenschutz Richtlinien",
+    "local": {
+      "title": "Lokale Daten",
+      "content": "StockManager speichert alle Daten lokal im Browser. Es werden keine Daten an einen Server gesendet. Die Daten werden in einer IndexedDB Datenbank gespeichert. Nur dieses Addon hat Zugriff auf die Datenbank. StockManager personalisiert keine Daten."
+    },
+    "public": {
+      "title": "Öffentliche Daten",
+      "content": "StockManager verwendet Kursdaten von öffentlichen Kursanbietern. Diese Daten werden über das Internet abgerufen. Die Kursanbieter können die Daten jederzeit ändern oder abschalten. StockManager übernimmt keine Garantie für die Richtigkeit der Daten. Beim Abruf werden Aktien-Kürzel, ISIN bzw. WKN über das Internet versendet. Andere Daten werden nicht weitergegeben."
+    },
+    "connections": {
+      "title": "Internetverbindungen",
+      "content": "zu den Kursanbietern werden hergestellt zum Empfang von:",
+      "dataList": [
+        "Kursdaten",
+        "Rohstoffdaten",
+        "Indexdaten",
+        "Tagesdeltas",
+        "52Wochen Hoch/Tief Daten",
+        "Wechselkursen"
+      ]
+    }
+  },
+  "partnerPage": {
+    "title": "Stockmanager Partner",
+    "buttonText": "Öffnen",
+    "linkData": [
+      {
+        "title": "finanzen.net",
+        "content": "Kursdaten, Indexdaten, Materialdaten",
+        "url": "https://www.finanzen.net/",
+        "icon": "fnet"
+      },
+      {
+        "title": "fx-rate",
+        "content": "Wechselkurs-Daten",
+        "url": "https://fx-rate.net/",
+        "icon": "fx"
+      },
+      {
+        "title": "tagesschau",
+        "content": "Kursdaten",
+        "url": "https://www.tagesschau.de/wirtschaft/boersenkurse/",
+        "icon": "ard"
+      },
+      {
+        "title": "tradegatexchange",
+        "content": "Neue Aktie Daten",
+        "url": "https://www.tradegate.de/",
+        "icon": "tgate"
+      },
+      {
+        "title": "wallstreet Online",
+        "content": "Kursdaten",
+        "url": "https://www.wallstreet-online.de/",
+        "icon": "wstreet"
+      },
+      {
+        "title": "Aktien Check",
+        "content": "Kursdaten, 52Wochen Hoch/Tief Daten",
+        "url": "https://www.aktiencheck.de/",
+        "icon": "acheck"
+      },
+      {
+        "title": "GOYAX",
+        "content": "Kursdaten",
+        "url": "https://www.goyax.de/",
+        "icon": "goyax"
+      }
+    ]
+  },
+  "optionsPage": {
+    "tabs": [
+      {
+        "title": "Allgemein",
+        "id": "register_ge"
+      },
+      {
+        "title": "Marktplatz",
+        "id": "register_mp"
+      },
+      {
+        "title": "Indizes",
+        "id": "register_ind"
+      },
+      {
+        "title": "Rohstoffe",
+        "id": "register_mat"
+      },
+      {
+        "title": "Währungen",
+        "id": "register_ex"
+      }
+    ],
+    "capitals": {
+      "skins": "Themen",
+      "services": "Kursanbieter"
+    },
+    "themeNames": {
+      "earth": "Erde",
+      "ocean": "Ozean",
+      "sky": "Himmel",
+      "meadow": "Wiese",
+      "dark": "Dunkel",
+      "light": "Hell"
+    },
+    "materials": {
+      "au": "Gold",
+      "ag": "Silber",
+      "brent": "Öl (Brent)",
+      "cu": "Kupfer",
+      "pt": "Platin",
+      "al": "Aluminium",
+      "ni": "Nickel",
+      "sn": "Zinn",
+      "pb": "Blei"
+    },
+    "exchanges": {
+      "title": "Wechselkurs-Kürzel",
+      "label": "Kürzel",
+      "error": "Das Kürzel ist ungültig."
+    },
+    "markets": {
+      "title": "Handelsplätze",
+      "label": "Handelsplatz",
+      "error": "Der Handelsplatz ist ungültig."
+    }
+  }
+}
