@@ -1096,7 +1096,9 @@ export const useApp = (): IUseApp => {
       return found < 0 ? true : 'Input is required.'
     }
   }
-  const appPort = (): browser.runtime.Port => { return browser.runtime.connect({name: 'telp'}) }
+  const appPort = (): browser.runtime.Port => {
+    return browser.runtime.connect()
+  }
   const migrateStock = (stock: IStock): IStock => {
     delete stock.mPortfolio
     delete stock.mBuyValue

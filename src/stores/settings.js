@@ -73,16 +73,8 @@ export const useSettingsStore = defineStore('settings', {
             this._indexes = ar;
             await browser.storage.local.set({ indexes: ar });
         },
-        async setIndexes(value) {
-            this._indexes = value;
-            await browser.storage.local.set({ indexes: value });
-        },
         setIndexesStoreOnly(value) {
             this._indexes = value;
-        },
-        async setMaterials(value) {
-            this._materials = value;
-            await browser.storage.local.set({ materials: value });
         },
         setMaterialsStoreOnly(value) {
             this._materials = value;

@@ -92,16 +92,8 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
       this._indexes = ar
       await browser.storage.local.set({indexes: ar})
     },
-    async setIndexes(value: string[] | boolean): Promise<void> {
-      this._indexes = value
-      await browser.storage.local.set({indexes: value})
-    },
     setIndexesStoreOnly(value: string[] | boolean) {
       this._indexes = value
-    },
-    async setMaterials(value: string[] | boolean): Promise<void> {
-      this._materials = value
-      await browser.storage.local.set({materials: value})
     },
     setMaterialsStoreOnly(value: string[] | boolean) {
       this._materials = value
