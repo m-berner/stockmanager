@@ -348,6 +348,7 @@ declare global {
   interface IUseApp {
     CONS: IConstants,
     validators: Record<string, (v: string | number) => boolean | string>,
+    appPort: () => browser.runtime.Port,
     migrateStock: (stock: IStock) => IStock
     migrateTransfer: (transfer: ITransfer) => ITransfer
     notice: (messages: string[]) => void
@@ -1095,6 +1096,7 @@ export const useApp = (): IUseApp => {
       return found < 0 ? true : 'Input is required.'
     }
   }
+  const appPort = (): browser.runtime.Port => { return browser.runtime.connect({name: 'telp'}) }
   const migrateStock = (stock: IStock): IStock => {
     delete stock.mPortfolio
     delete stock.mBuyValue
@@ -1309,6 +1311,7 @@ export const useApp = (): IUseApp => {
   // },
   return {
     CONS,
+    appPort,
     validators,
     migrateStock,
     migrateTransfer,

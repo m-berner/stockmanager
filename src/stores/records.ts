@@ -44,8 +44,7 @@ interface IStockValues {
   pchange: number
 }
 
-const {CONS} = useApp()
-const {notice, offset, migrateStock, migrateTransfer} = useApp()
+const {appPort, CONS, notice, offset, migrateStock, migrateTransfer} = useApp()
 
 export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = defineStore('records', {
   state: (): IRecordsStore => {
@@ -427,10 +426,10 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
       const readISIN = readIsin()
       if (readISIN.isin.length > 0) {
         runtime.setIsStocksLoading(true)
-        await browser.runtime.sendMessage({type: CONS.FETCH_API.ASK__MIN_RATE_MAX, data: readISIN.isin})
+        appPort().postMessage({type: CONS.FETCH_API.ASK__MIN_RATE_MAX, data: readISIN.isin})
       }
       if (readISIN.isinDates.length > 0) {
-        await browser.runtime.sendMessage({type: CONS.FETCH_API.ASK__DATES_DATA, data: readISIN.isinDates})
+        appPort().postMessage({type: CONS.FETCH_API.ASK__DATES_DATA, data: readISIN.isinDates})
       }
     },
     async cleanStoreAndDatabase(): Promise<string> {

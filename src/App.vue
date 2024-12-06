@@ -24,7 +24,7 @@ const settings = useSettingsStore()
 const records = useRecordsStore()
 const runtime = useRuntimeStore()
 const theme = useTheme()
-const {CONS, getUI, notice} = useApp()
+const {appPort, CONS, getUI, notice} = useApp()
 const layout = ref()
 const route = useRoute()
 
@@ -60,7 +60,7 @@ onBeforeMount(async (): Promise<void> => {
           break
         case change.exchanges?.oldValue.length < change.exchanges?.newValue.length:
           settings.setExchangesStoreOnly(change.exchanges.newValue)
-          await browser.runtime.sendMessage({
+          appPort().postMessage({
             type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
             data: change.exchanges.newValue,
           })
@@ -130,26 +130,35 @@ onBeforeMount(async (): Promise<void> => {
     window.addEventListener('keydown', onKeyDown, false)
     window.addEventListener('keyup', onKeyUp, false)
     window.addEventListener('beforeunload', onBeforeOnload, false)
-    await browser.runtime.sendMessage({
+    appPort().postMessage({
       type: CONS.FETCH_API.ASK__EXCHANGES_BASE_DATA,
       data: [getUI().curusd, getUI().cureur],
     })
     await settings.loadStorageIntoStore(theme)
     await records.openDatabase()
     await records.loadDatabaseIntoStore()
-    await browser.runtime.sendMessage({
+    appPort().postMessage({
       type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
       data: toRaw(settings.exchanges),
     })
-    await browser.runtime.sendMessage({
+    appPort().postMessage({
       type: CONS.FETCH_API.ASK__MATERIAL_DATA,
       data: [],
     })
-    await browser.runtime.sendMessage({
+    appPort().postMessage({
       type: CONS.FETCH_API.ASK__INDEX_DATA,
       data: [],
     })
   }
 )
+
+//const _appPort = appPort()
+//_appPort.postMessage({ test: 'rtertete'})
+
+// _appPort.onMessage.addListener((m) => {
+//   console.log("In content script, received message from background script: ");
+//   console.log(m);
+// });
+
 console.log('--- App.vue setup ---')
 </script>

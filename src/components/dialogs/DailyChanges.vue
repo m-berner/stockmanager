@@ -50,7 +50,7 @@ interface IDailyChanges {
 }
 
 const {t} = useI18n()
-const {CONS, notice} = useApp()
+const {appPort, CONS, notice} = useApp()
 const runtime = useRuntimeStore()
 const state: IDailyChanges = reactive({
   _progress: true,
@@ -67,22 +67,10 @@ const onMessageDailyChanges = async (ev: MessageEvent): Promise<void> => {
       case CONS.FETCH_API.ANSWER__DAILY_CHANGES:
         state._tmpChanges = [...state._tmpChanges, ...ev.data]
         break
-      case CONS.FETCH_API.FINISH__DAILY_CHANGES:
-        state._tmpChangesWithNoDuplicates = [
-          ...toRaw(
-            new Map(
-              state._tmpChanges.map((obj: IChange) => [obj.key, obj])
-            ).values()
-          )
-        ]
-        state._tmpChangesWithNoDuplicates.sort((a: IChange, b: IChange) => {
-          return a.value.change - b.value.change
-        })
-        break
       case CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL:
         state._tmpChanges = [...state._tmpChanges, ...ev.data]
         break
-      case CONS.FETCH_API.FINISH__DAILY_CHANGES_ALL:
+      case CONS.FETCH_API.FINISH__DAILY_CHANGES:
         state._tmpChangesWithNoDuplicates = [
           ...toRaw(
             new Map(
@@ -118,25 +106,20 @@ const getDailyChanges = async (): Promise<void> => {
   state._progress = true
   if (runtime.changesMode === CONS.DIALOGS.DAILYCHANGES) {
     for (let i = 0; i < CONS.SERVICES.tgate.CHS.length; i++) {
-      await browser.runtime.sendMessage({
+      appPort().postMessage({
         type: CONS.FETCH_API.ASK__DAILY_CHANGES,
-        data: CONS.SERVICES.tgate.CHS[i]
+        data: CONS.SERVICES.tgate.CHS[i],
+        lastEventId: i.toString()
       })
     }
-    await browser.runtime.sendMessage({
-      type: CONS.FETCH_API.END__DAILY_CHANGES,
-      data: []
-    })
   } else {
     for (let i = 0; i < CONS.SERVICES.tgate.CHB.length; i++) {
-      await browser.runtime.sendMessage({
+      appPort().postMessage({
         type: CONS.FETCH_API.ASK__DAILY_CHANGES_ALL,
-        data: CONS.SERVICES.tgate.CHB[i]
+        data: CONS.SERVICES.tgate.CHB[i],
+        lastEventId: i.toString()
       })
     }
-    await browser.runtime.sendMessage({
-      type: CONS.FETCH_API.END__DAILY_CHANGES_ALL
-    })
   }
   state._progress = false
 }

@@ -58,7 +58,7 @@ export default defineConfig({
     modulePreload: false,
     rollupOptions: {
       input: {
-        background: 'src/background.html',
+        background: 'src/background.js',
         app: 'src/app.html'
       },
       output: {

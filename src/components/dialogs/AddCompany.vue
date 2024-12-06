@@ -62,7 +62,7 @@ interface IAddStock {
 }
 
 const {t} = useI18n()
-const {CONS, notice, validators} = useApp()
+const {appPort, CONS, notice, validators} = useApp()
 const runtime = useRuntimeStore()
 const formRef = useTemplateRef('form-ref')
 const state: IAddStock = reactive({
@@ -90,7 +90,7 @@ const onMessageAddCompany = async (ev: MessageEvent): Promise<void> => {
 const onIsin = async (): Promise<void> => {
   console.log('ADDSTOCK: onIsin')
   if (state._isin !== '' && state._isin?.length === 12) {
-    await browser.runtime.sendMessage({
+    appPort().postMessage({
       type: CONS.FETCH_API.ASK__COMPANY_DATA,
       data: state._isin
     })

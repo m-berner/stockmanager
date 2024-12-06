@@ -1,12 +1,60 @@
 import { useApp } from '@/composables/useApp';
+const initStorageLocal = async () => {
+    console.log('BACKGROUND: initStorageLocal');
+    const { CONS } = useApp();
+    const storageLocal = await browser.storage.local.get();
+    if (storageLocal.service === undefined) {
+        await browser.storage.local.set({
+            service: CONS.DEFAULTS.STORAGE.service
+        });
+    }
+    if (storageLocal.skin === undefined) {
+        await browser.storage.local.set({ skin: CONS.DEFAULTS.STORAGE.skin });
+    }
+    if (storageLocal.indexes === undefined) {
+        await browser.storage.local.set({
+            indexes: CONS.DEFAULTS.STORAGE.indexes
+        });
+    }
+    if (storageLocal.materials === undefined) {
+        await browser.storage.local.set({
+            materials: CONS.DEFAULTS.STORAGE.materials
+        });
+    }
+    if (storageLocal.markets === undefined) {
+        await browser.storage.local.set({
+            markets: CONS.DEFAULTS.STORAGE.markets
+        });
+    }
+    if (storageLocal.exchanges === undefined) {
+        await browser.storage.local.set({
+            exchanges: CONS.DEFAULTS.STORAGE.exchanges
+        });
+    }
+    if (storageLocal.partner === undefined) {
+        await browser.storage.local.set({
+            partner: CONS.DEFAULTS.STORAGE.partner
+        });
+    }
+    if (storageLocal.items_per_page_stocks === undefined) {
+        await browser.storage.local.set({
+            items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
+        });
+    }
+    if (storageLocal.items_per_page_transfers === undefined) {
+        await browser.storage.local.set({
+            items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers
+        });
+    }
+};
 const useListener = () => {
     const { CONS } = useApp();
     const appUrls = { url: browser.runtime.getURL(CONS.RESOURCES.INDEX) + '*' };
     const onClick = async () => {
-        console.log('USEAPP: onClick');
+        console.log('BACKGROUND: onClick');
         const { notice } = useApp();
         const start = async () => {
-            console.log('USEAPP: onClick: start');
+            console.log('BACKGROUND: onClick: start');
             const textDetailOn = { text: 'on' };
             const colorDetailGreen = { color: '#008000' };
             const textDetailOff = { text: 'off' };
@@ -44,30 +92,30 @@ const useListener = () => {
         };
         const permit = await browser.permissions.request(CONS.PERMISSIONS);
         if (!permit) {
-            console.warn('USEAPP: onClick: missing permission');
+            console.warn('BACKGROUND: onClick: missing permission');
             notice(['Some online data might not be available!']);
         }
         await start();
     };
     const onRemove = (permissions) => {
-        console.warn('USEAPP: onRemove');
+        console.warn('BACKGROUND: onRemove');
         const { notice } = useApp();
         notice(['Online data might not be available.', JSON.stringify(permissions)]);
     };
     const onInstall = () => {
-        console.log('USEAPP: onInstall');
+        console.log('BACKGROUND: onInstall');
         const { migrateStock, migrateTransfer } = useApp();
         const onSuccess = (ev) => {
-            console.log('USEAPP: onInstall: onSuccess');
+            console.log('BACKGROUND: onInstall: onSuccess');
             ev.target.result.close();
         };
         const onError = (err) => {
-            console.error('USEAPP: onError: ', err.message);
+            console.error('BACKGROUND: onError: ', err.message);
         };
         const onUpgradeNeeded = async (ev) => {
-            console.log('USEAPP: onInstall: onUpgradeNeeded');
+            console.log('BACKGROUND: onInstall: onUpgradeNeeded');
             const createDB = () => {
-                console.log('USEAPP: onInstall: onUpgradeNeeded: fCreateDB');
+                console.log('BACKGROUND: onInstall: onUpgradeNeeded: fCreateDB');
                 const optAuto = {
                     keyPath: 'cID',
                     autoIncrement: true
@@ -85,10 +133,10 @@ const useListener = () => {
                 requestCreateTStore.createIndex('transfers_k3', 'cStockID', optFalse);
             };
             const updateDB = () => {
-                console.log('USEAPP: onInstall: onUpgradeNeeded: fUpdateDB');
+                console.log('BACKGROUND: onInstall: onUpgradeNeeded: fUpdateDB');
                 const optFalse = { unique: false };
                 const onSuccessStocks = (ev) => {
-                    console.log('USEAPP: onInstall: onUpgradeNeeded: fCreateDB: onSuccessStocks');
+                    console.log('BACKGROUND: onInstall: onUpgradeNeeded: fCreateDB: onSuccessStocks');
                     const cursor = ev.target.result;
                     if (cursor !== null) {
                         const stock = cursor.value;
@@ -98,7 +146,7 @@ const useListener = () => {
                     else {
                         stocksOpenCursorRequest?.removeEventListener(CONS.EVENTS.SUC, onSuccessStocks, false);
                         const onSuccessTransfers = (ev) => {
-                            console.log('USEAPP: onUpgradeNeeded: fCreateDB: onSuccessTransfers');
+                            console.log('BACKGROUND: onUpgradeNeeded: fCreateDB: onSuccessTransfers');
                             const cursor = ev.target.result;
                             if (cursor !== null) {
                                 const transfer = cursor.value;
@@ -110,7 +158,7 @@ const useListener = () => {
                             }
                         };
                         if (dbOpenRequest?.transaction === null) {
-                            console.error('USEAPP: open database error');
+                            console.error('BACKGROUND: open database error');
                         }
                         else if (!dbOpenRequest.transaction
                             ?.objectStore(CONS.DB.STORES.S)
@@ -165,10 +213,10 @@ const useListener = () => {
         dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE);
     };
     const onMessage = async (ev) => {
-        console.info('USEAPP: onMessage', ev);
+        console.info('BACKGROUND: onMessage', ev);
         const { mean, notice, toNumber } = useApp();
         const fetchMinRateMaxData = async (storageOnline) => {
-            console.log('USEAPP: fetchMinRateMaxData');
+            console.log('BACKGROUND: fetchMinRateMaxData');
             const storageService = await browser.storage.local.get('service');
             const serviceName = storageService.service.name;
             const _fnet = async (urls) => {
@@ -412,7 +460,7 @@ const useListener = () => {
             return await _select(urls);
         };
         const fetchDailyChangesData = async (table, mode = CONS.SERVICES.tgate.CHANGES.SMALL) => {
-            console.log('USEAPP: fetchDailyChangesData');
+            console.log('BACKGROUND: fetchDailyChangesData');
             let valuestr;
             let company;
             let sDocument;
@@ -487,7 +535,7 @@ const useListener = () => {
             return _changes;
         };
         const fetchCompanyData = async (isin) => {
-            console.log('USEAPP: fetchCompanyData');
+            console.log('BACKGROUND: fetchCompanyData');
             let sDocument;
             let company = '';
             let child;
@@ -552,7 +600,7 @@ const useListener = () => {
             return result;
         };
         const fetchExchangesData = async (exchangeCodes) => {
-            console.log('USEAPP: fetchExchangesData');
+            console.log('BACKGROUND: fetchExchangesData');
             const fExUrl = (code) => {
                 return `${CONS.SERVICES.fx.EXCHANGE}${code.substring(0, 3)}&cp_input=${code.substring(3, 6)}&amount_from=1`;
             };
@@ -576,7 +624,7 @@ const useListener = () => {
             return result;
         };
         const fetchMaterialData = async () => {
-            console.log('USEAPP: fetchMaterialData');
+            console.log('BACKGROUND: fetchMaterialData');
             const materials = [];
             const firstResponse = await fetch(CONS.SERVICES.fnet.MATERIALS);
             if (!firstResponse.ok ||
@@ -599,7 +647,7 @@ const useListener = () => {
             return materials;
         };
         const fetchIndexData = async () => {
-            console.log('USEAPP: fetchIndexData');
+            console.log('BACKGROUND: fetchIndexData');
             const indexes = [];
             const indexesKeys = Object.keys(CONS.SETTINGS.INDEXES);
             const indexesValues = Object.values(CONS.SETTINGS.INDEXES);
@@ -626,7 +674,7 @@ const useListener = () => {
             return indexes;
         };
         const fetchDatesData = async (obj) => {
-            console.log('USEAPP: fetchDatesData');
+            console.log('BACKGROUND: fetchDatesData');
             const gmqf = { gm: 0, qf: 0 };
             const parseGermanDate = (germanDateString) => {
                 const parts = germanDateString.match(/(\d+)/g) ?? ['01', '01', '1970'];
@@ -640,7 +688,7 @@ const useListener = () => {
                 !firstResponse.ok ||
                 firstResponse.status >= CONS.STATES.SRV ||
                 (firstResponse.status > 0 && firstResponse.status < CONS.STATES.SUCCESS)) {
-                console.error('USEAPP: fetchDatesData: First request failed');
+                console.error('BACKGROUND: fetchDatesData: First request failed');
             }
             else {
                 const atoms = firstResponse.url.split('/');
@@ -650,7 +698,7 @@ const useListener = () => {
                     secondResponse.status >= CONS.STATES.SRV ||
                     (secondResponse.status > 0 &&
                         secondResponse.status < CONS.STATES.SUCCESS)) {
-                    console.error('USEAPP: fetchDatesData: Second request failed');
+                    console.error('BACKGROUND: fetchDatesData: Second request failed');
                 }
                 else {
                     const secondResponseText = await secondResponse.text();
@@ -753,12 +801,12 @@ const useListener = () => {
                         type: CONS.FETCH_API.ANSWER__DAILY_CHANGES,
                         data: dailyChangesData
                     });
-                    break;
-                case CONS.FETCH_API.END__DAILY_CHANGES:
-                    await browser.tabs.sendMessage(appTab, {
-                        type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
-                        data: []
-                    });
+                    if (Number.parseInt(ev.lastEventId) === CONS.SERVICES.tgate.CHS.length - 1) {
+                        await browser.tabs.sendMessage(appTab, {
+                            type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
+                            data: []
+                        });
+                    }
                     break;
                 case CONS.FETCH_API.ASK__DAILY_CHANGES_ALL:
                     const dailyChangesDataAll = await fetchDailyChangesData(ev.data, CONS.SERVICES.tgate.CHANGES.BIG);
@@ -766,73 +814,30 @@ const useListener = () => {
                         type: CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL,
                         data: dailyChangesDataAll
                     });
+                    if (Number.parseInt(ev.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
+                        await browser.tabs.sendMessage(appTab, {
+                            type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
+                            data: []
+                        });
+                    }
                     break;
-                case CONS.FETCH_API.END__DAILY_CHANGES_ALL:
-                    await browser.tabs.sendMessage(appTab, {
-                        type: CONS.FETCH_API.FINISH__DAILY_CHANGES_ALL,
-                        data: []
-                    });
-                    break;
+                default:
+                    console.error('BACKGROUND: missing fetchApi event type');
             }
         }
         else {
-            console.info('USEAPP: No stockmanager tab found!');
+            console.info('BACKGROUND: No stockmanager tab found!');
         }
     };
-    return { onClick, onRemove, onInstall, onMessage };
+    const onConnect = (aPort) => {
+        console.log('BACKGROUND: onConnect', aPort.name);
+        aPort.onMessage.addListener(onMessage);
+    };
+    return { onClick, onRemove, onInstall, onMessage, onConnect };
 };
-const { onClick, onRemove, onInstall, onMessage } = useListener();
-const { CONS } = useApp();
-const initStorageLocal = async () => {
-    console.log('USEAPP: initStorageLocal');
-    const storageLocal = await browser.storage.local.get();
-    if (storageLocal.service === undefined) {
-        await browser.storage.local.set({
-            service: CONS.DEFAULTS.STORAGE.service
-        });
-    }
-    if (storageLocal.skin === undefined) {
-        await browser.storage.local.set({ skin: CONS.DEFAULTS.STORAGE.skin });
-    }
-    if (storageLocal.indexes === undefined) {
-        await browser.storage.local.set({
-            indexes: CONS.DEFAULTS.STORAGE.indexes
-        });
-    }
-    if (storageLocal.materials === undefined) {
-        await browser.storage.local.set({
-            materials: CONS.DEFAULTS.STORAGE.materials
-        });
-    }
-    if (storageLocal.markets === undefined) {
-        await browser.storage.local.set({
-            markets: CONS.DEFAULTS.STORAGE.markets
-        });
-    }
-    if (storageLocal.exchanges === undefined) {
-        await browser.storage.local.set({
-            exchanges: CONS.DEFAULTS.STORAGE.exchanges
-        });
-    }
-    if (storageLocal.partner === undefined) {
-        await browser.storage.local.set({
-            partner: CONS.DEFAULTS.STORAGE.partner
-        });
-    }
-    if (storageLocal.items_per_page_stocks === undefined) {
-        await browser.storage.local.set({
-            items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
-        });
-    }
-    if (storageLocal.items_per_page_transfers === undefined) {
-        await browser.storage.local.set({
-            items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers
-        });
-    }
-};
-await initStorageLocal();
-if (!browser.runtime.onMessage.hasListener(onMessage)) {
-    browser.runtime.onMessage.addListener(onMessage);
+const { onClick, onRemove, onInstall, onConnect } = useListener();
+if (!browser.runtime.onInstalled.hasListener(onInstall)) {
+    browser.runtime.onInstalled.addListener(onInstall);
 }
 if (!browser.action.onClicked.hasListener(onClick)) {
     browser.action.onClicked.addListener(onClick);
@@ -840,7 +845,8 @@ if (!browser.action.onClicked.hasListener(onClick)) {
 if (!browser.permissions.onRemoved.hasListener(onRemove)) {
     browser.permissions.onRemoved.addListener(onRemove);
 }
-if (!browser.runtime.onInstalled.hasListener(onInstall)) {
-    browser.runtime.onInstalled.addListener(onInstall);
+if (!browser.runtime.onConnect.hasListener(onConnect)) {
+    browser.runtime.onConnect.addListener(onConnect);
 }
+await initStorageLocal();
 console.info('--- background.js ---', window.location.href);

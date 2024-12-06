@@ -710,6 +710,7 @@ export const useApp = () => {
             return found < 0 ? true : 'Input is required.';
         }
     };
+    const appPort = () => { return browser.runtime.connect({ name: 'telp' }); };
     const migrateStock = (stock) => {
         delete stock.mPortfolio;
         delete stock.mBuyValue;
@@ -873,6 +874,7 @@ export const useApp = () => {
     };
     return {
         CONS,
+        appPort,
         validators,
         migrateStock,
         migrateTransfer,
