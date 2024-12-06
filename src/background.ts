@@ -124,17 +124,6 @@ const useListener = (): IUseListener => {
     const {migrateStock, migrateTransfer} = useApp()
     const onSuccess = (ev: TIDBRequestEvent): void => {
       console.log('BACKGROUND: onInstall: onSuccess')
-      // const onVersionChange = (ev: TIDBRequestEvent): void => {
-      //   console.info(
-      //     'BACKGROUND: onInstall: onSuccess: onVersionChange: ',
-      //     ev.target.result
-      //   )
-      // }
-      // ev.target.result.addEventListener(
-      //   CONS.EVENTS.VERSIONCHANGE,
-      //   onVersionChange,
-      //   CONS.SYSTEM.ONCE
-      // )
       ev.target.result.close()
     }
     const onError = (err: ErrorEvent): void => {
@@ -170,9 +159,6 @@ const useListener = (): IUseListener => {
       }
       const updateDB = (): void => {
         console.log('BACKGROUND: onInstall: onUpgradeNeeded: fUpdateDB')
-        // if (!upgradeDb.objectStoreNames.contains('store3')) {
-        //   upgradeDb.createObjectStore('store3')
-        // }
         const optFalse: IDBIndexParameters = {unique: false}
         const onSuccessStocks = (ev: TIDBRequestEvent): void => {
           console.log(
@@ -248,7 +234,6 @@ const useListener = (): IUseListener => {
           onSuccessStocks,
           false
         )
-        // delete all objectStores but stocks and transfers.
         for (
           let i = 0;
           i < dbOpenRequest.result.objectStoreNames.length;
@@ -1055,10 +1040,6 @@ if (!browser.permissions.onRemoved.hasListener(onRemove)) {
   // noinspection JSDeprecatedSymbols
   browser.permissions.onRemoved.addListener(onRemove)
 }
-// if (!browser.runtime.onMessage.hasListener(onMessage)) {
-//   // noinspection JSDeprecatedSymbols
-//   browser.runtime.onMessage.addListener(onMessage)
-// }
 if (!browser.runtime.onConnect.hasListener(onConnect)) {
   // noinspection JSDeprecatedSymbols
   browser.runtime.onConnect.addListener(onConnect)

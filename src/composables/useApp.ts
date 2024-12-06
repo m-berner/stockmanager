@@ -1203,15 +1203,6 @@ export const useApp = (): IUseApp => {
     }
     return ar
   }
-  // isEmptyObject: (obj: Record<string, unknown>): boolean => {
-  //   let result = false
-  //   if (obj === undefined || obj === null) {
-  //     result = true
-  //   } else if (Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype) {
-  //     result = true
-  //   }
-  //   return result
-  // },
   const offset = (): number => {
     return new Date().getTimezoneOffset() * 60000
     // - 7.200.000 we are UTC/GMT + 2
@@ -1267,48 +1258,6 @@ export const useApp = (): IUseApp => {
   }
   const emptyFunction = (): void => {
   }
-  // toUTCMilliseconds: (datestr: string | undefined) => {
-  //   const today = new Date()
-  //   let datear: string[]
-  //   let day: number
-  //   let month: number
-  //   let year: number
-  //   let result: number
-  //   const region = getUI().region
-  //   if (typeof datestr === 'string') {
-  //     if (datestr.includes('.')) {
-  //       datear = datestr.split('.')
-  //       year = Number.parseInt(datear[2], 10) ?? CONS.DATE.FYEAR
-  //       month = Number.parseInt(datear[1], 10) ?? 1
-  //       day = Number.parseInt(datear[0], 10) ?? 1
-  //     } else if (datestr.includes('-')) {
-  //       datear = datestr.split('-')
-  //       year = Number.parseInt(datear[0], 10) ?? CONS.DATE.FYEAR
-  //       month = Number.parseInt(datear[1], 10) ?? 1
-  //       day = Number.parseInt(datear[2], 10) ?? 1
-  //     } else if (datestr.includes('/')) {
-  //       datear = datestr.split('/')
-  //       year = Number.parseInt(datear[2], 10) ?? CONS.DATE.FYEAR
-  //       day = Number.parseInt(datear[0], 10) ?? 1
-  //       month = Number.parseInt(datear[1], 10) ?? 1
-  //       if (region === 'us') {
-  //         day = Number.parseInt(datear[1], 10) ?? 1
-  //         month = Number.parseInt(datear[0], 10) ?? 1
-  //       }
-  //     } else {
-  //       year = CONS.DATE.FYEAR
-  //       day = 1
-  //       month = 1
-  //     }
-  //     result = year === CONS.DATE.FYEAR ? CONS.DATE.DEFAULT : Date.UTC(year, month - 1, day, today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds())
-  //   } else {
-  //     result = CONS.DATE.DEFAULT
-  //   }
-  //   return result
-  // },
-  // sleep: async (ms: number): Promise<void> => {
-  //   await new Promise((resolve) => setTimeout(resolve, ms))
-  // },
   return {
     CONS,
     appPort,
