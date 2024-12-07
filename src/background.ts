@@ -15,6 +15,11 @@ interface IUseListener {
   onConnect: (port: browser.runtime.Port) => void
 }
 
+interface IUrlWithId {
+  ident: number
+  url: string
+}
+
 const initStorageLocal = async (): Promise<void> => {
   console.log('BACKGROUND: initStorageLocal')
   const {CONS} = useApp()

@@ -24,32 +24,9 @@ declare global {
     value: string | number | Record<string, string | number>
   }>
 
-  interface Date {
-    toISOString: () => string
-  }
-
-  interface IUrlWithId {
-    ident: number
-    url: string
-  }
-
   interface IUrlWithName {
     name: string
     url: string
-  }
-
-  interface IService {
-    name: string
-    url: string
-  }
-
-  interface IChange {
-    key: string
-    value: {
-      percentChange: string
-      change: number
-      stringChange: string
-    }
   }
 
   interface IAddTransfer {
@@ -166,7 +143,7 @@ declare global {
   }
 
   interface IStorageLocal {
-    service?: IService
+    service?: IUrlWithName
     skin?: string
     indexes?: string[]
     materials?: string[]

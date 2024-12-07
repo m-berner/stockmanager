@@ -40,7 +40,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click.prevent="onUpdate()"
+          v-on:click="onUpdate()"
         ></v-app-bar-nav-icon>
       </template>
     </v-tooltip>

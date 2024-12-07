@@ -42,6 +42,15 @@ import {useI18n} from 'vue-i18n'
 import {useApp} from '@/composables/useApp'
 import {useRuntimeStore} from '@/stores/runtime'
 
+interface IChange {
+  key: string
+  value: {
+    percentChange: string
+    change: number
+    stringChange: string
+  }
+}
+
 interface IDailyChanges {
   _progress: boolean
   _search: string
