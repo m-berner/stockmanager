@@ -1005,18 +1005,6 @@ export const useApp = (): IUseApp => {
   return {
     CONS,
     validators: {
-      // commaCurrencyString2: (v: string) => {
-      //   const found = v.match(/^0$|^\d*(,?\d{1,2})\s[€|$]$/g)
-      //   return found !== null ? true : 'A comma formatted currency value is required.'
-      // },
-      // commaCurrencyString5: (v: string) => {
-      //   const found = v.match(/^0$|^\d*(,?\d{1,5})\s[€|$]$/g)
-      //   return found !== null ? true : 'A comma formatted currency value is required.'
-      // },
-      // dottedNumber2: (vstr: string) => {
-      //   const found = vstr.match(/^(-)?0$|^(-)?[0-9]\d*(\.?\d{1,2})$/g)
-      //   return found !== null ? true : 'A dot formatted number is required.'
-      // },
       dottedPositiveNumber2: (vstr: string): boolean | string => {
         const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,2})$/g)
         return found !== null ? true : 'A dot formatted positive number is required.'
