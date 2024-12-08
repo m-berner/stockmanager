@@ -108,7 +108,7 @@
         "key": "cQuarterDay"
       },
       {
-        "title": "general meeting",
+        "title": "General meeting",
         "align": "start",
         "sortable": false,
         "key": "cMeetingDay"
@@ -236,19 +236,19 @@
         "key": "cCount"
       },
       {
-        "title": "fee",
+        "title": "Fee",
         "align": "start",
         "sortable": false,
         "key": "cFees"
       },
       {
-        "title": "Q tax",
+        "title": "Source tax",
         "align": "start",
         "sortable": false,
         "key": "cSTax"
       },
       {
-        "title": "FT tax",
+        "title": "Transaction tax",
         "align": "start",
         "sortable": false,
         "key": "cFTax"
@@ -260,19 +260,19 @@
         "key": "cTax"
       },
       {
-        "title": "Solos",
+        "title": "Soli",
         "align": "start",
         "sortable": false,
         "key": "cSoli"
       },
       {
-        "title": "trading place",
+        "title": "Trading place",
         "align": "start",
         "sortable": false,
         "key": "cMarketPlace"
       },
       {
-        "title": "remark",
+        "title": "Remark",
         "align": "start",
         "sortable": false,
         "key": "cDescription"
@@ -299,7 +299,7 @@
       "isin": "ISIN",
       "company": "Pursue",
       "wkn": "WKN",
-      "symbol": "abbreviation",
+      "symbol": "Abbreviation",
       "errors": [
         "ISIN already exists!"
       ]
@@ -312,11 +312,11 @@
       "title": "Deposit",
       "amount": "Amount",
       "date": "Date",
-      "description": "remark",
+      "description": "Remark",
       "types": {
-        "transfer": "transfer",
-        "fee": "fee",
-        "stax": "Withholding tax",
+        "transfer": "Transfer",
+        "fee": "Fee",
+        "stax": "Source tax",
         "ftax": "Transaction tax",
         "tax": "Tax",
         "soli": "Solidarity surcharge"
@@ -326,11 +326,11 @@
       "title": "Payout",
       "amount": "Amount",
       "date": "Date",
-      "description": "remark",
+      "description": "Remark",
       "types": {
-        "transfer": "transfer",
-        "fee": "fee",
-        "stax": "Withholding tax",
+        "transfer": "Transfer",
+        "fee": "Fee",
+        "stax": "Source tax",
         "ftax": "Transaction tax",
         "tax": "Tax",
         "soli": "Solidarity surcharge"
@@ -343,7 +343,7 @@
       "year": "Year",
       "deposits": "Deposit",
       "withdrawals": "Payout",
-      "dividends": "dividend",
+      "dividends": "Dividend",
       "taxes": "Taxes/Soli",
       "fees": "Fees",
       "earnings": "Stock Proceeds"
@@ -374,17 +374,17 @@
     "updateTransfer": {
       "title": "Edit booking",
       "bookDay": "Booking day",
-      "exDay": "ex-day",
+      "exDay": "Ex-day",
       "unitQuotation": "Price",
       "amount": "Amount",
       "number": "Number",
       "fees": "Fees",
-      "sTax": "Withholding tax",
+      "sTax": "Source tax",
       "fTax": "Transaction tax",
       "tax": "Tax",
       "soli": "Solidarity surcharge",
-      "marketPlace": "trading place",
-      "description": "remark",
+      "marketPlace": "Trading place",
+      "description": "Remark",
       "validationError": "The booking cannot be validated."
     },
     "deleteStock": {
@@ -396,7 +396,7 @@
     "addDividend": {
       "title": "New dividend - {company}",
       "bookDay": "Booking day",
-      "exDay": "ex-day",
+      "exDay": "Ex-day",
       "count": "Number",
       "unitQuotation": "Price",
       "stax": "Withholding tax",
@@ -409,7 +409,7 @@
       "title": "Dividend Overview - {company}"
     },
     "sellStock": {
-      "title": "Sell ​​shares - {company}",
+      "title": "Sell shares - {company}",
       "bookDay": "Booking day",
       "count": "Number",
       "unitQuotation": "Price",
@@ -417,20 +417,20 @@
       "stax": "Withholding tax",
       "tax": "Steer",
       "soli": "Solos",
-      "marketplace": "trading place",
+      "marketplace": "Trading place",
       "validationError": "The share cannot be validated.",
-      "loss": "with loss"
+      "loss": "Win/Loss"
     },
     "configStock": {
       "title": "Configure share - {company}",
       "company": "Pursue",
       "isin": "ISIN",
       "wkn": "WKN",
-      "symbol": "abbreviation",
+      "symbol": "Abbreviation",
       "firstPage": "First page",
       "fadeOut": "Hide",
       "qf": "Quarterly figures",
-      "gm": "general meeting",
+      "gm": "General meeting",
       "url": "Link to stock page",
       "validationError": "The configuration cannot be validated."
     },
@@ -444,7 +444,7 @@
       "ftax": "Transaction tax",
       "tax": "Steer",
       "soli": "Solidarity surcharge",
-      "marketplace": "trading place",
+      "marketplace": "Trading place",
       "validationError": "The share cannot be validated.",
       "hint": "Information is required"
     },
@@ -483,9 +483,9 @@
       "winloss": "Profit/loss",
       "earnings": "Stock Proceeds",
       "deposits": "Deposit",
-      "dividends": "dividend",
+      "dividends": "Dividend",
       "withdrawals": "Payout",
-      "fees": "fee",
+      "fees": "Fee",
       "taxes": "Tax",
       "account": "Trading account",
       "depot": "Depot account"
@@ -593,7 +593,7 @@
         "icon": "$addStock"
       },
       {
-        "title": "Sell ​​stocks",
+        "title": "Sell stocks",
         "subtitle": "",
         "icon": "$sellStock"
       },
@@ -631,7 +631,7 @@
         "icon": "$editDocument"
       }
     ],
-    "footerBarTitle": "footer",
+    "footerBarTitle": "Footer",
     "footerBarSubtitle": "Open other pages",
     "footerBar": [
       {
@@ -645,7 +645,7 @@
         "icon": "$privacy"
       },
       {
-        "title": "partner",
+        "title": "Partner",
         "content": "Click to view the partner page.",
         "icon": "$partner"
       }
@@ -679,31 +679,31 @@
     "buttonText": "Open",
     "linkData": [
       {
-        "title": "finance.net",
+        "title": "Finance.net",
         "content": "Price data, index data, material data",
         "url": "https://www.finanzen.net/",
         "icon": "fnet"
       },
       {
-        "title": "fx rate",
+        "title": "Fx rate",
         "content": "Exchange rate data",
         "url": "https://fx-rate.net/",
         "icon": "fx"
       },
       {
-        "title": "daily news",
+        "title": "Daily news",
         "content": "Course dates",
         "url": "https://www.tagesschau.de/wirtschaft/boersenkurs/",
         "icon": "ard"
       },
       {
-        "title": "tradegatexchange",
+        "title": "Tradegatexchange",
         "content": "New share data",
         "url": "https://www.tradegate.de/",
         "icon": "tgate"
       },
       {
-        "title": "wall street online",
+        "title": "Wall street online",
         "content": "Course dates",
         "url": "https://www.wallstreet-online.de/",
         "icon": "wstreet"
@@ -737,7 +737,7 @@
         "id": "register_ind"
       },
       {
-        "title": "raw materials",
+        "title": "Raw materials",
         "id": "register_mat"
       },
       {
@@ -770,12 +770,12 @@
     },
     "exchanges": {
       "title": "Exchange rate abbreviation",
-      "label": "abbreviation",
+      "label": "Abbreviation",
       "error": "The abbreviation is invalid."
     },
     "markets": {
-      "title": "trading venues",
-      "label": "trading place",
+      "title": "Trading venues",
+      "label": "Trading place",
       "error": "The trading venue is invalid."
     }
   }
