@@ -996,261 +996,260 @@ export const useApp = (): IUseApp => {
       }
     }
   })
-  const validators = {
-    // commaCurrencyString2: (v: string) => {
-    //   const found = v.match(/^0$|^\d*(,?\d{1,2})\s[€|$]$/g)
-    //   return found !== null ? true : 'A comma formatted currency value is required.'
-    // },
-    // commaCurrencyString5: (v: string) => {
-    //   const found = v.match(/^0$|^\d*(,?\d{1,5})\s[€|$]$/g)
-    //   return found !== null ? true : 'A comma formatted currency value is required.'
-    // },
-    // dottedNumber2: (vstr: string) => {
-    //   const found = vstr.match(/^(-)?0$|^(-)?[0-9]\d*(\.?\d{1,2})$/g)
-    //   return found !== null ? true : 'A dot formatted number is required.'
-    // },
-    dottedPositiveNumber2: (vstr: string): boolean | string => {
-      const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,2})$/g)
-      return found !== null ? true : 'A dot formatted positive number is required.'
-    },
-    dottedPositiveNumber5: (vstr: string): boolean | string => {
-      const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,5})$/g)
-      return found !== null ? true : 'A dot formatted positive number is required.'
-    },
-    integer: (v: string): boolean | string => {
-      if (v === null || v === undefined) {
-        return 'Input is required.'
-      } else {
-        const found = v.match(/^(-?[1-9]\d*|0)$/g)
-        return found !== null ? true : 'Input is required.'
-      }
-    },
-    positiveInteger: (v: string): boolean | string => {
-      if (v === null || v === undefined) {
-        return 'Input is required.'
-      } else {
-        const found = v.match(/^[1-9][0-9]*$/g)
-        return found !== null ? true : 'Input is required.'
-      }
-    },
-    isin: (v: string): boolean | string => {
-      if (v === null || v === undefined) {
-        return 'Input is required.'
-      } else {
-        const found = v.match(/^[a-zA-Z]{2}[a-zA-Z0-9]{10}$/g)
-        return found !== null ? true : 'Input is required.'
-      }
-    },
-    wkn: (v: string): boolean | string => {
-      const found = v.match(/^[a-hj-np-zA-HJ-NP-Z0-9]{6}$/g)
-      return found !== null ? true : 'Length 6 is required. I,O are not allowed.'
-    },
-    url: (v: string): boolean | string => {
-      const found = v.match(/^[htps]{4,5}:\/\/\S*$/g)
-      return found !== null ? true : 'Input is required.'
-    },
-    isoDate: (v: string): boolean | string => {
-      if (v === null || v === undefined) {
-        return 'Input is required.'
-      } else {
-        const found = v.match(/^([1-2])?[0-9]{3}-(1[0-1]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/g)
-        return found !== null ? true : 'Input is required.'
-      }
-    },
-    notEmpty: (v: string): boolean | string => {
-      const found = v.length
-      return found > 0 ? true : 'Input is required.'
-    },
-    positiveNumber: (v: string): boolean | string => {
-      const found = Number.parseFloat(v)
-      return found > 0 ? true : 'Input is required.'
-    },
-    positiveCurrency: (v: number): boolean | string => {
-      return v > 0 ? true : 'Input is required.'
-    },
-    negativeNumber: (v: string): boolean | string => {
-      const found = Number.parseFloat(v)
-      return found < 0 ? true : 'Input is required.'
-    }
-  }
-  const appPort = (): browser.runtime.Port => {
-    return browser.runtime.connect()
-  }
-  const migrateStock = (stock: IStock): IStock => {
-    delete stock.mPortfolio
-    delete stock.mBuyValue
-    delete stock.mValue
-    delete stock.mMin
-    delete stock.mMax
-    delete stock.mChange
-    delete stock.mEuroChange
-    delete stock.mDividendYielda
-    delete stock.mDividendYeara
-    delete stock.mDividendYieldb
-    delete stock.mDividendYearb
-    delete stock.mRealDividend
-    delete stock.mRealBuyValue
-    delete stock.mDeleteable
-    delete stock.mAskDates
-    stock.cFadeOut = stock.cFadeOut ?? 0
-    stock.cNotFirstPage = stock.cNotFirstPage ?? 1
-    stock.cFirstPage = stock.cFirstPage ?? (stock.cNotFirstPage + 1) % 2
-    stock.cQuarterDay = stock.cQuarterDay > 0 ? stock.cQuarterDay - offset() : 0
-    stock.cMeetingDay = stock.cMeetingDay > 0 ? stock.cMeetingDay - offset() : 0
-    const props: string[] = Object.keys(stock)
-    for (let i = 0; i < props.length; i++) {
-      if (!CONS.DB.STORES.SC.includes(props[i])) {
-        delete stock[props[i]]
-      }
-    }
-    return stock
-  }
-  const migrateTransfer = (transfer: ITransfer): ITransfer => {
-    delete transfer.mCompany
-    delete transfer.mSortDate
-    transfer.cCount = transfer.cNumber ?? transfer.cCount ?? 0
-    transfer.cAmount = transfer.cDeposit ?? transfer.cAmount ?? 0
-    transfer.cTax = transfer.cTaxes ?? transfer.cTax ?? 0
-    transfer.cFTax = transfer.cFTax ?? 0
-    transfer.cSTax = transfer.cSTax ?? 0
-    transfer.cSoli = transfer.cSoli ?? 0
-    transfer.cDate = transfer.cDate > 0 ? transfer.cDate - offset() : 0
-    transfer.cExDay = transfer.cExDay > 0 ? transfer.cExDay - offset() : 0
-    const props = Object.keys(transfer)
-    for (let i = 0; i < props.length; i++) {
-      if (!CONS.DB.STORES.TC.includes(props[i])) {
-        delete transfer[props[i]]
-      }
-    }
-    return transfer
-  }
-  const notice = async (messages: string[]): Promise<void> => {
-    const msg = messages.join('\n')
-    const notificationOption: browser.notifications.CreateNotificationOptions =
-      {
-        type: 'basic',
-        iconUrl: '_assets/icon16.png',
-        title: 'Stockmanager',
-        message: msg
-      }
-    await browser.notifications.create(notificationOption)
-  }
-  const getUI = (): Record<string, string> => {
-    let code: string
-    const result: Record<string, string> = {
-      lang: '',
-      region: '',
-      locale: '',
-      cur: '',
-      curusd: '',
-      cureur: '',
-      fontSize: '0'
-    }
-    const uiLang: string =
-      browser.i18n.getUILanguage().toLowerCase() ?? CONS.DEFAULTS.LANG
-    if (uiLang.includes('-')) {
-      result.lang = uiLang.split('-')[0]
-      result.region = uiLang.split('-')[1].toUpperCase()
-      result.locale = uiLang
-      code =
-        CONS.CURRENCIES.CODE.get(uiLang.split('-')[1]) ?? CONS.DEFAULTS.CURRENCY
-      result.cur = code ?? CONS.DEFAULTS.CURRENCY
-    } else {
-      result.lang = uiLang
-      result.region = uiLang.toUpperCase()
-      result.locale = uiLang + '-' + uiLang.toUpperCase()
-      code = CONS.CURRENCIES.CODE.get(uiLang) ?? CONS.DEFAULTS.CURRENCY
-      result.cur = code ?? CONS.DEFAULTS.CURRENCY
-    }
-    result.cureur = result.cur + CONS.CURRENCIES.EUR
-    result.curusd = result.cur + CONS.CURRENCIES.USD
-    result.fontSize = window
-      .getComputedStyle(document.body, null)
-      .getPropertyValue('font-size')
-    return result
-  }
-  const group = (count: number, size = 2): number[] => {
-    const ar: number[] = []
-    const isOdd = count % 2 === 1
-    const part = Math.ceil(count / size)
-    for (let i = 0; i < size; i++) {
-      if (isOdd && i === size - 1) {
-        ar.push(part - 1)
-      } else {
-        ar.push(part)
-      }
-    }
-    return ar
-  }
   const offset = (): number => {
     return new Date().getTimezoneOffset() * 60000
     // - 7.200.000 we are UTC/GMT + 2
     // DB to store -offset
     // Store to DB +offset
   }
-  const isoDatePlusSeconds = (iso: string | number | Date): number => {
-    return new Date(iso).getTime() + (Date.now() % 86400)
-  }
-  const toNumber = (str: string | boolean | number | undefined | null): number => {
-    let result = 0
-    if (str !== null && str !== undefined) {
-      const a = str.toString().replace(/,$/g, '')
-      const b = a.split(',')
-      if (b.length === 2) {
-        const tmp2 = a
-          .trim()
-          .replace(/\s|\.|\t|%/g, '')
-          .replace(',', '.')
-        result = Number.isNaN(Number.parseFloat(tmp2))
-          ? 0
-          : Number.parseFloat(tmp2)
-      } else if (b.length > 2) {
-        let tmp: string = ''
-        for (let i = b.length - 1; i > 0; i--) {
-          tmp += b[i]
-        }
-        const tmp2 = tmp + '.' + b[0]
-        result = Number.isNaN(Number.parseFloat(tmp2))
-          ? 0
-          : Number.parseFloat(tmp2)
-      } else {
-        result = Number.isNaN(parseFloat(b[0])) ? 0 : Number.parseFloat(b[0])
-      }
-    }
-    return result
-  }
-  const mean = (nar: number[]): number => {
-    let sum = 0
-    let len: number = nar.length
-    let n: number
-    for (n of nar) {
-      if (n !== 0 && !Number.isNaN(n)) {
-        sum += n
-      } else {
-        len--
-      }
-    }
-    return len > 0 ? sum / len : 0
-  }
-  const dateToISO = (value: number): string => {
-    return new Date(value).toISOString().substring(0, 10)
-  }
-  const emptyFunction = (): void => {
-  }
   return {
     CONS,
-    appPort,
-    validators,
-    migrateStock,
-    migrateTransfer,
-    notice,
-    getUI,
-    group,
-    isoDatePlusSeconds,
+    validators: {
+      // commaCurrencyString2: (v: string) => {
+      //   const found = v.match(/^0$|^\d*(,?\d{1,2})\s[€|$]$/g)
+      //   return found !== null ? true : 'A comma formatted currency value is required.'
+      // },
+      // commaCurrencyString5: (v: string) => {
+      //   const found = v.match(/^0$|^\d*(,?\d{1,5})\s[€|$]$/g)
+      //   return found !== null ? true : 'A comma formatted currency value is required.'
+      // },
+      // dottedNumber2: (vstr: string) => {
+      //   const found = vstr.match(/^(-)?0$|^(-)?[0-9]\d*(\.?\d{1,2})$/g)
+      //   return found !== null ? true : 'A dot formatted number is required.'
+      // },
+      dottedPositiveNumber2: (vstr: string): boolean | string => {
+        const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,2})$/g)
+        return found !== null ? true : 'A dot formatted positive number is required.'
+      },
+      dottedPositiveNumber5:
+        (vstr: string): boolean | string => {
+          const found = vstr.match(/^0$|^[0-9]\d*(\.?\d{1,5})$/g)
+          return found !== null ? true : 'A dot formatted positive number is required.'
+        },
+      integer:
+        (v: string): boolean | string => {
+          if (v === null || v === undefined) {
+            return 'Input is required.'
+          } else {
+            const found = v.match(/^(-?[1-9]\d*|0)$/g)
+            return found !== null ? true : 'Input is required.'
+          }
+        },
+      positiveInteger:
+        (v: string): boolean | string => {
+          if (v === null || v === undefined) {
+            return 'Input is required.'
+          } else {
+            const found = v.match(/^[1-9][0-9]*$/g)
+            return found !== null ? true : 'Input is required.'
+          }
+        },
+      isin:
+        (v: string): boolean | string => {
+          if (v === null || v === undefined) {
+            return 'Input is required.'
+          } else {
+            const found = v.match(/^[a-zA-Z]{2}[a-zA-Z0-9]{10}$/g)
+            return found !== null ? true : 'Input is required.'
+          }
+        },
+      wkn:
+        (v: string): boolean | string => {
+          const found = v.match(/^[a-hj-np-zA-HJ-NP-Z0-9]{6}$/g)
+          return found !== null ? true : 'Length 6 is required. I,O are not allowed.'
+        },
+      url:
+        (v: string): boolean | string => {
+          const found = v.match(/^[htps]{4,5}:\/\/\S*$/g)
+          return found !== null ? true : 'Input is required.'
+        },
+      isoDate:
+        (v: string): boolean | string => {
+          if (v === null || v === undefined) {
+            return 'Input is required.'
+          } else {
+            const found = v.match(/^([1-2])?[0-9]{3}-(1[0-1]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/g)
+            return found !== null ? true : 'Input is required.'
+          }
+        },
+      notEmpty:
+        (v: string): boolean | string => {
+          const found = v.length
+          return found > 0 ? true : 'Input is required.'
+        },
+      positiveNumber:
+        (v: string): boolean | string => {
+          const found = Number.parseFloat(v)
+          return found > 0 ? true : 'Input is required.'
+        },
+      positiveCurrency:
+        (v: number): boolean | string => {
+          return v > 0 ? true : 'Input is required.'
+        },
+      negativeNumber:
+        (v: string): boolean | string => {
+          const found = Number.parseFloat(v)
+          return found < 0 ? true : 'Input is required.'
+        }
+    },
+    appPort: (): browser.runtime.Port => {
+      return browser.runtime.connect()
+    },
+    migrateStock: (stock: IStock): IStock => {
+      delete stock.mPortfolio
+      delete stock.mBuyValue
+      delete stock.mValue
+      delete stock.mMin
+      delete stock.mMax
+      delete stock.mChange
+      delete stock.mEuroChange
+      delete stock.mDividendYielda
+      delete stock.mDividendYeara
+      delete stock.mDividendYieldb
+      delete stock.mDividendYearb
+      delete stock.mRealDividend
+      delete stock.mRealBuyValue
+      delete stock.mDeleteable
+      delete stock.mAskDates
+      stock.cFadeOut = stock.cFadeOut ?? 0
+      stock.cNotFirstPage = stock.cNotFirstPage ?? 1
+      stock.cFirstPage = stock.cFirstPage ?? (stock.cNotFirstPage + 1) % 2
+      stock.cQuarterDay = stock.cQuarterDay > 0 ? stock.cQuarterDay - offset() : 0
+      stock.cMeetingDay = stock.cMeetingDay > 0 ? stock.cMeetingDay - offset() : 0
+      const props: string[] = Object.keys(stock)
+      for (let i = 0; i < props.length; i++) {
+        if (!CONS.DB.STORES.SC.includes(props[i])) {
+          delete stock[props[i]]
+        }
+      }
+      return stock
+    },
+    migrateTransfer: (transfer: ITransfer): ITransfer => {
+      delete transfer.mCompany
+      delete transfer.mSortDate
+      transfer.cCount = transfer.cNumber ?? transfer.cCount ?? 0
+      transfer.cAmount = transfer.cDeposit ?? transfer.cAmount ?? 0
+      transfer.cTax = transfer.cTaxes ?? transfer.cTax ?? 0
+      transfer.cFTax = transfer.cFTax ?? 0
+      transfer.cSTax = transfer.cSTax ?? 0
+      transfer.cSoli = transfer.cSoli ?? 0
+      transfer.cDate = transfer.cDate > 0 ? transfer.cDate - offset() : 0
+      transfer.cExDay = transfer.cExDay > 0 ? transfer.cExDay - offset() : 0
+      const props = Object.keys(transfer)
+      for (let i = 0; i < props.length; i++) {
+        if (!CONS.DB.STORES.TC.includes(props[i])) {
+          delete transfer[props[i]]
+        }
+      }
+      return transfer
+    },
+    notice: async (messages: string[]): Promise<void> => {
+      const msg = messages.join('\n')
+      const notificationOption: browser.notifications.CreateNotificationOptions =
+        {
+          type: 'basic',
+          iconUrl: '_assets/icon16.png',
+          title: 'Stockmanager',
+          message: msg
+        }
+      await browser.notifications.create(notificationOption)
+    },
+    getUI: (): Record<string, string> => {
+      let code: string
+      const result: Record<string, string> = {
+        lang: '',
+        region: '',
+        locale: '',
+        cur: '',
+        curusd: '',
+        cureur: '',
+        fontSize: '0'
+      }
+      const uiLang: string =
+        browser.i18n.getUILanguage().toLowerCase() ?? CONS.DEFAULTS.LANG
+      if (uiLang.includes('-')) {
+        result.lang = uiLang.split('-')[0]
+        result.region = uiLang.split('-')[1].toUpperCase()
+        result.locale = uiLang
+        code =
+          CONS.CURRENCIES.CODE.get(uiLang.split('-')[1]) ?? CONS.DEFAULTS.CURRENCY
+        result.cur = code ?? CONS.DEFAULTS.CURRENCY
+      } else {
+        result.lang = uiLang
+        result.region = uiLang.toUpperCase()
+        result.locale = uiLang + '-' + uiLang.toUpperCase()
+        code = CONS.CURRENCIES.CODE.get(uiLang) ?? CONS.DEFAULTS.CURRENCY
+        result.cur = code ?? CONS.DEFAULTS.CURRENCY
+      }
+      result.cureur = result.cur + CONS.CURRENCIES.EUR
+      result.curusd = result.cur + CONS.CURRENCIES.USD
+      result.fontSize = window
+        .getComputedStyle(document.body, null)
+        .getPropertyValue('font-size')
+      return result
+    },
+    group: (count: number, size = 2): number[] => {
+      const ar: number[] = []
+      const isOdd = count % 2 === 1
+      const part = Math.ceil(count / size)
+      for (let i = 0; i < size; i++) {
+        if (isOdd && i === size - 1) {
+          ar.push(part - 1)
+        } else {
+          ar.push(part)
+        }
+      }
+      return ar
+    },
     offset,
-    toNumber,
-    mean,
-    dateToISO,
-    emptyFunction
+    isoDatePlusSeconds: (iso: string | number | Date): number => {
+      return new Date(iso).getTime() + (Date.now() % 86400)
+    },
+    toNumber: (str: string | boolean | number | undefined | null): number => {
+      let result = 0
+      if (str !== null && str !== undefined) {
+        const a = str.toString().replace(/,$/g, '')
+        const b = a.split(',')
+        if (b.length === 2) {
+          const tmp2 = a
+            .trim()
+            .replace(/\s|\.|\t|%/g, '')
+            .replace(',', '.')
+          result = Number.isNaN(Number.parseFloat(tmp2))
+            ? 0
+            : Number.parseFloat(tmp2)
+        } else if (b.length > 2) {
+          let tmp: string = ''
+          for (let i = b.length - 1; i > 0; i--) {
+            tmp += b[i]
+          }
+          const tmp2 = tmp + '.' + b[0]
+          result = Number.isNaN(Number.parseFloat(tmp2))
+            ? 0
+            : Number.parseFloat(tmp2)
+        } else {
+          result = Number.isNaN(parseFloat(b[0])) ? 0 : Number.parseFloat(b[0])
+        }
+      }
+      return result
+    },
+    mean: (nar: number[]): number => {
+      let sum = 0
+      let len: number = nar.length
+      let n: number
+      for (n of nar) {
+        if (n !== 0 && !Number.isNaN(n)) {
+          sum += n
+        } else {
+          len--
+        }
+      }
+      return len > 0 ? sum / len : 0
+    },
+    dateToISO: (value: number): string => {
+      return new Date(value).toISOString().substring(0, 10)
+    },
+    emptyFunction: (): void => {
+    }
   }
 }
