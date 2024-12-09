@@ -18,6 +18,11 @@ interface IRuntimeStore {
   _page_title: string
   _exchanges: Record<string, number | boolean>
   _dialogs: Record<string, string | boolean | undefined | Ref>
+  _info_bar: {
+    exchanges: Map<string, number>
+    indexes: Map<string, number>
+    materials: Map<string, number>
+  }
 }
 
 export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = defineStore('runtime', {
@@ -53,10 +58,24 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
         _is_add_dividend: false,
         _is_show_dividend: false,
         _is_config_company: false
+      },
+      _info_bar:  {
+        exchanges: new Map<string, number>(),
+        indexes: new Map<string, number>(),
+        materials: new Map<string, number>()
       }
     }
   },
   getters: {
+    exchanges(state: IRuntimeStore) {
+      return state._info_bar.exchanges
+    },
+    indexes(state: IRuntimeStore) {
+      return state._info_bar.indexes
+    },
+    materials(state: IRuntimeStore) {
+      return state._info_bar.materials
+    },
     exchangesCurUsd(state: IRuntimeStore) {
       return state._exchanges.curusd
     },
@@ -134,6 +153,15 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     }
   },
   actions: {
+    setExchanges(entry: Map<string, number>) {
+      this._info_bar.exchanges = entry
+    },
+    setIndexes(entry: Map<string, number>) {
+      this._info_bar.indexes = entry
+    },
+    setMaterials(entry: Map<string, number>) {
+      this._info_bar.materials = entry
+    },
     setPageTitle(value: string) {
       this._page_title = value
     },

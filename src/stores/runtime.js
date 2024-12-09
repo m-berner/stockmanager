@@ -35,10 +35,24 @@ export const useRuntimeStore = defineStore('runtime', {
                 _is_add_dividend: false,
                 _is_show_dividend: false,
                 _is_config_company: false
+            },
+            _info_bar: {
+                exchanges: new Map(),
+                indexes: new Map(),
+                materials: new Map()
             }
         };
     },
     getters: {
+        exchanges(state) {
+            return state._info_bar.exchanges;
+        },
+        indexes(state) {
+            return state._info_bar.indexes;
+        },
+        materials(state) {
+            return state._info_bar.materials;
+        },
         exchangesCurUsd(state) {
             return state._exchanges.curusd;
         },
@@ -116,6 +130,15 @@ export const useRuntimeStore = defineStore('runtime', {
         }
     },
     actions: {
+        setExchanges(entry) {
+            this._info_bar.exchanges = entry;
+        },
+        setIndexes(entry) {
+            this._info_bar.indexes = entry;
+        },
+        setMaterials(entry) {
+            this._info_bar.materials = entry;
+        },
         setPageTitle(value) {
             this._page_title = value;
         },

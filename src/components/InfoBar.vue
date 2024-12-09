@@ -26,12 +26,12 @@
       <v-row class="w-100" justify="space-between">
         <v-list-item v-for="item in _exchanges" v-bind:key="item">
           <v-list-item-title>{{ item }}</v-list-item-title>
-          <v-list-item-subtitle>{{ n(infobar.exchanges.get(item) ?? 1, 'decimal3') }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ n(runtime.exchanges.get(item) ?? 1, 'decimal3') }}</v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item v-for="item in _indexes" v-bind:key="item">
           <v-list-item-title>{{ CONS.SETTINGS.INDEXES[item] }}</v-list-item-title>
-          <v-list-item-subtitle>{{ n(infobar.indexes.get(item) ?? 0, 'integer') }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ n(runtime.indexes.get(item) ?? 0, 'integer') }}</v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item v-for="item in _materials" v-bind:key="item">
@@ -51,7 +51,6 @@ import {useI18n} from 'vue-i18n'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {useRecordsStore} from '@/stores/records'
-import {useInfobarStore} from '@/stores/infobar'
 import {storeToRefs} from 'pinia'
 import {useApp} from '@/composables/useApp'
 
@@ -60,7 +59,6 @@ const {CONS, notice} = useApp()
 const runtime = useRuntimeStore()
 const settings = useSettingsStore()
 const records = useRecordsStore()
-const infobar = useInfobarStore()
 const {_exchanges, _indexes, _materials} = storeToRefs(settings)
 const state = {
   _show: ref(true),
@@ -70,9 +68,9 @@ const state = {
 const usd = (mat: string, usd = true): number => {
   // NOTE: material prices arrive in USD
   if (usd) {
-    return infobar.materials.get(mat) ?? 0
+    return runtime.materials.get(mat) ?? 0
   } else {
-    return (infobar.materials.get(mat) ?? 0) / (runtime.exchangesCurUsd)
+    return (runtime.materials.get(mat) ?? 0) / (runtime.exchangesCurUsd)
   }
 }
 const updateDrawerControls = (): void => {
@@ -100,19 +98,19 @@ const onMessageInfoBar = (ev: MessageEvent): void => {
         for (let i = 0; i < ev.data.length; i++) {
           exchanges.set(ev.data[i].key, ev.data[i].value)
         }
-        infobar.setExchanges(exchanges)
+        runtime.setExchanges(exchanges)
         break
       case CONS.FETCH_API.ANSWER__MATERIAL_DATA:
         for (let i = 0; i < ev.data.length; i++) {
           materials.set(ev.data[i].key, ev.data[i].value)
         }
-        infobar.setMaterials(materials)
+        runtime.setMaterials(materials)
         break
       case CONS.FETCH_API.ANSWER__INDEX_DATA:
         for (let i = 0; i < ev.data.length; i++) {
           indexes.set(ev.data[i].key, ev.data[i].value)
         }
-        infobar.setIndexes(indexes)
+        runtime.setIndexes(indexes)
         break
     }
   }
