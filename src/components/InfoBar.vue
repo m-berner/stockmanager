@@ -26,12 +26,12 @@
       <v-row class="w-100" justify="space-between">
         <v-list-item v-for="item in _exchanges" v-bind:key="item">
           <v-list-item-title>{{ item }}</v-list-item-title>
-          <v-list-item-subtitle>{{ n(state._exchanges.get(item) ?? 1, 'decimal3') }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ n(infobar.exchanges.get(item) ?? 1, 'decimal3') }}</v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item v-for="item in _indexes" v-bind:key="item">
           <v-list-item-title>{{ CONS.SETTINGS.INDEXES[item] }}</v-list-item-title>
-          <v-list-item-subtitle>{{ n(state._indexes.get(item) ?? 0, 'integer') }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ n(infobar.indexes.get(item) ?? 0, 'integer') }}</v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item v-for="item in _materials" v-bind:key="item">
@@ -51,6 +51,7 @@ import {useI18n} from 'vue-i18n'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {useRecordsStore} from '@/stores/records'
+import {useInfobarStore} from '@/stores/infobar'
 import {storeToRefs} from 'pinia'
 import {useApp} from '@/composables/useApp'
 
@@ -59,21 +60,19 @@ const {CONS, notice} = useApp()
 const runtime = useRuntimeStore()
 const settings = useSettingsStore()
 const records = useRecordsStore()
+const infobar = useInfobarStore()
 const {_exchanges, _indexes, _materials} = storeToRefs(settings)
 const state = {
   _show: ref(true),
-  _drawer_controls: reactive(CONS.DEFAULTS.DRAWER_CONTROLS),
-  _exchanges: reactive(new Map<string, number>()),
-  _indexes: reactive(new Map<string, number>()),
-  _materials: reactive(new Map<string, number>()),
+  _drawer_controls: reactive(CONS.DEFAULTS.DRAWER_CONTROLS)
 }
 
 const usd = (mat: string, usd = true): number => {
   // NOTE: material prices arrive in USD
   if (usd) {
-    return state._materials.get(mat) ?? 0
+    return infobar.materials.get(mat) ?? 0
   } else {
-    return (state._materials.get(mat) ?? 0) / (runtime.exchangesCurUsd)
+    return (infobar.materials.get(mat) ?? 0) / (runtime.exchangesCurUsd)
   }
 }
 const updateDrawerControls = (): void => {
@@ -88,29 +87,32 @@ const updateDrawerControls = (): void => {
     state._drawer_controls[i].class = records.transfers.totalController[CONS.DEFAULTS.DRAWER_KEYS[i]] < 0 ? CONS.DEFAULTS.DRAWER_KEYS[i] + '_minus' : CONS.DEFAULTS.DRAWER_KEYS[i]
   }
 }
-const updateInfo = (): void => {
-  console.error(state._exchanges)
-}
 const onMessageInfoBar = (ev: MessageEvent): void => {
   console.info('INFOBAR: onMessageInfoBar', ev)
+  const exchanges = new Map<string, number>()
+  const materials = new Map<string, number>()
+  const indexes = new Map<string, number>()
   if (ev.data === undefined) {
     notice(['Sorry, no data arrived'])
   } else {
     switch (ev.type) {
       case CONS.FETCH_API.ANSWER__EXCHANGES_DATA:
         for (let i = 0; i < ev.data.length; i++) {
-          state._exchanges.set(ev.data[i].key, ev.data[i].value)
+          exchanges.set(ev.data[i].key, ev.data[i].value)
         }
+        infobar.setExchanges(exchanges)
         break
       case CONS.FETCH_API.ANSWER__MATERIAL_DATA:
         for (let i = 0; i < ev.data.length; i++) {
-          state._materials.set(ev.data[i].key, ev.data[i].value)
+          materials.set(ev.data[i].key, ev.data[i].value)
         }
+        infobar.setMaterials(materials)
         break
       case CONS.FETCH_API.ANSWER__INDEX_DATA:
         for (let i = 0; i < ev.data.length; i++) {
-          state._indexes.set(ev.data[i].key, ev.data[i].value)
+          indexes.set(ev.data[i].key, ev.data[i].value)
         }
+        infobar.setIndexes(indexes)
         break
     }
   }
@@ -120,8 +122,6 @@ watch(() => records.transfers.totalController.dividends, updateDrawerControls)
 watch(() => records.transfers.totalController.depot, updateDrawerControls)
 watch(() => records.transfers.totalController.account, updateDrawerControls)
 onMounted(() => {
-  console.error('!ewrrrw--------------------------')
-  updateInfo()
   updateDrawerControls()
 })
 if (!browser.runtime.onMessage.hasListener(onMessageInfoBar)) {
