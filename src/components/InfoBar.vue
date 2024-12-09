@@ -88,6 +88,9 @@ const updateDrawerControls = (): void => {
     state._drawer_controls[i].class = records.transfers.totalController[CONS.DEFAULTS.DRAWER_KEYS[i]] < 0 ? CONS.DEFAULTS.DRAWER_KEYS[i] + '_minus' : CONS.DEFAULTS.DRAWER_KEYS[i]
   }
 }
+const updateInfo = (): void => {
+  console.error(state._exchanges)
+}
 const onMessageInfoBar = (ev: MessageEvent): void => {
   console.info('INFOBAR: onMessageInfoBar', ev)
   if (ev.data === undefined) {
@@ -112,10 +115,13 @@ const onMessageInfoBar = (ev: MessageEvent): void => {
     }
   }
 }
+
 watch(() => records.transfers.totalController.dividends, updateDrawerControls)
 watch(() => records.transfers.totalController.depot, updateDrawerControls)
 watch(() => records.transfers.totalController.account, updateDrawerControls)
 onMounted(() => {
+  console.error('!ewrrrw--------------------------')
+  updateInfo()
   updateDrawerControls()
 })
 if (!browser.runtime.onMessage.hasListener(onMessageInfoBar)) {
