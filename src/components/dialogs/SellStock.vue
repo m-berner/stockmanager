@@ -129,7 +129,7 @@ const state: ISellStock = reactive({
 })
 
 const ok = async (): Promise<void> => {
-  console.log('SELLSTOCK: ok')
+  console.log('SELLSTOCK: ok', state._date, validators.isoDate(state._date))
   const transfer = {
     cStockID: records.stocks.active[records.stocks.active_index].cID,
     cDate: new Date(state._date).getTime(),
@@ -152,8 +152,10 @@ const ok = async (): Promise<void> => {
   if (validators.positiveInteger(state._count) !== true) {
     state._count = '0'
   }
+  console.error('SELLSTOCK:', validators.isoDate(state._date) )
   if (validators.positiveInteger(state._count) === true && validators.isoDate(state._date) === true) {
     await records.addTransfer(transfer)
+    console.error('DFSDFSFSFSFSFS')
     records.evaluateTransfers()
     records.setDrawerDepot()
     runtime.toggleVisibility()

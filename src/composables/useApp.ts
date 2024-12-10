@@ -1056,7 +1056,8 @@ export const useApp = (): IUseApp => {
           if (v === null || v === undefined) {
             return 'Input is required.'
           } else {
-            const found = v.match(/^([1-2])?[0-9]{3}-(1[0-1]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/g)
+            const found = v.match(/^([1-2])?[0-9]{3}-(3[01]|[12][0-9]|0?[1-9])-(1[0-1]|0?[1-9])$/g)
+            console.error(found)
             return found !== null ? true : 'Input is required.'
           }
         },
