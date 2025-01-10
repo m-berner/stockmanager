@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you could obtain one at https://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
+ * Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
 
 declare global {
@@ -1056,8 +1056,7 @@ export const useApp = (): IUseApp => {
           if (v === null || v === undefined) {
             return 'Input is required.'
           } else {
-            const found = v.match(/^([1-2])?[0-9]{3}-(3[01]|[12][0-9]|0?[1-9])-(1[0-1]|0?[1-9])$/g)
-            console.error(found)
+            const found = v.match(/^([1-2])?[0-9]{3}-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/g)
             return found !== null ? true : 'Input is required.'
           }
         },

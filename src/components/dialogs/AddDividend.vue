@@ -3,7 +3,7 @@
   -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
   -- you could obtain one at https://mozilla.org/MPL/2.0/.
   --
-  -- Copyright (c) 2014-2024, Martin Berner, stockmanager@gmx.de. All rights reserved.
+  -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
   <v-form ref="form-ref" validate-on="submit" v-on:submit.prevent>
@@ -149,15 +149,6 @@ const ok = async (): Promise<void> => {
     cMarketPlace: '',
     cDescription: state._description
   }
-  // if (validators.isoDate(state._date) !== true) {
-  //   state._date = '0000-00-00'
-  // }
-  // if (validators.isoDate(state._ex_day) !== true) {
-  //   state._ex_day = '0000-00-00'
-  // }
-  // if (validators.positiveInteger(state._count) !== true) {
-  //   state._count = '0'
-  // }
   if (
     validators.positiveInteger(state._count) === true &&
     validators.isoDate(state._date) === true &&

@@ -695,8 +695,7 @@ export const useApp = () => {
                     return 'Input is required.';
                 }
                 else {
-                    const found = v.match(/^([1-2])?[0-9]{3}-(3[01]|[12][0-9]|0?[1-9])-(1[0-1]|0?[1-9])$/g);
-                    console.error(found);
+                    const found = v.match(/^([1-2])?[0-9]{3}-(1[0-2]|0?[1-9])-(3[01]|[12][0-9]|0?[1-9])$/g);
                     return found !== null ? true : 'Input is required.';
                 }
             },
