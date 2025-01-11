@@ -860,7 +860,7 @@ export const useApp = (): IUseApp => {
       NORENDER: 'norender'
     },
     SYSTEM: {
-      COPYRIGHT: '2013-2024 Martin Berner',
+      COPYRIGHT: '2013-2025 Martin Berner',
       FETCHTO: 20,
       DELAY: 600,
       EMAIL: 'mailto:stockmanager@gmx.de',

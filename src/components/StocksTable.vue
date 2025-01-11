@@ -32,8 +32,10 @@
         </td>
         <td>{{ item.cCompany }}</td>
         <td>{{ item.cISIN }}</td>
-        <td>{{ d(new Date(item.cQuarterDay), 'short', 'de-DE') }}</td>
-        <td>{{ d(new Date(item.cMeetingDay), 'short', 'de-DE') }}</td>
+        <td v-if="item.cQuarterDay > 0">{{ d(new Date(item.cQuarterDay), 'short', 'de-DE') }}</td>
+        <td v-else></td>
+        <td v-if="item.cMeetingDay > 0">{{ d(new Date(item.cMeetingDay), 'short', 'de-DE') }}</td>
+        <td v-else></td>
         <td>{{ item.mPortfolio }}</td>
         <td>{{ n(item.mBuyValue ?? 0, 'currency3') }}</td>
         <v-tooltip location="left" v-bind:text="n((item.mChange ?? 0) / 100, 'percent')">

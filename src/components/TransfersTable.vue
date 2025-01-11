@@ -44,8 +44,10 @@
           ></OptionMenu>
         </td>
         <td>{{ item.mCompany }}</td>
-        <td>{{ d(new Date(item.cDate), 'short', 'de-DE') }}</td>
-        <td>{{ d(new Date(item.cExDay), 'short', 'de-DE') }}</td>
+        <td v-if="item.cDate > 0">{{ d(new Date(item.cDate), 'short', 'de-DE') }}</td>
+        <td v-else></td>
+        <td v-if="item.cExDay > 0">{{ d(new Date(item.cExDay), 'short', 'de-DE') }}</td>
+        <td v-else></td>
         <td>{{ n(item.cUnitQuotation, 'currency5') }}</td>
         <td>{{ n(item.cAmount, 'currency') }}</td>
         <td>{{ n(item.cCount, 'integer') }}</td>
