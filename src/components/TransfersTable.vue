@@ -39,7 +39,7 @@
         <td>
           <OptionMenu
             menuType="transfers"
-            v-bind:menuItems="tm('transfersTable.menuItems')"
+            v-bind:menuItems="options"
             v-bind:recordID="item.cID"
           ></OptionMenu>
         </td>
@@ -86,6 +86,7 @@ const tableHeaders = headers.map((item: { title: string, align: string, sortable
     key: rt(item.key)
   }
 })
+const options: Record<string, string>[] = tm('transfersTable.menuItems')
 
 console.log('--- TransfersTable.vue setup ---')
 </script>

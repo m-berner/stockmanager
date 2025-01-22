@@ -154,7 +154,7 @@ const {t} = useI18n()
 const runtime = useRuntimeStore()
 const records = useRecordsStore()
 const settings = useSettingsStore()
-const {dateToISO, getUI, toNumber, validators} = useApp()
+const {dateToISO, getUI, notice, toNumber, validators} = useApp()
 const formRef = useTemplateRef('form-ref')
 const state: IUpdateTransfer = reactive({
   _date: '',
@@ -204,8 +204,10 @@ const ok = async (): Promise<void> => {
   currentTransfer.cDescription = state._description
   if (validators.isoDate(state._date) === true) {
     await records.updateTransfer(currentTransfer)
-    records.evaluateTransfers()
+    records.setDrawerDepot()
     runtime.toggleVisibility()
+  }else {
+    notice(['UPDATETRANSFER: invalid input'])
   }
 }
 const title = () => {

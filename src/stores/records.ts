@@ -775,6 +775,8 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
         const onSuccess = (): void => {
           requestUpdate.removeEventListener(CONS.EVENTS.SUC, onSuccess, false)
           this._transfers.all[this._transfers.selected_index] = {...data} // important to use sorted transfers
+          this._sortTransfers()
+          this.evaluateTransfers()
           if (msg) {
             notice([browser.i18n.getMessage('sm_msg_updaterecord')])
           }

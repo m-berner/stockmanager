@@ -726,6 +726,8 @@ export const useRecordsStore = defineStore('records', {
                 const onSuccess = () => {
                     requestUpdate.removeEventListener(CONS.EVENTS.SUC, onSuccess, false);
                     this._transfers.all[this._transfers.selected_index] = { ...data };
+                    this._sortTransfers();
+                    this.evaluateTransfers();
                     if (msg) {
                         notice([browser.i18n.getMessage('sm_msg_updaterecord')]);
                     }
