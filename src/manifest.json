@@ -21,8 +21,7 @@
   "permissions": [
     "downloads",
     "notifications",
-    "storage",
-    "tabs"
+    "storage"
   ],
   "host_permissions": [
     "https://www.tradegate.de/*",
@@ -31,7 +30,8 @@
     "https://www.goyax.de/*",
     "https://www.wallstreet-online.de/*",
     "https://*.aktiencheck.de/*",
-    "https://www.tagesschau.de/*"
+    "https://www.tagesschau.de/*",
+    "moz-extension://*"
   ],
   "options_ui": {
     "browser_style": false,
