@@ -110,7 +110,7 @@ const onMessageStocksTable = async (ev: MessageEvent): Promise<void> => {
         const index = records._getActiveStocksIndexById(ev.data[i].key)
         records.setDates(index, ev.data[i].value)
       }
-      await records.updateStocksStoreIntoDatabase()
+      await records.storeIntoDatabase('update')
     }
   }
 }

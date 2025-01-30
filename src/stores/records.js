@@ -18,8 +18,8 @@ export const useRecordsStore = defineStore('records', {
             },
             _transfers: {
                 all: [],
-                stockController: new Map(),
-                totalController: CONS.RECORDS.CONTROLLER.TOTAL,
+                dividend_transfers_per_stock: new Map(),
+                total_controller: CONS.RECORDS.CONTROLLER.TOTAL,
                 selected_index: -1
             },
             _bkup_object: {
@@ -31,8 +31,7 @@ export const useRecordsStore = defineStore('records', {
                 },
                 stocks: [],
                 transfers: [],
-            },
-            _dividends_per_stock: new Map()
+            }
         };
     },
     getters: {
@@ -46,7 +45,7 @@ export const useRecordsStore = defineStore('records', {
             return state._dbi;
         },
         dividendsPerStock(state) {
-            return state._dividends_per_stock;
+            return state._transfers.dividend_transfers_per_stock;
         }
     },
     actions: {
@@ -131,7 +130,7 @@ export const useRecordsStore = defineStore('records', {
             const portfolio = this._stocks.active.filter((stock) => {
                 return (stock.mPortfolio ?? 0) > 0;
             });
-            const total = this._transfers.totalController;
+            const total = this._transfers.total_controller;
             let depot = 0;
             let buyvalue = 0;
             portfolio.forEach((stock) => {
@@ -198,7 +197,7 @@ export const useRecordsStore = defineStore('records', {
                     const currentYear = new Date(transfer.mSortDate ?? 0).getFullYear();
                     return transfer.cStockID === stock.cID && currentYear <= year;
                 });
-                const dividendController = [];
+                const dividendTransfersPerStock = [];
                 const activeStockIndex = this._getActiveStocksIndexById(stock.cID);
                 let portfolio = 0;
                 let buyCount = 0;
@@ -227,7 +226,7 @@ export const useRecordsStore = defineStore('records', {
                             break;
                         case CONS.DB.RECORD_TYPES.DIV:
                             totalController.dividends += (transfer.cUnitQuotation ?? 0) * (transfer.cCount ?? 0);
-                            dividendController.push(transfer);
+                            dividendTransfersPerStock.push(transfer);
                             break;
                         case CONS.DB.RECORD_TYPES.DEPOSIT:
                             totalController.deposits += transfer.cAmount ?? 0;
@@ -242,7 +241,7 @@ export const useRecordsStore = defineStore('records', {
                 if (activeStockIndex > -1) {
                     this._stocks.active[activeStockIndex].mPortfolio = portfolio;
                     this._stocks.active[activeStockIndex].mBuyValue = buyCount > 0.9 ? invest / buyCount : 0;
-                    this._dividends_per_stock.set(stock.cID, dividendController);
+                    this._transfers.dividend_transfers_per_stock.set(stock.cID, dividendTransfersPerStock);
                 }
                 totalController.depotBuyValue += buyCount > 0.9 ? (portfolio * invest) / buyCount : 0;
             });
@@ -258,7 +257,7 @@ export const useRecordsStore = defineStore('records', {
             totalController.winloss = totalController.winloss === undefined ? 0 : totalController.winloss;
             totalController.depot = totalController.depot === undefined ? 0 : totalController.depot;
             if (year === CONS.DEFAULTS.YEAR) {
-                this._transfers.totalController = totalController;
+                this._transfers.total_controller = totalController;
             }
             return { ...totalController };
         },
@@ -389,8 +388,7 @@ export const useRecordsStore = defineStore('records', {
             this._stocks.active.splice(0, this._stocks.active.length);
             this._stocks.passive.splice(0, this._stocks.passive.length);
             this._stocks.all.splice(0, this._stocks.all.length);
-            this._transfers.totalController = CONS.RECORDS.CONTROLLER.TOTAL;
-            this._transfers.stockController = new Map();
+            this._transfers.total_controller = CONS.RECORDS.CONTROLLER.TOTAL;
             this._transfers.all.splice(0, this._transfers.all.length);
             return new Promise((resolve, reject) => {
                 const onError = (ev) => {
@@ -490,16 +488,21 @@ export const useRecordsStore = defineStore('records', {
                 requestStocksOpenCursor.addEventListener(CONS.EVENTS.SUC, onSuccessStocksOpenCursor, false);
             });
         },
-        async loadStoreIntoDatabase() {
-            console.log('RECORDS: loadStoreIntoDatabase');
+        async storeIntoDatabase(store = 'load') {
+            console.info('RECORDS: storeIntoDatabase', store);
             return new Promise((resolve, reject) => {
                 let requestAddStock;
                 let requestAddTransfer;
                 const onComplete = () => {
                     requestAddStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
-                    requestAddTransfer.removeEventListener(CONS.EVENTS.ERR, onError, false);
-                    notice(['All stocks and transfers are added to the database!']);
-                    resolve('RECORDS: loadStoreIntoDatabase: all stocks and transfers are added to the database!');
+                    if (store === 'load') {
+                        requestAddTransfer.removeEventListener(CONS.EVENTS.ERR, onError, false);
+                        notice(['All stocks and transfers are added to the database!']);
+                        resolve('RECORDS: storeIntoDatabase: all stocks and transfers are added to the database!');
+                    }
+                    else {
+                        resolve('RECORDS: storeIntoDatabase: stocks updated in database!');
+                    }
                 };
                 const onAbort = () => {
                     notice(['Transaction aborted!', requestTransaction.error]);
@@ -526,53 +529,22 @@ export const useRecordsStore = defineStore('records', {
                     delete stock.mValue;
                     delete stock.mChange;
                     delete stock.mEuroChange;
-                    requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).add({ ...stock });
+                    if (store === 'load') {
+                        requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).add({ ...stock });
+                    }
+                    else {
+                        requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).put({ ...stock });
+                    }
                     requestAddStock.addEventListener(CONS.EVENTS.ERR, onError, false);
                 }
-                for (let i = 0; i < this._transfers.all.length; i++) {
-                    const transfer = { ...this._transfers.all[i] };
-                    delete transfer.mCompany;
-                    delete transfer.mSortDate;
-                    requestAddTransfer = requestTransaction.objectStore(CONS.DB.STORES.T).add({ ...transfer });
-                    requestAddTransfer.addEventListener(CONS.EVENTS.ERR, onError, false);
-                }
-            });
-        },
-        async updateStocksStoreIntoDatabase() {
-            console.log('RECORDS: updateStocksStoreIntoDatabase');
-            return new Promise((resolve, reject) => {
-                let requestAddStock;
-                const onComplete = () => {
-                    requestAddStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
-                    resolve('RECORDS: updateStocksStoreIntoDatabase: stocks updated in database!');
-                };
-                const onAbort = () => {
-                    notice(['Transaction aborted!', requestTransaction.error]);
-                    reject(requestTransaction.error);
-                };
-                const onError = (ev) => {
-                    reject(ev.message);
-                };
-                const requestTransaction = this._dbi.transaction([CONS.DB.STORES.S], 'readwrite');
-                requestTransaction.addEventListener(CONS.EVENTS.COMP, onComplete, CONS.SYSTEM.ONCE);
-                requestTransaction.addEventListener(CONS.EVENTS.ABORT, onAbort, CONS.SYSTEM.ONCE);
-                for (let i = 0; i < this._stocks.all.length; i++) {
-                    const stock = { ...this._stocks.all[i] };
-                    delete stock.mBuyValue;
-                    delete stock.mRealBuyValue;
-                    delete stock.mPortfolio;
-                    delete stock.mDividendYielda;
-                    delete stock.mDividendYeara;
-                    delete stock.mDividendYieldb;
-                    delete stock.mDividendYearb;
-                    delete stock.mRealDividend;
-                    delete stock.mMin;
-                    delete stock.mMax;
-                    delete stock.mValue;
-                    delete stock.mChange;
-                    delete stock.mEuroChange;
-                    requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).put({ ...stock });
-                    requestAddStock.addEventListener(CONS.EVENTS.ERR, onError, false);
+                if (store === 'load') {
+                    for (let i = 0; i < this._transfers.all.length; i++) {
+                        const transfer = { ...this._transfers.all[i] };
+                        delete transfer.mCompany;
+                        delete transfer.mSortDate;
+                        requestAddTransfer = requestTransaction.objectStore(CONS.DB.STORES.T).add({ ...transfer });
+                        requestAddTransfer.addEventListener(CONS.EVENTS.ERR, onError, false);
+                    }
                 }
             });
         },

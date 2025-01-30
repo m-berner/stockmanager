@@ -155,7 +155,6 @@ const ok = async (): Promise<void> => {
   console.error('SELLSTOCK:', validators.isoDate(state._date) )
   if (validators.positiveInteger(state._count) === true && validators.isoDate(state._date) === true) {
     await records.addTransfer(transfer)
-    console.error('DFSDFSFSFSFSFS')
     records.evaluateTransfers()
     records.setDrawerDepot()
     runtime.toggleVisibility()

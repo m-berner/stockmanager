@@ -129,7 +129,7 @@ const state: IAddDividend = reactive({
   _soli: 0,
   _description: ''
 })
-
+// TODO use booking date instead of exday
 const ok = async (): Promise<void> => {
   console.log('ADDDIVIDEND: ok')
   const records = useRecordsStore()

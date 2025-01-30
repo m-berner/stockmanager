@@ -4742,7 +4742,7 @@ __metadata:
     vite-plugin-vuetify: "npm:2.0.4"
     vite-plugin-zip-pack: "npm:1.2.4"
     vue: "npm:3.5.12"
-    vue-currency-input: "npm:3.1.0"
+    vue-currency-input: "npm:3.2.1"
     vue-eslint-parser: "npm:9.4.3"
     vue-i18n: "npm:10.0.4"
     vue-router: "npm:4.4.5"
@@ -5507,12 +5507,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-currency-input@npm:3.1.0":
-  version: 3.1.0
-  resolution: "vue-currency-input@npm:3.1.0"
+"vue-currency-input@npm:3.2.1":
+  version: 3.2.1
+  resolution: "vue-currency-input@npm:3.2.1"
   peerDependencies:
     vue: ^2.7 || ^3.0.0
-  checksum: 10c0/a70850af622bcc4e77670a750bed75158548e414d91e1f399f9917b4920764aeb0ff39870e896bd71c918ced0ff8ffdcc7d8257b00e1547a0196a346ac0185f3
+  checksum: 10c0/6017f0ac9a3dc6a863fb95ab94feea09b9fbd6e33097e6a1ed897b806fe5877381765a2f3312a0820fa02559e43656c76cfbde1e77bcdef9c5ee422f73dbee53
   languageName: node
   linkType: hard
 

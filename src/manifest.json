@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "StockManager",
-  "version": "2025.1002",
+  "version": "2025.1003",
   "author": "Martin Berner",
   "icons": {
     "48": "assets/icon48.png"

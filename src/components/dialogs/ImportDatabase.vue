@@ -77,7 +77,7 @@ const ok = async (): Promise<void> => {
   records.loadBkupObjectIntoStore()
   records.setActiveStocksPage(1)
   await records.updateWrapper()
-  const result = await records.loadStoreIntoDatabase()
+  const result = await records.storeIntoDatabase()
   if (result !== '') {
     console.info('IMPORTDATABASE: onLoad', result)
     runtime.toggleVisibility()

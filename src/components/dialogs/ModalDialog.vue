@@ -47,8 +47,7 @@
       <DeleteTransfer
         v-if="runtime.isDeleteTransfer"
         ref="dialogRef"
-      >
-      </DeleteTransfer>
+      ></DeleteTransfer>
       <UpdateTransfer
         v-if="runtime.isUpdateTransfer"
         ref="dialogRef"

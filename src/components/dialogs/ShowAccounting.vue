@@ -157,7 +157,7 @@ const onUpdate = (): void => {
       ? (a.earnings - b.earnings + a.dividends - b.dividends + a.taxes - b.taxes + a.fees - b.fees) /
       (a.deposits + a.withdrawals + (b.deposits + b.withdrawals) / 2)
       : 0
-  state._efficiency = a.taxes + a.fees !== 0 ? (a.earnings + a.dividends) / -(a.taxes + a.fees) : 0
+  state._efficiency = a.taxes + a.fees !== 0 ? (a.earnings - b.earnings) + (a.dividends - b.dividends) / -(a.taxes + a.fees) : 0
   state._taxes = a.taxes - b.taxes
   state._fees = a.fees - b.fees
   state._dividends = a.dividends - b.dividends

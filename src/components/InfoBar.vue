@@ -78,11 +78,11 @@ const updateDrawerControls = (): void => {
   for (let i = 0; i < CONS.DEFAULTS.DRAWER_KEYS.length; i++) {
     state._drawer_controls[i] = {id: i, title: '', value: '', class: ''}
     // const percent =
-    // elem === 'winloss' ? ' / ' + n(records.transfers.totalController.winlossPercent ?? 0, 'percent') : ''
+    // elem === 'winloss' ? ' / ' + n(records.transfers.total_controller.winlossPercent ?? 0, 'percent') : ''
     state._drawer_controls[i].id = i
     state._drawer_controls[i].title = t(`infoBar.drawerTitles.${CONS.DEFAULTS.DRAWER_KEYS[i]}`)
-    state._drawer_controls[i].value = n(records.transfers.totalController[CONS.DEFAULTS.DRAWER_KEYS[i]], 'currency') // + percent,
-    state._drawer_controls[i].class = records.transfers.totalController[CONS.DEFAULTS.DRAWER_KEYS[i]] < 0 ? CONS.DEFAULTS.DRAWER_KEYS[i] + '_minus' : CONS.DEFAULTS.DRAWER_KEYS[i]
+    state._drawer_controls[i].value = n(records.transfers.total_controller[CONS.DEFAULTS.DRAWER_KEYS[i]], 'currency') // + percent,
+    state._drawer_controls[i].class = records.transfers.total_controller[CONS.DEFAULTS.DRAWER_KEYS[i]] < 0 ? CONS.DEFAULTS.DRAWER_KEYS[i] + '_minus' : CONS.DEFAULTS.DRAWER_KEYS[i]
   }
 }
 const onMessageInfoBar = (ev: MessageEvent): void => {
@@ -116,9 +116,9 @@ const onMessageInfoBar = (ev: MessageEvent): void => {
   }
 }
 
-watch(() => records.transfers.totalController.dividends, updateDrawerControls)
-watch(() => records.transfers.totalController.depot, updateDrawerControls)
-watch(() => records.transfers.totalController.account, updateDrawerControls)
+watch(() => records.transfers.total_controller.dividends, updateDrawerControls)
+watch(() => records.transfers.total_controller.depot, updateDrawerControls)
+watch(() => records.transfers.total_controller.account, updateDrawerControls)
 onMounted(() => {
   updateDrawerControls()
 })
