@@ -78,12 +78,6 @@ declare global {
     earnings: number
   }
 
-  interface IStockController extends IYearController {
-    invest: number
-    portfolio: number
-    buyCount: number
-  }
-
   interface ITotalController extends IYearController {
     account: number
     depot: number
