@@ -5,9 +5,6 @@
  *
  * Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
  */
-import PagesLayout from '@/layouts/PagesLayout.vue'
-import StocksTable from '@/components/StocksTable.vue'
-import TransfersTable from '@/components/TransfersTable.vue'
 import BareLayout from '@/layouts/BareLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import HomePage from '@/views/HomePage.vue'
@@ -59,6 +56,10 @@ import {
 } from '@mdi/js'
 import messages from '@intlify/unplugin-vue-i18n/messages'
 import {useApp} from '@/composables/useApp'
+import HelpPage from '@/components/HelpPage.vue'
+import PrivacyPage from '@/components/PrivacyPage.vue'
+import StocksTable from '@/components/StocksTable.vue'
+import TransfersTable from '@/components/TransfersTable.vue'
 
 const {getUI} = useApp()
 const router = createRouter({
@@ -75,22 +76,6 @@ const router = createRouter({
       component: () => import('@/views/OptionsPage.vue'),
       meta: {
         layout: 'Bare',
-      }
-    },
-    {
-      path: '/help',
-      name: 'help',
-      component: () => import('@/views/HelpPage.vue'),
-      meta: {
-        layout: 'Pages',
-      }
-    },
-    {
-      path: '/privacy',
-      name: 'privacy',
-      component: () => import('@/views/PrivacyPage.vue'),
-      meta: {
-        layout: 'Pages',
       }
     }
   ]
@@ -357,8 +342,9 @@ app.config.warnHandler = (msg: string) => {
 app.component('DefaultLayout', DefaultLayout)
 app.component('StocksTable', StocksTable)
 app.component('TransfersTable', TransfersTable)
+app.component('HelpPage', HelpPage)
+app.component('PrivacyPage', PrivacyPage)
 app.component('BareLayout', BareLayout)
-app.component('PagesLayout', PagesLayout)
 app.use(router)
 app.use(vuetify)
 app.use(i18n)

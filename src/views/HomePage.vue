@@ -6,11 +6,7 @@
   -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
-  <component
-    v-bind:is="runtime.table"
-    v-if="runtime.isStockTable"
-    v-model="runtime.isStockTable">
-  </component>
+  <component v-bind:is="runtime.table"></component>
 </template>
 
 <script lang="ts" setup>

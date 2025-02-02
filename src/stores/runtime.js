@@ -7,7 +7,6 @@ export const useRuntimeStore = defineStore('runtime', {
         return {
             _is_stocks_loading: false,
             _show_partial_drawer: true,
-            _is_stock_table: false,
             _table: 'StocksTable',
             _page_title: '',
             _exchanges: {
@@ -59,14 +58,8 @@ export const useRuntimeStore = defineStore('runtime', {
         exchangesCurEur(state) {
             return state._exchanges.cureur;
         },
-        pageTitle(state) {
-            return state._page_title;
-        },
         changesMode(state) {
             return state._dialogs._changes_mode;
-        },
-        isStockTable(state) {
-            return state._is_stock_table;
         },
         table(state) {
             return state._table;
@@ -138,9 +131,6 @@ export const useRuntimeStore = defineStore('runtime', {
         },
         setMaterials(entry) {
             this._info_bar.materials = entry;
-        },
-        setPageTitle(value) {
-            this._page_title = value;
         },
         setExchangesUsd(value) {
             this._exchanges.curusd = value;
@@ -237,10 +227,6 @@ export const useRuntimeStore = defineStore('runtime', {
                     this._dialogs._is_update_transfer = false;
                     this._dialogs._is_visible = false;
             }
-        },
-        toggleShowStockTable() {
-            const tmp = Boolean(this._is_stock_table);
-            this._is_stock_table = !tmp;
         },
         setTable(value) {
             this._table = value;

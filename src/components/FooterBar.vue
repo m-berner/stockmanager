@@ -7,33 +7,19 @@
   -->
 <template>
   <v-bottom-navigation color="primary">
-    <v-btn color="secondary">
-      <router-link
-        activeClass="color-white"
-        class="color-white"
-        exactActiveClass="color-white"
-        to="/help"
-        v-on:click="() => { runtime.setPageTitle('help')}">
-        <v-icon icon="$help"></v-icon>
-      </router-link>
-      {{ t('footer.help') }}
+    <v-btn color="white" v-on:click="runtime.setTable('HelpPage')">
+      <v-icon icon="$help"></v-icon>
+      <span>{{ t('footer.help') }}</span>
     </v-btn>
-    <v-btn color="secondary">
-      <router-link
-        activeClass="color-white"
-        class="color-white"
-        exactActiveClass="color-white"
-        to="/privacy"
-        v-on:click="() => { runtime.setPageTitle('privacy')}">
-        <v-icon icon="$privacy"></v-icon>
-      </router-link>
-      {{ t('footer.privacy') }}
+    <v-btn color="white" v-on:click="runtime.setTable('PrivacyPage')">
+      <v-icon icon="$privacy"></v-icon>
+      <span>{{ t('footer.privacy') }}</span>
     </v-btn>
-    <v-btn href="mailto:stockmanager@gmx.de">
+    <v-btn color="white" href="mailto:stockmanager@gmx.de">
       <v-icon icon="$mail"></v-icon>
-      {{ t('footer.mail') }}
+      <span>{{ t('footer.mail') }}</span>
     </v-btn>
-    <v-btn v-bind:disabled="true">
+    <v-btn color="white" v-bind:disabled="true">
       <v-icon icon="$copyright"></v-icon>
       <div class="nowrap">{{ CONS.SYSTEM.COPYRIGHT }}</div>
     </v-btn>
@@ -55,9 +41,5 @@ console.log('--- FooterBar.vue setup ---')
 <style scoped>
 .nowrap {
   white-space: nowrap;
-}
-
-.color-white {
-  color: white;
 }
 </style>

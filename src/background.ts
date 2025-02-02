@@ -1026,6 +1026,7 @@ const useListener = (): IUseListener => {
   }
   const onConnect = (aPort: browser.runtime.Port) => {
     console.log('BACKGROUND: onConnect', aPort.name)
+    // noinspection JSDeprecatedSymbols
     aPort.onMessage.addListener(onMessage)
     // DO something, next answer
     // aPort.postMessage({greeting: 'hi there content script!'})

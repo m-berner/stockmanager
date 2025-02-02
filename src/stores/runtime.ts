@@ -13,7 +13,6 @@ import {useApp} from '@/composables/useApp'
 interface IRuntimeStore {
   _is_stocks_loading: boolean
   _show_partial_drawer: boolean
-  _is_stock_table: boolean
   _table: string
   _page_title: string
   _exchanges: Record<string, number | boolean>
@@ -30,7 +29,6 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     return {
       _is_stocks_loading: false,
       _show_partial_drawer: true,
-      _is_stock_table: false,
       _table: 'StocksTable',
       _page_title: '',
       _exchanges: {
@@ -82,14 +80,8 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     exchangesCurEur(state: IRuntimeStore) {
       return state._exchanges.cureur
     },
-    pageTitle(state: IRuntimeStore) {
-      return state._page_title
-    },
     changesMode(state: IRuntimeStore) {
       return state._dialogs._changes_mode
-    },
-    isStockTable(state: IRuntimeStore) {
-      return state._is_stock_table
     },
     table(state: IRuntimeStore) {
       return state._table
@@ -161,9 +153,6 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     },
     setMaterials(entry: Map<string, number>) {
       this._info_bar.materials = entry
-    },
-    setPageTitle(value: string) {
-      this._page_title = value
     },
     setExchangesUsd(value: number) {
       this._exchanges.curusd = value
@@ -260,10 +249,6 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
           this._dialogs._is_update_transfer = false
           this._dialogs._is_visible = false
       }
-    },
-    toggleShowStockTable() {
-      const tmp: boolean = Boolean(this._is_stock_table)
-      this._is_stock_table = !tmp
     },
     setTable(value: string) {
       this._table = value

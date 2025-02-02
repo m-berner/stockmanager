@@ -485,13 +485,14 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
       this._transfers.all.splice(0, this._transfers.all.length)
       return new Promise((resolve, reject) => {
         const requestTransaction = this._dbi.transaction([CONS.DB.STORES.S, CONS.DB.STORES.T], 'readonly')
-        const onComplete = (): void => {
+        const onComplete = async (): Promise<void> => {
           console.info('RECORDS: loadDatabaseIntoStore: all records loaded!')
           this.evaluateTransfers()
           this._sortActiveStocks()
           this.setActiveStocksPage(1)
           this.resetActiveStocksValues()
-          runtime.toggleShowStockTable()
+          runtime.setTable('StocksTable')
+          await this.updateWrapper()
           resolve('RECORDS: loadDatabaseIntoStore: all records loaded!')
         }
         const onAbort = (): void => {

@@ -22,8 +22,8 @@
   </v-navigation-drawer>
   <v-app-bar app color="secondary" v-bind:flat="true">
     <v-app-bar-nav-icon variant="text" v-on:click="state._show.value = !state._show.value"></v-app-bar-nav-icon>
-    <v-list bg-color="secondary" class="w-100">
-      <v-row class="w-100" justify="space-between">
+    <v-list bg-color="secondary" class="hide-scroll-bar" lines="two">
+      <v-row>
         <v-list-item v-for="item in _exchanges" v-bind:key="item">
           <v-list-item-title>{{ item }}</v-list-item-title>
           <v-list-item-subtitle>{{ n(runtime.exchanges.get(item) ?? 1, 'decimal3') }}</v-list-item-subtitle>
@@ -143,5 +143,9 @@ console.log('--- InfoBar.vue setup ---')
 .account_minus,
 .earnings_minus {
   color: red;
+}
+
+.hide-scroll-bar {
+  overflow: hidden;
 }
 </style>

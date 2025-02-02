@@ -6,7 +6,7 @@
   -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
-  <v-sheet class="test" color="surface-light">
+  <v-sheet class="sheet" color="surface-light">
     <v-container>
       <v-row justify="center">
         <v-col cols="8" s="8">
@@ -85,8 +85,8 @@ console.log('--- HelpPage.vue setup ---')
 </script>
 
 <style scoped>
-.test {
+.sheet {
   overflow: auto;
-  max-height: 100%;
+  height: calc(100vh - 300px);
 }
 </style>

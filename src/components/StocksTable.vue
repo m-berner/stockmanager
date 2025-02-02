@@ -58,7 +58,6 @@
 <script lang="ts" setup>
 import OptionMenu from '@/components/OptionMenu.vue'
 import {useI18n} from 'vue-i18n'
-import {onBeforeMount} from 'vue'
 import {storeToRefs} from 'pinia'
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
@@ -118,9 +117,6 @@ if (!browser.runtime.onMessage.hasListener(onMessageStocksTable)) {
   // noinspection JSDeprecatedSymbols
   browser.runtime.onMessage.addListener(onMessageStocksTable)
 }
-onBeforeMount(async () => {
-  console.log('STOCKSTABLE: onBeforeMount')
-  await records.updateWrapper()
-})
+
 console.log('--- StocksTable.vue setup ---')
 </script>
