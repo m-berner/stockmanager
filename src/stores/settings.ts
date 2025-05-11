@@ -7,7 +7,7 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {type ThemeInstance} from 'vuetify'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 
 interface ISettingsStore {
   _service: IUrlWithName

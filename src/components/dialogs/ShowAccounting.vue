@@ -112,7 +112,7 @@ import CurrencyInput from '@/components/CurrencyInput.vue'
 import {useRecordsStore} from '@/stores/records'
 import {onMounted, reactive} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import {useRuntimeStore} from '@/stores/runtime'
 
 const {n, t} = useI18n()

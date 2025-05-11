@@ -1,4 +1,4 @@
-import { useApp } from '@/composables/useApp';
+import { useApp } from '@/pages/background.js';
 const initStorageLocal = async () => {
     console.log('BACKGROUND: initStorageLocal');
     const { CONS } = useApp();

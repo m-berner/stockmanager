@@ -1,9 +1,9 @@
 <!--
-  -- This Source Code Form is subject to the terms of the Mozilla Public
-  -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  -- you could obtain one at https://mozilla.org/MPL/2.0/.
-  --
-  -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
+  - This Source Code Form is subject to the terms of the Mozilla Public
+  - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  - you could obtain one at https://mozilla.org/MPL/2.0/.
+  -
+  - Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
   <v-container>
@@ -146,7 +146,7 @@ import {useSettingsStore} from '@/stores/settings'
 import {useI18n} from 'vue-i18n'
 import {useTheme} from 'vuetify'
 import {storeToRefs} from 'pinia'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import {onMounted, reactive, toRaw} from 'vue'
 
 interface IOptionsPage {
@@ -195,5 +195,5 @@ onMounted(() => {
   state._material_keys = Object.keys(toRaw(labelsOptionsPage.materials))
 })
 
-console.log('--- OptionsPage.vue setup ---')
+console.log('--- OptionsIndex.vue setup ---')
 </script>

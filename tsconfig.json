@@ -74,14 +74,5 @@
   },
   "vueCompilerOption": {
     "target": 3.4
-  },
-  "typedocOptions": {
-    "name": "Stockmanager",
-    "entryPoints": [
-      "src/background.ts",
-      "src/app.ts"
-    ],
-    "out": "docs",
-    "readme": "README.md"
   }
 }

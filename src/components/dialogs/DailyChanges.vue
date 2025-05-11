@@ -39,7 +39,7 @@
 //import {storeToRefs} from 'pinia'
 import {onBeforeMount, onMounted, reactive, toRaw} from 'vue'
 import {useI18n} from 'vue-i18n'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import {useRuntimeStore} from '@/stores/runtime'
 
 interface IChange {

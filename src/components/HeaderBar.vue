@@ -205,7 +205,7 @@
 import {useRuntimeStore} from '@/stores/runtime'
 import {useRecordsStore} from '@/stores/records'
 import {useI18n} from 'vue-i18n'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 
 const {t} = useI18n()
 const {CONS} = useApp()

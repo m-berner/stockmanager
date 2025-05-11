@@ -85,7 +85,7 @@
 </template>
 <script lang="ts" setup>
 import CurrencyInput from '@/components/CurrencyInput.vue'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import {onMounted, reactive, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useRecordsStore} from '@/stores/records'

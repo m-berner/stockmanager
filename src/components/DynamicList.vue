@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import {useSettingsStore} from '@/stores/settings'
 import {toRaw} from 'vue'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 
 interface DynamicListProps {
   _title: string

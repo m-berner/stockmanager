@@ -21,12 +21,12 @@ export default defineConfig({
       targets: [
         {
           src: 'manifest.json',
-          dest: '.',
+          dest: '../stockmanager@gmx.de',
           overwrite: true
         },
         {
           src: '../stockmanager@gmx.de',
-          dest: 'C:/Users/Martin/AppData/Roaming/Mozilla/Firefox/Profiles/developer.mb/extensions',
+          dest: 'C:/Users/Martin/AppData/Roaming/Mozilla/Firefox/Profiles/developer.mb/extensions/',
           overwrite: true
         }
       ]
@@ -50,7 +50,7 @@ export default defineConfig({
   build: {
     minify: false,
     cssMinify: false,
-    target: ['es2022', 'firefox131'],
+    target: ['es2022', 'firefox132'],
     assetsDir: 'assets',
     assetsInlineLimit: 0,
     emptyOutDir: true,
@@ -58,8 +58,9 @@ export default defineConfig({
     modulePreload: false,
     rollupOptions: {
       input: {
-        background: 'src/background.js',
-        app: 'src/app.html'
+        background: 'src/pages/background.js',
+        app: 'src/pages/app.html',
+        options: 'src/pages/options.html',
       },
       output: {
         entryFileNames: '[name].js',

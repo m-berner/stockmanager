@@ -7,8 +7,8 @@
  */
 import BareLayout from '@/layouts/BareLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
-import HomePage from '@/views/HomePage.vue'
-import IndexPage from '@/App.vue'
+import HomePage from '@/pages/HomePage.vue'
+import AppIndex from '@/pages/AppIndex.vue'
 import {createPinia} from 'pinia'
 import {createRouter, createWebHashHistory} from 'vue-router'
 import {createApp} from 'vue'
@@ -55,7 +55,7 @@ import {
   mdiTransfer
 } from '@mdi/js'
 import messages from '@intlify/unplugin-vue-i18n/messages'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import HelpPage from '@/components/HelpPage.vue'
 import PrivacyPage from '@/components/PrivacyPage.vue'
 import StocksTable from '@/components/StocksTable.vue'
@@ -73,7 +73,7 @@ const router = createRouter({
     {
       path: '/options',
       name: 'options',
-      component: () => import('@/views/OptionsPage.vue'),
+      component: () => import('@/pages/OptionsIndex.vue'),
       meta: {
         layout: 'Bare',
       }
@@ -330,7 +330,7 @@ const i18n = createI18n({
   }
 })
 const pinia = createPinia()
-const app = createApp(IndexPage)
+const app = createApp(AppIndex)
 
 app.config.errorHandler = (err: ErrorEvent) => {
   console.error(err)

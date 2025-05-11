@@ -22,8 +22,8 @@ export default [
     }, rules: {
       'indent': ['error', 2],
       '@stylistic/js/indent': ['error', 2],
-      'semi': ['error', 'never'],
-      '@stylistic/js/semi': ['error', 'never']
+      //'semi': ['error', 'never'],
+      //'@stylistic/js/semi': ['error', 'never']
     }
   }, {
     files: ['**/*.{vue,ts}'],

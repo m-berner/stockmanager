@@ -15,8 +15,7 @@
   "background": {
     "scripts": [
       "background.js"
-    ],
-    "type": "module"
+    ]
   },
   "permissions": [
     "downloads",
@@ -35,7 +34,7 @@
   "options_ui": {
     "browser_style": false,
     "open_in_tab": false,
-    "page": "/app.html#/options"
+    "page": "pages/options.html"
   },
   "browser_specific_settings": {
     "gecko": {

@@ -1,9 +1,9 @@
 <!--
-  -- This Source Code Form is subject to the terms of the Mozilla Public
-  -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  -- you could obtain one at https://mozilla.org/MPL/2.0/.
-  --
-  -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
+  - This Source Code Form is subject to the terms of the Mozilla Public
+  - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  - you could obtain one at https://mozilla.org/MPL/2.0/.
+  -
+  - Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
   <v-app v-bind:flat="true">
@@ -16,7 +16,7 @@ import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
 import {onBeforeMount, ref, toRaw, watchEffect} from 'vue'
 import {useTheme} from 'vuetify'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/pages/background'
 import {useRoute} from 'vue-router'
 import {useRuntimeStore} from '@/stores/runtime'
 
@@ -160,5 +160,5 @@ onBeforeMount(async (): Promise<void> => {
 //   console.log(m);
 // });
 
-console.log('--- App.vue setup ---')
+console.log('--- AppIndex.vue setup ---')
 </script>
