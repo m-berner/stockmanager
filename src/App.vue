@@ -42,34 +42,40 @@ onBeforeMount(async (): Promise<void> => {
   const keyStrokeController: string[] = []
   const onStorageChange = async (change: Record<string, browser.storage.StorageChange>): Promise<void> => {
     console.info('APP: onStorageChange', change)
-    switch (true) {
-      case change['sService']?.oldValue !== undefined:
-        settings.setServiceStoreOnly({
+    // TODO FIRST Option Instance, APP Instance Problem
+    switch (Object.keys(change)[0]) {
+      case 'sService':
+        await settings.setService({
           name: change['sService'].newValue.name,
           url: change['sService'].newValue.url,
         })
         break
-      case change['sSkin']?.oldValue !== undefined:
+      case 'sSkin':
         theme.global.name.value = change['sSkin'].newValue
+        console.error('APP: onStorageChange---------', change['sSkin'])
+        //await settings.setSkin(change['sSkin'].newValue, theme)
         break
-      case change['sIndexes']?.oldValue !== undefined:
-        settings.setIndexesStoreOnly(change['sIndexes'].newValue)
+      case 'sMarkets':
+        await settings.setMarkets(change['sMarkets'].newValue)
         break
-      case change['sMaterials']?.oldValue !== undefined:
-        settings.setMaterialsStoreOnly(change['sMaterials'].newValue)
+      case 'sIndexes':
+        settings.setIndexes(change['sIndexes'].newValue)
         break
-      case change['sExchanges']?.oldValue.length < change['sExchanges']?.newValue.length:
-        settings.setExchangesStoreOnly(change['sExchanges'].newValue)
-        const exchangesResponse = browser.runtime.sendMessage(JSON.stringify({
+      case 'sMaterials':
+        settings.setMaterials(change['sMaterials'].newValue)
+        break
+      case 'sExchanges':
+        settings.setExchanges(change['sExchanges'].newValue)
+        const exchangesResponseString = await browser.runtime.sendMessage(JSON.stringify({
           type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
           data: change['sExchanges'].newValue,
         }))
+        const exchangesResponse = JSON.parse(exchangesResponseString)
         console.error('äääääää', exchangesResponse)
         break
-      case change['sExchanges']?.oldValue.length > change['sExchanges']?.newValue.length:
-        settings.setExchangesStoreOnly(change['sExchanges'].newValue)
-        break
-      //TODO markets
+      // case 'sExchanges':
+      //   settings.setExchangesStoreOnly(change['sExchanges'].newValue)
+      //   break
       default:
     }
   }
@@ -109,10 +115,6 @@ onBeforeMount(async (): Promise<void> => {
     // noinspection JSDeprecatedSymbols
     browser.storage.onChanged.addListener(onStorageChange)
   }
-  // if (!browser.runtime.onMessage.hasListener(onMessageExchangesBase)) {
-  //   // noinspection JSDeprecatedSymbols
-  //   browser.runtime.onMessage.addListener(onMessageExchangesBase)
-  // }
   /* Listen to onKeyup, onKeyDown:
    * - set the service to tgate if ctrl + alt + t is pressed.
    * - clear the local storage if ctrl + alt + r is pressed.
@@ -172,5 +174,5 @@ onBeforeMount(async (): Promise<void> => {
 })
 
 
-console.log('--- App.vue setup ---')
+console.log('--- App.vue setup ---', window.location.href)
 </script>

@@ -48,7 +48,7 @@ export const useSettingsStore = defineStore('settings', {
     actions: {
         async setService(value) {
             this._service = value;
-            await browser.storage.local.set({ service: value });
+            await browser.storage.local.set({ sService: value });
         },
         setServiceStoreOnly(value) {
             this._service = value;
@@ -56,9 +56,10 @@ export const useSettingsStore = defineStore('settings', {
         async setSkin(value, theme) {
             theme.global.name.value = value;
             this._skin = value;
-            await browser.storage.local.set({ skin: value });
+            await browser.storage.local.set({ sSkin: value });
         },
-        setSkinStoreOnly(value) {
+        setSkinStoreOnly(value, theme) {
+            theme.global.name.value = value;
             this._skin = value;
         },
         async toggleIndexes(keys, n) {
@@ -73,22 +74,30 @@ export const useSettingsStore = defineStore('settings', {
             this._indexes = ar;
             await browser.storage.local.set({ indexes: ar });
         },
+        async setIndexes(value) {
+            this._indexes = value;
+            await browser.storage.local.set({ sIndexes: value });
+        },
         setIndexesStoreOnly(value) {
             this._indexes = value;
+        },
+        async setMaterials(value) {
+            this._materials = value;
+            await browser.storage.local.set({ sMaterials: value });
         },
         setMaterialsStoreOnly(value) {
             this._materials = value;
         },
         async setMarkets(value) {
             this._markets = value;
-            await browser.storage.local.set({ markets: value });
+            await browser.storage.local.set({ sMarkets: value });
         },
         setMarketsStoreOnly(value) {
             this._markets = value;
         },
         async setExchanges(value) {
             this._exchanges = value;
-            await browser.storage.local.set({ exchanges: value });
+            await browser.storage.local.set({ sExchanges: value });
         },
         setExchangesStoreOnly(value) {
             this._exchanges = value;
@@ -103,14 +112,14 @@ export const useSettingsStore = defineStore('settings', {
         },
         async setItemsPerPageTransfers(value) {
             this._items_per_page_transfers = value;
-            await browser.storage.local.set({ itemsPerPageTransfers: value });
+            await browser.storage.local.set({ sItemsPerPageTransfers: value });
         },
         setItemsPerPageTransfersStoreOnly(value) {
             this._items_per_page_transfers = value;
         },
         async setItemsPerPageStocks(value) {
             this._items_per_page_stocks = value;
-            await browser.storage.local.set({ itemsPerPageStocks: value });
+            await browser.storage.local.set({ sItemsPerPageStocks: value });
         },
         setItemsPerPageStocksStoreOnly(value) {
             this._items_per_page_stocks = value;
@@ -118,9 +127,9 @@ export const useSettingsStore = defineStore('settings', {
         async loadStorageIntoStore(theme) {
             console.log('SETTINGS: loadStorageIntoStore');
             const response = await browser.storage.local.get();
-            this.setServiceStoreOnly(response['sService']);
             theme.global.name.value = response['sSkin'] ?? 'ocean';
-            this.setSkinStoreOnly(response['sSkin']);
+            this.setServiceStoreOnly(response['sService']);
+            this.setSkinStoreOnly(response['sSkin'], theme);
             this.setIndexesStoreOnly(response['sIndexes']);
             this.setMaterialsStoreOnly(response['sMaterials']);
             this.setMarketsStoreOnly(response['sMarkets']);

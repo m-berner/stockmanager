@@ -182,7 +182,9 @@ const service = (i: number) => {
 }
 
 onMounted(() => {
-  console.log('OPTIONSPAGE: onMounted')
+  console.log('OPTIONSPAGE: onMounted', settings)
+  // TODO mount with values from localStorage!!! adjust state ...
+  // All communication has to be done via localStorage...
   const labelsOptionsPage: Record<string, string> = tm('optionsPage')
   const serviceKeys = Object.keys(CONS.SERVICES)
   serviceKeys.pop()

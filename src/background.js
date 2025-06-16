@@ -9,7 +9,9 @@ const initStorageLocal = async () => {
         });
     }
     if (storageLocal.skin === undefined) {
-        await browser.storage.local.set({ sSkin: CONS.DEFAULTS.STORAGE['sSkin'] });
+        await browser.storage.local.set({
+            sSkin: CONS.DEFAULTS.STORAGE['sSkin']
+        });
     }
     if (storageLocal.indexes === undefined) {
         await browser.storage.local.set({
@@ -185,18 +187,6 @@ const useListener = () => {
                     }
                 }
             };
-            const updateStorageLocal = async () => {
-                const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE);
-                const storageValues = Object.values(CONS.DEFAULTS.STORAGE);
-                const storage = await browser.storage.local.get(storageKeys);
-                for (let i = 0; i < storageKeys.length; i++) {
-                    if (storage[storageKeys[i]] === undefined) {
-                        await browser.storage.local.set({
-                            [storageKeys[i]]: storageValues[i]
-                        });
-                    }
-                }
-            };
             if (ev.oldVersion === 0) {
                 createDB();
             }
@@ -205,7 +195,7 @@ const useListener = () => {
                 await browser.storage.local
                     .remove(CONS.SYSTEM.STORAGE_OLD);
             }
-            await updateStorageLocal();
+            await initStorageLocal();
         };
         const dbOpenRequest = indexedDB.open(CONS.DB.NAME, CONS.DB.VERSION);
         dbOpenRequest.addEventListener(CONS.EVENTS.ERR, onError, CONS.SYSTEM.ONCE);
@@ -224,7 +214,6 @@ const useListener = () => {
                 return await Promise.all(urls.map(async (urlObj) => {
                     const firstResponse = await fetch(urlObj.url);
                     const secondResponse = await fetch(firstResponse.url);
-                    console.error(firstResponse.url);
                     const secondResponseText = await secondResponse.text();
                     const onlineDocument = new DOMParser().parseFromString(secondResponseText, 'text/html');
                     const onlineNodes = onlineDocument.querySelectorAll('#snapshot-value-fst-current-0 > span');
@@ -832,7 +821,7 @@ const useListener = () => {
                     });
                     if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
                         response = JSON.stringify({
-                            type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
+                            type: CONS.FETCH_API.FINISH__DAILY_CHANGES_ALL,
                             data: []
                         });
                     }
@@ -857,5 +846,4 @@ if (!browser.permissions.onRemoved.hasListener(onRemove)) {
     browser.permissions.onRemoved.addListener(onRemove);
 }
 browser.runtime.onMessage.addListener(onAppMessage);
-await initStorageLocal();
 console.info('--- background.js ---', window.location.href);

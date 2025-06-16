@@ -35,8 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-//import {useOnlineStore} from '@/stores/online'
-//import {storeToRefs} from 'pinia'
 import {onBeforeMount, onMounted, reactive, toRaw} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useApp} from '@/composables/useApp'
@@ -59,7 +57,7 @@ interface IDailyChanges {
 }
 
 const {t} = useI18n()
-const {CONS, notice} = useApp()
+const {CONS} = useApp()
 const runtime = useRuntimeStore()
 const state: IDailyChanges = reactive({
   _progress: true,
@@ -67,33 +65,7 @@ const state: IDailyChanges = reactive({
   _tmpChanges: [],
   _tmpChangesWithNoDuplicates: []
 })
-const onMessageDailyChanges = async (ev: MessageEvent): Promise<void> => {
-  console.info('DAILYCHANGES: onMessageDailyChanges', ev)
-  if (ev.data === undefined) {
-    notice(['Sorry, no data arrived'])
-  } else {
-    switch (ev.type) {
-      case CONS.FETCH_API.ANSWER__DAILY_CHANGES:
-        state._tmpChanges = [...state._tmpChanges, ...ev.data]
-        break
-      case CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL:
-        state._tmpChanges = [...state._tmpChanges, ...ev.data]
-        break
-      case CONS.FETCH_API.FINISH__DAILY_CHANGES:
-        state._tmpChangesWithNoDuplicates = [
-          ...toRaw(
-            new Map(
-              state._tmpChanges.map((obj: IChange) => [obj.key, obj])
-            ).values()
-          )
-        ]
-        state._tmpChangesWithNoDuplicates.sort((a: IChange, b: IChange) => {
-          return a.value.change - b.value.change
-        })
-        break
-    }
-  }
-}
+
 const onSearchDailyChanges = (): void => {
   if (state._search.length > 3) {
     const matches = state._tmpChangesWithNoDuplicates.filter((item: IChange) => {
@@ -115,23 +87,35 @@ const getDailyChanges = async (): Promise<void> => {
   state._progress = true
   if (runtime.changesMode === CONS.DIALOGS.DAILYCHANGES) {
     for (let i = 0; i < CONS.SERVICES.tgate.CHS.length; i++) {
-      const chsDataResponse = await browser.runtime.sendMessage(JSON.stringify({
+      const chsDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
         type: CONS.FETCH_API.ASK__DAILY_CHANGES,
         data: CONS.SERVICES.tgate.CHS[i],
         lastEventId: i.toString()
       }))
-      console.error(chsDataResponse)
+      const chsDataResponse = JSON.parse(chsDataResponseString).data
+      state._tmpChanges = [...state._tmpChanges, ...chsDataResponse]
     }
   } else {
     for (let i = 0; i < CONS.SERVICES.tgate.CHB.length; i++) {
-      const chbDataResponse = await browser.runtime.sendMessage(JSON.stringify({
+      const chbDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
         type: CONS.FETCH_API.ASK__DAILY_CHANGES_ALL,
         data: CONS.SERVICES.tgate.CHB[i],
         lastEventId: i.toString()
       }))
-      console.error(chbDataResponse)
+      const chbDataResponse = JSON.parse(chbDataResponseString).data
+      state._tmpChanges = [...state._tmpChanges, ...chbDataResponse]
     }
   }
+  state._tmpChangesWithNoDuplicates = [
+    ...toRaw(
+      new Map(
+        state._tmpChanges.map((obj: IChange) => [obj.key, obj])
+      ).values()
+    )
+  ]
+  state._tmpChangesWithNoDuplicates.sort((a: IChange, b: IChange) => {
+    return a.value.change - b.value.change
+  })
   state._progress = false
 }
 const title = () => {
@@ -148,10 +132,6 @@ defineExpose({title, classes})
 
 onBeforeMount(async (): Promise<void> => {
   console.log('DAILYCHANGES: onBeforeMount')
-  if (!browser.runtime.onMessage.hasListener(onMessageDailyChanges)) {
-    // noinspection JSDeprecatedSymbols
-    browser.runtime.onMessage.addListener(onMessageDailyChanges)
-  }
   await getDailyChanges()
 })
 

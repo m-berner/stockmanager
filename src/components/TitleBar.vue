@@ -41,22 +41,22 @@
 
 <script lang="ts" setup>
 import CustomIcon from '@/components/CustomIcon.vue'
-import {useRecordsStore} from '@/stores/records'
+//import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
 import {useI18n, type VueMessageType} from 'vue-i18n'
-import {watch} from 'vue'
+//import {watch} from 'vue'
 
 const {rt, t, tm} = useI18n()
 const settings = useSettingsStore()
-const records = useRecordsStore()
+//const records = useRecordsStore()
 
-watch(
-  () => settings.service,
-  () => {
-    console.log('TITLEBAR: watch')
-    records.resetActiveStocksValues()
-  }
-)
+// watch(
+//   () => settings.service,
+//   () => {
+//     console.log('TITLEBAR: watch')
+//     records.resetActiveStocksValues()
+//   }
+// )
 
 console.log('--- TitleBar.vue setup ---')
 </script>

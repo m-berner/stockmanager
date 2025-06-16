@@ -132,7 +132,7 @@ export const useApp = () => {
                     'cDescription'
                 ]
             },
-            VERSION: 24,
+            VERSION: 25,
             MINVERSION: 21
         },
         DEFAULTS: {

@@ -29,7 +29,9 @@ const initStorageLocal = async (): Promise<void> => {
     })
   }
   if (storageLocal.skin === undefined) {
-    await browser.storage.local.set({sSkin: CONS.DEFAULTS.STORAGE['sSkin']})
+    await browser.storage.local.set({
+      sSkin: CONS.DEFAULTS.STORAGE['sSkin']
+    })
   }
   if (storageLocal.indexes === undefined) {
     await browser.storage.local.set({
@@ -253,20 +255,20 @@ const useListener = (): IUseListener => {
           }
         }
       }
-      const updateStorageLocal = async () => {
-        const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE)
-        const storageValues = Object.values(CONS.DEFAULTS.STORAGE)
-        const storage: IStorageLocal = await browser.storage.local.get(
-          storageKeys
-        )
-        for (let i = 0; i < storageKeys.length; i++) {
-          if (storage[storageKeys[i]] === undefined) {
-            await browser.storage.local.set({
-              [storageKeys[i]]: storageValues[i]
-            })
-          }
-        }
-      }
+      // const updateStorageLocal = async () => {
+      //   const storageKeys = Object.keys(CONS.DEFAULTS.STORAGE)
+      //   const storageValues = Object.values(CONS.DEFAULTS.STORAGE)
+      //   const storage: IStorageLocal = await browser.storage.local.get(
+      //     storageKeys
+      //   )
+      //   for (let i = 0; i < storageKeys.length; i++) {
+      //     if (storage[storageKeys[i]] === undefined) {
+      //       await browser.storage.local.set({
+      //         [storageKeys[i]]: storageValues[i]
+      //       })
+      //     }
+      //   }
+      // }
       if (ev.oldVersion === 0) {
         createDB()
       } else {
@@ -275,7 +277,8 @@ const useListener = (): IUseListener => {
         await browser.storage.local
           .remove(CONS.SYSTEM.STORAGE_OLD)
       }
-      await updateStorageLocal()
+      await initStorageLocal()
+      //await updateStorageLocal()
     }
     //
     const dbOpenRequest = indexedDB.open(CONS.DB.NAME, CONS.DB.VERSION)
@@ -283,6 +286,7 @@ const useListener = (): IUseListener => {
     dbOpenRequest.addEventListener(CONS.EVENTS.SUC, onSuccess, CONS.SYSTEM.ONCE)
     dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE)
   }
+  // TODO localStorage, optionspage, export correction? or add record correction? repair database!!!
   const onAppMessage = async (msg: object) => {
     console.info('BACKGROUND: onMessage', msg)
     const request = JSON.parse(msg.toString())
@@ -296,7 +300,6 @@ const useListener = (): IUseListener => {
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
-            console.error(firstResponse.url)
             const secondResponseText = await secondResponse.text()
             const onlineDocument = new DOMParser().parseFromString(
               secondResponseText,
@@ -758,7 +761,6 @@ const useListener = (): IUseListener => {
       }
       return result
     }
-    // TODO ask dates only once a day
     const fetchExchangesData = async (exchangeCodes: string[]): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchExchangesData')
       const fExUrl = (code: string): string => {
@@ -1028,7 +1030,7 @@ const useListener = (): IUseListener => {
           })
           if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
             response = JSON.stringify({
-              type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
+              type: CONS.FETCH_API.FINISH__DAILY_CHANGES_ALL,
               data: []
             })
           }
@@ -1059,7 +1061,5 @@ if (!browser.permissions.onRemoved.hasListener(onRemove)) {
 }
 // noinspection JSDeprecatedSymbols
 browser.runtime.onMessage.addListener(onAppMessage)
-
-await initStorageLocal()
 
 console.info('--- background.js ---', window.location.href)

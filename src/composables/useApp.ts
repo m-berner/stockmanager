@@ -474,7 +474,7 @@ export const useApp = (): IUseApp => {
         ]
         // do not change! (part of database records)
       },
-      VERSION: 24,
+      VERSION: 25,
       MINVERSION: 21
     },
     DEFAULTS: {
