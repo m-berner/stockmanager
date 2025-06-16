@@ -24,7 +24,7 @@ const settings = useSettingsStore()
 const records = useRecordsStore()
 const runtime = useRuntimeStore()
 const theme = useTheme()
-const {appPort, CONS, getUI, notice} = useApp()
+const {CONS, getUI} = useApp()
 const layout = ref()
 const route = useRoute()
 
@@ -38,127 +38,139 @@ watchEffect(
   }
 )
 onBeforeMount(async (): Promise<void> => {
-    console.log('APP: onBeforeMount')
-    const keyStrokeController: string[] = []
-    const onStorageChange = async (change: Record<string, browser.storage.StorageChange>): Promise<void> => {
-      console.info('APP: onStorageChange', change)
-      switch (true) {
-        case change.service?.oldValue !== undefined:
-          settings.setServiceStoreOnly({
-            name: change.service.newValue.name,
-            url: change.service.newValue.url,
-          })
-          break
-        case change.skin?.oldValue !== undefined:
-          theme.global.name.value = change.skin.newValue
-          break
-        case change.indexes?.oldValue !== undefined:
-          settings.setIndexesStoreOnly(change.indexes.newValue)
-          break
-        case change.materials?.oldValue !== undefined:
-          settings.setMaterialsStoreOnly(change.materials.newValue)
-          break
-        case change.exchanges?.oldValue.length < change.exchanges?.newValue.length:
-          settings.setExchangesStoreOnly(change.exchanges.newValue)
-          appPort().postMessage({
-            type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
-            data: change.exchanges.newValue,
-          })
-          break
-        case change.exchanges?.oldValue.length > change.exchanges?.newValue.length:
-          settings.setExchangesStoreOnly(change.exchanges.newValue)
-          break
-      }
-    }
-    const onBeforeOnload = async (): Promise<void> => {
-      console.log('APP: onBeforeOnload')
-      const foundTabs = await browser.tabs.query({url: 'about:addons'})
-      if (foundTabs.length > 0) {
-        await browser.tabs.remove(foundTabs[0].id ?? 0)
-      }
-      records.dbi.close()
-    }
-    const onKeyDown = (ev: KeyboardEvent): void => {
-      keyStrokeController.push(ev.key)
-      if (
-        keyStrokeController.includes('Control') &&
-        keyStrokeController.includes('Alt') &&
-        ev.key === 't'
-      ) {
+  console.log('APP: onBeforeMount')
+  const keyStrokeController: string[] = []
+  const onStorageChange = async (change: Record<string, browser.storage.StorageChange>): Promise<void> => {
+    console.info('APP: onStorageChange', change)
+    switch (true) {
+      case change['sService']?.oldValue !== undefined:
         settings.setServiceStoreOnly({
-          name: 'tgate',
-          url: CONS.SERVICES.tgate.HOME,
+          name: change['sService'].newValue.name,
+          url: change['sService'].newValue.url,
         })
-      }
-      if (
-        keyStrokeController.includes('Control') &&
-        keyStrokeController.includes('Alt') &&
-        ev.key === 'r'
-      ) {
-        browser.storage.local.clear()
-      }
+        break
+      case change['sSkin']?.oldValue !== undefined:
+        theme.global.name.value = change['sSkin'].newValue
+        break
+      case change['sIndexes']?.oldValue !== undefined:
+        settings.setIndexesStoreOnly(change['sIndexes'].newValue)
+        break
+      case change['sMaterials']?.oldValue !== undefined:
+        settings.setMaterialsStoreOnly(change['sMaterials'].newValue)
+        break
+      case change['sExchanges']?.oldValue.length < change['sExchanges']?.newValue.length:
+        settings.setExchangesStoreOnly(change['sExchanges'].newValue)
+        const exchangesResponse = browser.runtime.sendMessage(JSON.stringify({
+          type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
+          data: change['sExchanges'].newValue,
+        }))
+        console.error('äääääää', exchangesResponse)
+        break
+      case change['sExchanges']?.oldValue.length > change['sExchanges']?.newValue.length:
+        settings.setExchangesStoreOnly(change['sExchanges'].newValue)
+        break
+      //TODO markets
+      default:
     }
-    const onKeyUp = (ev: KeyboardEvent): void => {
-      keyStrokeController.splice(keyStrokeController.indexOf(ev.key), 1)
-    }
-    const onMessageExchangesBase = (ev: MessageEvent): void => {
-      console.info('APP: onMessageExchangesBase', ev)
-      if (ev.data === undefined) {
-        notice(['Sorry, no data arrived'])
-      } else if (ev.type === CONS.FETCH_API.ANSWER__EXCHANGES_DATA) {
-        for (let i = 0; i < ev.data.length; i++) {
-          if (ev.data[i].key.includes('USD')) {
-            runtime.setExchangesUsd(ev.data[i].value)
-          } else {
-            runtime.setExchangesEur(ev.data[i].value)
-          }
-        }
-      }
-    }
-    if (!browser.storage.onChanged.hasListener(onStorageChange)) {
-      // noinspection JSDeprecatedSymbols
-      browser.storage.onChanged.addListener(onStorageChange)
-    }
-    if (!browser.runtime.onMessage.hasListener(onMessageExchangesBase)) {
-      // noinspection JSDeprecatedSymbols
-      browser.runtime.onMessage.addListener(onMessageExchangesBase)
-    }
-    /* Listen to onKeyup, onKeyDown:
-     * - set the service to tgate if ctrl + alt + t is pressed.
-     * - clear the local storage if ctrl + alt + r is pressed.
-     */
-    window.addEventListener('keydown', onKeyDown, false)
-    window.addEventListener('keyup', onKeyUp, false)
-    window.addEventListener('beforeunload', onBeforeOnload, false)
-    appPort().postMessage({
-      type: CONS.FETCH_API.ASK__EXCHANGES_BASE_DATA,
-      data: [getUI().curusd, getUI().cureur],
-    })
-    await settings.loadStorageIntoStore(theme)
-    await records.openDatabase()
-    await records.loadDatabaseIntoStore()
-    appPort().postMessage({
-      type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
-      data: toRaw(settings.exchanges),
-    })
-    appPort().postMessage({
-      type: CONS.FETCH_API.ASK__MATERIAL_DATA,
-      data: [],
-    })
-    appPort().postMessage({
-      type: CONS.FETCH_API.ASK__INDEX_DATA,
-      data: [],
-    })
   }
-)
+  const onBeforeOnload = async (): Promise<void> => {
+    console.log('APP: onBeforeOnload')
+    const foundTabs = await browser.tabs.query({url: 'about:addons'})
+    if (foundTabs.length > 0) {
+      await browser.tabs.remove(foundTabs[0].id ?? 0)
+    }
+    records.dbi.close()
+  }
+  const onKeyDown = (ev: KeyboardEvent): void => {
+    keyStrokeController.push(ev.key)
+    if (
+      keyStrokeController.includes('Control') &&
+      keyStrokeController.includes('Alt') &&
+      ev.key === 't'
+    ) {
+      settings.setServiceStoreOnly({
+        name: 'tgate',
+        url: CONS.SERVICES.tgate.HOME,
+      })
+    }
+    if (
+      keyStrokeController.includes('Control') &&
+      keyStrokeController.includes('Alt') &&
+      ev.key === 'r'
+    ) {
+      browser.storage.local.clear()
+    }
+  }
+  const onKeyUp = (ev: KeyboardEvent): void => {
+    keyStrokeController.splice(keyStrokeController.indexOf(ev.key), 1)
+  }
 
-//const _appPort = appPort()
-//_appPort.postMessage({ test: 'rtertete'})
+  if (!browser.storage.onChanged.hasListener(onStorageChange)) {
+    // noinspection JSDeprecatedSymbols
+    browser.storage.onChanged.addListener(onStorageChange)
+  }
+  // if (!browser.runtime.onMessage.hasListener(onMessageExchangesBase)) {
+  //   // noinspection JSDeprecatedSymbols
+  //   browser.runtime.onMessage.addListener(onMessageExchangesBase)
+  // }
+  /* Listen to onKeyup, onKeyDown:
+   * - set the service to tgate if ctrl + alt + t is pressed.
+   * - clear the local storage if ctrl + alt + r is pressed.
+   */
+  window.addEventListener('keydown', onKeyDown, false)
+  window.addEventListener('keyup', onKeyUp, false)
+  window.addEventListener('beforeunload', onBeforeOnload, false)
 
-// _appPort.onMessage.addListener((m) => {
-//   console.log("In content script, received message from background script: ");
-//   console.log(m);
-// });
+  const exchangesBaseDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
+    type: CONS.FETCH_API.ASK__EXCHANGES_BASE_DATA,
+    data: [getUI().curusd, getUI().cureur],
+  }))
+  const exchangesBaseDataResponse = JSON.parse(exchangesBaseDataResponseString)
+  for (let i = 0; i < exchangesBaseDataResponse.data.length; i++) {
+    if (exchangesBaseDataResponse.data[i].key.includes('USD')) {
+      runtime.setExchangesUsd(exchangesBaseDataResponse.data[i].value)
+    } else {
+      runtime.setExchangesEur(exchangesBaseDataResponse.data[i].value)
+    }
+  }
+  await settings.loadStorageIntoStore(theme)
+  await records.openDatabase()
+  await records.loadDatabaseIntoStore()
+  const exchangesDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
+    type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
+    data: toRaw(settings.exchanges),
+  }))
+  const materialsDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
+    type: CONS.FETCH_API.ASK__MATERIAL_DATA,
+    data: [],
+  }))
+  const indexesDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
+    type: CONS.FETCH_API.ASK__INDEX_DATA,
+    data: [],
+  }))
+  const exchanges = new Map<string, number>()
+  const materials = new Map<string, number>()
+  const indexes = new Map<string, number>()
+
+  const exchangesDataResponse = JSON.parse(exchangesDataResponseString)
+  for (let i = 0; i < exchangesDataResponse.data.length; i++) {
+    exchanges.set(exchangesDataResponse.data[i].key, exchangesDataResponse.data[i].value)
+  }
+  runtime.setExchanges(exchanges)
+
+  const materialsDataResponse = JSON.parse(materialsDataResponseString)
+  for (let i = 0; i < materialsDataResponse.data.length; i++) {
+    materials.set(materialsDataResponse.data[i].key, materialsDataResponse.data[i].value)
+  }
+  runtime.setMaterials(materials)
+
+  const indexesDataResponse = JSON.parse(indexesDataResponseString)
+  for (let i = 0; i < indexesDataResponse.data.length; i++) {
+    indexes.set(indexesDataResponse.data[i].key, indexesDataResponse.data[i].value)
+  }
+  runtime.setIndexes(indexes)
+})
+
 
 console.log('--- App.vue setup ---')
 </script>

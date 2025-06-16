@@ -192,15 +192,15 @@ declare global {
       LANG: string
       YEAR: number
       STORAGE: {
-        service: { name: string, url: string }
-        skin: string
-        indexes: string[]
-        materials: string[]
-        markets: string[]
-        exchanges: string[]
-        partner: boolean
-        items_per_page_stocks: number
-        items_per_page_transfers: number
+        sService: { name: string, url: string }
+        sSkin: string
+        sIndexes: string[]
+        sMaterials: string[]
+        sMarkets: string[]
+        sExchanges: string[]
+        sPartner: boolean
+        sItemsPerPageStocks: number
+        sItemsPerPageTransfers: number
       },
       DRAWER_KEYS: string[]
       DRAWER_CONTROLS: IDrawerControls[]
@@ -482,15 +482,15 @@ export const useApp = (): IUseApp => {
       LANG: 'de',
       YEAR: 9999,
       STORAGE: {
-        service: {name: 'fnet', url: 'https://www.finanzen.net/aktienkurse/'},
-        skin: 'ocean',
-        indexes: ['dax', 'dow'],
-        materials: ['au', 'brent'],
-        markets: ['Frankfurt', 'XETRA'],
-        exchanges: ['EURUSD'],
-        partner: false,
-        items_per_page_stocks: 9,
-        items_per_page_transfers: 9
+        sService: {name: 'fnet', url: 'https://www.finanzen.net/aktienkurse/'},
+        sSkin: 'ocean',
+        sIndexes: ['dax', 'dow'],
+        sMaterials: ['au', 'brent'],
+        sMarkets: ['Frankfurt', 'XETRA'],
+        sExchanges: ['EURUSD'],
+        sPartner: false,
+        sItemsPerPageStocks: 9,
+        sItemsPerPageTransfers: 9
       },
       DRAWER_KEYS: [
         'winloss',

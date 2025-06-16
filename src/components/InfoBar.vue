@@ -55,7 +55,7 @@ import {storeToRefs} from 'pinia'
 import {useApp} from '@/composables/useApp'
 
 const {n, t} = useI18n()
-const {CONS, notice} = useApp()
+const {CONS} = useApp()
 const runtime = useRuntimeStore()
 const settings = useSettingsStore()
 const records = useRecordsStore()
@@ -85,36 +85,36 @@ const updateDrawerControls = (): void => {
     state._drawer_controls[i].class = records.transfers.total_controller[CONS.DEFAULTS.DRAWER_KEYS[i]] < 0 ? CONS.DEFAULTS.DRAWER_KEYS[i] + '_minus' : CONS.DEFAULTS.DRAWER_KEYS[i]
   }
 }
-const onMessageInfoBar = (ev: MessageEvent): void => {
-  console.info('INFOBAR: onMessageInfoBar', ev)
-  const exchanges = new Map<string, number>()
-  const materials = new Map<string, number>()
-  const indexes = new Map<string, number>()
-  if (ev.data === undefined) {
-    notice(['Sorry, no data arrived'])
-  } else {
-    switch (ev.type) {
-      case CONS.FETCH_API.ANSWER__EXCHANGES_DATA:
-        for (let i = 0; i < ev.data.length; i++) {
-          exchanges.set(ev.data[i].key, ev.data[i].value)
-        }
-        runtime.setExchanges(exchanges)
-        break
-      case CONS.FETCH_API.ANSWER__MATERIAL_DATA:
-        for (let i = 0; i < ev.data.length; i++) {
-          materials.set(ev.data[i].key, ev.data[i].value)
-        }
-        runtime.setMaterials(materials)
-        break
-      case CONS.FETCH_API.ANSWER__INDEX_DATA:
-        for (let i = 0; i < ev.data.length; i++) {
-          indexes.set(ev.data[i].key, ev.data[i].value)
-        }
-        runtime.setIndexes(indexes)
-        break
-    }
-  }
-}
+// const onMessageInfoBar = (ev: MessageEvent): void => {
+//   console.info('INFOBAR: onMessageInfoBar', ev)
+//   const exchanges = new Map<string, number>()
+//   const materials = new Map<string, number>()
+//   const indexes = new Map<string, number>()
+//   if (ev.data === undefined) {
+//     notice(['Sorry, no data arrived'])
+//   } else {
+//     switch (ev.type) {
+//       case CONS.FETCH_API.ANSWER__EXCHANGES_DATA:
+//         for (let i = 0; i < ev.data.length; i++) {
+//           exchanges.set(ev.data[i].key, ev.data[i].value)
+//         }
+//         runtime.setExchanges(exchanges)
+//         break
+//       case CONS.FETCH_API.ANSWER__MATERIAL_DATA:
+//         for (let i = 0; i < ev.data.length; i++) {
+//           materials.set(ev.data[i].key, ev.data[i].value)
+//         }
+//         runtime.setMaterials(materials)
+//         break
+//       case CONS.FETCH_API.ANSWER__INDEX_DATA:
+//         for (let i = 0; i < ev.data.length; i++) {
+//           indexes.set(ev.data[i].key, ev.data[i].value)
+//         }
+//         runtime.setIndexes(indexes)
+//         break
+//     }
+//   }
+// }
 
 watch(() => records.transfers.total_controller.dividends, updateDrawerControls)
 watch(() => records.transfers.total_controller.depot, updateDrawerControls)
@@ -122,10 +122,10 @@ watch(() => records.transfers.total_controller.account, updateDrawerControls)
 onMounted(() => {
   updateDrawerControls()
 })
-if (!browser.runtime.onMessage.hasListener(onMessageInfoBar)) {
+//if (!browser.runtime.onMessage.hasListener(onMessageInfoBar)) {
   // noinspection JSDeprecatedSymbols
-  browser.runtime.onMessage.addListener(onMessageInfoBar)
-}
+  //browser.runtime.onMessage.addListener(onMessageInfoBar)
+//}
 console.log('--- InfoBar.vue setup ---')
 </script>
 

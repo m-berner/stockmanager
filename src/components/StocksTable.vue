@@ -65,7 +65,7 @@ import {useApp} from '@/composables/useApp'
 import {useRuntimeStore} from '@/stores/runtime'
 
 const {d, n, rt, t, tm} = useI18n()
-const {CONS, notice, toNumber} = useApp()
+const {CONS, toNumber} = useApp()
 const records = useRecordsStore()
 const settings = useSettingsStore()
 const runtime = useRuntimeStore()
@@ -95,28 +95,24 @@ const onUpdatePageHandler = async (p: number): Promise<void> => {
   records.setActiveStocksPage(p)
   await records.updateWrapper()
 }
-const onMessageStocksTable = async (ev: MessageEvent): Promise<void> => {
-  console.info('STOCKSTABLE: onMessageStocksTable', ev)
-  if (ev.data === undefined) {
-    notice(['Sorry, no data arrived'])
-  } else {
-    if (ev.type === CONS.FETCH_API.ANSWER__MIN_RATE_MAX) {
-      runtime.setIsStocksLoading(false)
-      records.updatePage(ev.data)
-      records.setDrawerDepot()
-    } else if (ev.type === CONS.FETCH_API.ANSWER__DATES_DATA && ev.data.length > 0 && !runtime.isImportDb) {
-      for (let i = 0; i < ev.data.length; i++) {
-        const index = records._getActiveStocksIndexById(ev.data[i].key)
-        records.setDates(index, ev.data[i].value)
-      }
-      await records.storeIntoDatabase('update')
-    }
-  }
-}
-if (!browser.runtime.onMessage.hasListener(onMessageStocksTable)) {
-  // noinspection JSDeprecatedSymbols
-  browser.runtime.onMessage.addListener(onMessageStocksTable)
-}
+// const onMessageStocksTable = async (ev: MessageEvent): Promise<void> => {
+//   console.info('STOCKSTABLE: onMessageStocksTable', ev)
+//   if (ev.data === undefined) {
+//     notice(['Sorry, no data arrived'])
+//   } else {
+//     if (ev.type === CONS.FETCH_API.ANSWER__MIN_RATE_MAX) {
+//       runtime.setIsStocksLoading(false)
+//       records.updatePage(ev.data)
+//       records.setDrawerDepot()
+//     } else if (ev.type === CONS.FETCH_API.ANSWER__DATES_DATA && ev.data.length > 0 && !runtime.isImportDb) {
+//       for (let i = 0; i < ev.data.length; i++) {
+//         const index = records._getActiveStocksIndexById(ev.data[i].key)
+//         records.setDates(index, ev.data[i].value)
+//       }
+//       await records.storeIntoDatabase('update')
+//     }
+//   }
+// }
 
 console.log('--- StocksTable.vue setup ---')
 </script>

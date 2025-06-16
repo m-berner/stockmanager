@@ -62,7 +62,7 @@ interface IAddStock {
 }
 
 const {t} = useI18n()
-const {appPort, CONS, notice, validators} = useApp()
+const {CONS, notice, validators} = useApp()
 const runtime = useRuntimeStore()
 const formRef = useTemplateRef('form-ref')
 const state: IAddStock = reactive({
@@ -73,27 +73,17 @@ const state: IAddStock = reactive({
   _auto: true
 })
 
-const onMessageAddCompany = async (ev: MessageEvent): Promise<void> => {
-  console.info('ADDSTOCK: onMessageAddCompany', ev)
-  if (ev.data === undefined) {
-    notice(['Sorry, no data arrived'])
-  } else {
-    switch (ev.type) {
-      case CONS.FETCH_API.ANSWER__COMPANY_DATA:
-        state._company = ev.data.company
-        state._wkn = ev.data.wkn.toUpperCase()
-        state._sym = ev.data.symbol.toUpperCase()
-        break
-    }
-  }
-}
 const onIsin = async (): Promise<void> => {
   console.log('ADDSTOCK: onIsin')
   if (state._isin !== '' && state._isin?.length === 12) {
-    appPort().postMessage({
+    const companyDataResponse = await browser.runtime.sendMessage(JSON.stringify({
       type: CONS.FETCH_API.ASK__COMPANY_DATA,
       data: state._isin
-    })
+    }))
+    const companyData = JSON.parse(companyDataResponse).data
+    state._company = companyData.company
+    state._wkn = companyData.wkn.toUpperCase()
+    state._sym = companyData.symbol.toUpperCase()
   }
 }
 
@@ -133,10 +123,6 @@ onMounted(() => {
   formRef.value?.reset()
   state._auto = true
   runtime.setIsOk(true)
-  if (!browser.runtime.onMessage.hasListener(onMessageAddCompany)) {
-    // noinspection JSDeprecatedSymbols
-    browser.runtime.onMessage.addListener(onMessageAddCompany)
-  }
 })
 
 defineExpose({ok, title, classes})

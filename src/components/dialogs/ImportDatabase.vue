@@ -81,16 +81,16 @@ const ok = async (): Promise<void> => {
   if (result !== '') {
     console.info('IMPORTDATABASE: onLoad', result)
     runtime.toggleVisibility()
-    return Promise.resolve()
+    //return Promise.resolve()
   } else {
     notice(['IMPORTDATABASE: onLoad', result])
-    return Promise.reject('ERROR: database could not be loaded!')
+    //return Promise.reject('ERROR: database could not be loaded!')
   }
 }
-const title = () => {
+const title = (): string => {
   return t('dialogs.importDatabase.title')
 }
-const classes = () => {
+const classes = (): string => {
   return ''
 }
 defineExpose({ok, title, classes})

@@ -11,8 +11,7 @@ interface IUseListener {
   onClick: () => Promise<void>
   onRemove: (permissions: browser.permissions.Permissions) => void
   onInstall: () => void
-  onMessage: (request: object, sender: object, sendResponse: CallableFunction) => Promise<void>
-  onConnect: (port: browser.runtime.Port) => void
+  onAppMessage: (msg: object) => Promise<unknown>
 }
 
 interface IUrlWithId {
@@ -24,47 +23,47 @@ const initStorageLocal = async (): Promise<void> => {
   console.log('BACKGROUND: initStorageLocal')
   const {CONS} = useApp()
   const storageLocal: IStorageLocal = await browser.storage.local.get()
-  if (storageLocal.service === undefined) {
+  if (storageLocal['sService'] === undefined) {
     await browser.storage.local.set({
-      service: CONS.DEFAULTS.STORAGE.service
+      sService: CONS.DEFAULTS.STORAGE['sService']
     })
   }
   if (storageLocal.skin === undefined) {
-    await browser.storage.local.set({skin: CONS.DEFAULTS.STORAGE.skin})
+    await browser.storage.local.set({sSkin: CONS.DEFAULTS.STORAGE['sSkin']})
   }
   if (storageLocal.indexes === undefined) {
     await browser.storage.local.set({
-      indexes: CONS.DEFAULTS.STORAGE.indexes
+      sIndexes: CONS.DEFAULTS.STORAGE['sIndexes']
     })
   }
   if (storageLocal.materials === undefined) {
     await browser.storage.local.set({
-      materials: CONS.DEFAULTS.STORAGE.materials
+      sMaterials: CONS.DEFAULTS.STORAGE['sMaterials']
     })
   }
   if (storageLocal.markets === undefined) {
     await browser.storage.local.set({
-      markets: CONS.DEFAULTS.STORAGE.markets
+      sMarkets: CONS.DEFAULTS.STORAGE['sMarkets']
     })
   }
   if (storageLocal.exchanges === undefined) {
     await browser.storage.local.set({
-      exchanges: CONS.DEFAULTS.STORAGE.exchanges
+      sExchanges: CONS.DEFAULTS.STORAGE['sExchanges']
     })
   }
   if (storageLocal.partner === undefined) {
     await browser.storage.local.set({
-      partner: CONS.DEFAULTS.STORAGE.partner
+      sPartner: CONS.DEFAULTS.STORAGE['sPartner']
     })
   }
   if (storageLocal.items_per_page_stocks === undefined) {
     await browser.storage.local.set({
-      items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
+      sItemsPerPageStocks: CONS.DEFAULTS.STORAGE['sItemsPerPageStocks']
     })
   }
   if (storageLocal.items_per_page_transfers === undefined) {
     await browser.storage.local.set({
-      items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers
+      sItemsPerPageTransfers: CONS.DEFAULTS.STORAGE['sItemsPerPageTransfers']
     })
   }
 }
@@ -284,18 +283,20 @@ const useListener = (): IUseListener => {
     dbOpenRequest.addEventListener(CONS.EVENTS.SUC, onSuccess, CONS.SYSTEM.ONCE)
     dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE)
   }
-  const onMessage = async (ev: MessageEvent): Promise<void> => {
-    console.info('BACKGROUND: onMessage', ev)
+  const onAppMessage = async (msg: object) => {
+    console.info('BACKGROUND: onMessage', msg)
+    const request = JSON.parse(msg.toString())
     const {mean, notice, toNumber} = useApp()
     const fetchMinRateMaxData = async (storageOnline: TFetch[]): Promise<TFetch[]> => {
       console.log('BACKGROUND: fetchMinRateMaxData')
-      const storageService = await browser.storage.local.get('service')
-      const serviceName = storageService.service.name
+      const storageService = await browser.storage.local.get('sService')
+      const serviceName = storageService['sService'].name
       const _fnet = async (urls: IUrlWithId[]): Promise<TFetch[]> => {
         return await Promise.all(
           urls.map(async (urlObj: IUrlWithId): Promise<TFetch> => {
             const firstResponse = await fetch(urlObj.url) // .then(async (firstResponse) => {
             const secondResponse = await fetch(firstResponse.url)
+            console.error(firstResponse.url)
             const secondResponseText = await secondResponse.text()
             const onlineDocument = new DOMParser().parseFromString(
               secondResponseText,
@@ -305,19 +306,24 @@ const useListener = (): IUseListener => {
               '#snapshot-value-fst-current-0 > span'
             )
             const onlineArticleNodes = onlineDocument.querySelectorAll(
-              'main > div > aside article'
+              'main div[class=accordion__content]'
             )
             let onlineMin = '0'
             let onlineMax = '0'
             let onlineCurrency = 'EUR'
             let onlineRate = '0'
-            if (onlineArticleNodes.length > 1) {
+            if (onlineArticleNodes.length > 0) {
               const onlineMmNodes =
-                onlineArticleNodes[1].querySelectorAll('table > tbody > tr')
-              onlineMin =
-                onlineMmNodes[6].childNodes[1].textContent?.split(' ')[0] ?? '0'
-              onlineMax =
-                onlineMmNodes[7].childNodes[1].textContent?.split(' ')[0] ?? '0'
+                onlineArticleNodes[0].querySelectorAll('table > tbody > tr')
+              for (let i = 0; i < onlineMmNodes.length; i++) {
+                if (onlineMmNodes[i].textContent?.includes('1 Jahr')) {
+                  const tr = onlineMmNodes[i].querySelectorAll('td')
+                  onlineMin =
+                    tr[3].textContent ?? '0'
+                  onlineMax =
+                    tr[4].textContent ?? '0'
+                }
+              }
             }
             if (onlineNodes.length > 1) {
               onlineCurrency = onlineNodes[1].textContent ?? ''
@@ -774,14 +780,16 @@ const useListener = (): IUseListener => {
           firstResponseText,
           'text/html'
         )
-        const resultTr = resultDocument.querySelectorAll(
-          '#formcalculator > table > tbody tr'
-        )[2]
-        const resultString = resultTr.querySelector('div')?.textContent ?? ''
-        const resultMatchArray = resultString.match(/[0-9]*\.?[0-9]+/g) ?? ['1']
-        const exchangeRate = Number.parseFloat(resultMatchArray[0])
-        // noinspection JSUnresolvedReference
-        result.push({key: exchangeCodes[i], value: exchangeRate})
+        const resultTr = resultDocument.querySelector(
+          'form#formcalculator.formcalculator > div'
+        )
+        if (resultTr !== undefined && resultTr !== null) {
+          const resultString = resultTr.getAttribute('data-rate') //?.textContent ?? ''
+          const resultMatchArray = resultString?.match(/[0-9]*\.?[0-9]+/g) ?? ['1']
+          const exchangeRate = Number.parseFloat(resultMatchArray[0])
+          // noinspection JSUnresolvedReference
+          result.push({key: exchangeCodes[i], value: exchangeRate})
+        }
       }
       return result
     }
@@ -932,108 +940,111 @@ const useListener = (): IUseListener => {
       }
       return {key: obj.id, value: gmqf}
     }
-    const foundTabs = await browser.tabs.query(appUrls)
-    if (foundTabs.length > 0) {
-      const appTab = foundTabs[0].id ?? -1
-      switch (ev.type) {
+
+    return new Promise(async (resolve, reject) => {
+      let response: string
+      switch (request.type) {
         case CONS.FETCH_API.ASK__DATES_DATA:
           const datesData: TFetch[] = []
-          for (let i = 0; i < ev.data.length; i++) {
-            datesData.push(await fetchDatesData(ev.data[i]))
+          for (let i = 0; i < request.data.length; i++) {
+            datesData.push(await fetchDatesData(request.data[i]))
           }
-          await browser.tabs.sendMessage(appTab, {
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__DATES_DATA,
             data: datesData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__INDEX_DATA:
           const indexData: TFetch[] = await fetchIndexData()
-          await browser.tabs.sendMessage(appTab, {
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__INDEX_DATA,
             data: indexData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__MATERIAL_DATA:
           const materialData: TFetch[] = await fetchMaterialData()
-          await browser.tabs.sendMessage(appTab, {
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__MATERIAL_DATA,
             data: materialData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__EXCHANGES_BASE_DATA:
-          const exchangesBaseData: TFetch[] = await fetchExchangesData(ev.data)
-          await browser.tabs.sendMessage(appTab, {
+          const exchangesBaseData: TFetch[] = await fetchExchangesData(request.data)
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__EXCHANGES_BASE_DATA,
             data: exchangesBaseData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__EXCHANGES_DATA:
-          const exchangesData: TFetch[] = await fetchExchangesData(ev.data)
-          await browser.tabs.sendMessage(appTab, {
+          const exchangesData: TFetch[] = await fetchExchangesData(request.data)
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__EXCHANGES_DATA,
             data: exchangesData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__COMPANY_DATA:
-          const companyData: TFetch = await fetchCompanyData(ev.data)
-          await browser.tabs.sendMessage(appTab, {
+          const companyData: TFetch = await fetchCompanyData(request.data)
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__COMPANY_DATA,
             data: companyData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__MIN_RATE_MAX:
-          const responseData: TFetch[] = await fetchMinRateMaxData(ev.data)
-          await browser.tabs.sendMessage(appTab, {
+          const responseData: TFetch[] = await fetchMinRateMaxData(request.data)
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__MIN_RATE_MAX,
             data: responseData
           })
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__DAILY_CHANGES:
-          const dailyChangesData: TFetch[] = await fetchDailyChangesData(ev.data)
-          await browser.tabs.sendMessage(appTab, {
+          const dailyChangesData: TFetch[] = await fetchDailyChangesData(request.data)
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__DAILY_CHANGES,
             data: dailyChangesData
           })
-          if (Number.parseInt(ev.lastEventId) === CONS.SERVICES.tgate.CHS.length - 1) {
-            await browser.tabs.sendMessage(appTab, {
+          if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHS.length - 1) {
+            response = JSON.stringify({
               type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
               data: []
             })
           }
+          resolve(response)
           break
         case CONS.FETCH_API.ASK__DAILY_CHANGES_ALL:
           const dailyChangesDataAll: TFetch[] = await fetchDailyChangesData(
-            ev.data,
+            request.data,
             CONS.SERVICES.tgate.CHANGES.BIG
           )
-          await browser.tabs.sendMessage(appTab, {
+          response = JSON.stringify({
             type: CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL,
             data: dailyChangesDataAll
           })
-          if (Number.parseInt(ev.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
-            await browser.tabs.sendMessage(appTab, {
+          if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
+            response = JSON.stringify({
               type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
               data: []
             })
           }
+          resolve(response)
           break
         default:
-          console.error('BACKGROUND: missing fetchApi event type')
+          console.error('BACKGROUND: Missing message type')
+          reject('Missing message type')
       }
-    } else {
-      console.info('BACKGROUND: No stockmanager tab found!')
-    }
+    })
   }
-  const onConnect = (aPort: browser.runtime.Port) => {
-    console.log('BACKGROUND: onConnect', aPort.name)
-    // noinspection JSDeprecatedSymbols
-    aPort.onMessage.addListener(onMessage)
-    // DO something, next answer
-    // aPort.postMessage({greeting: 'hi there content script!'})
-  }
-  return {onClick, onRemove, onInstall, onMessage, onConnect}
+  //
+  return {onClick, onRemove, onInstall, onAppMessage}
 }
-const {onClick, onRemove, onInstall, onConnect} = useListener()
+
+const {onClick, onRemove, onInstall, onAppMessage} = useListener()
 if (!browser.runtime.onInstalled.hasListener(onInstall)) {
   // noinspection JSDeprecatedSymbols
   browser.runtime.onInstalled.addListener(onInstall)
@@ -1046,9 +1057,9 @@ if (!browser.permissions.onRemoved.hasListener(onRemove)) {
   // noinspection JSDeprecatedSymbols
   browser.permissions.onRemoved.addListener(onRemove)
 }
-if (!browser.runtime.onConnect.hasListener(onConnect)) {
-  // noinspection JSDeprecatedSymbols
-  browser.runtime.onConnect.addListener(onConnect)
-}
+// noinspection JSDeprecatedSymbols
+browser.runtime.onMessage.addListener(onAppMessage)
+
 await initStorageLocal()
+
 console.info('--- background.js ---', window.location.href)

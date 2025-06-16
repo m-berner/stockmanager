@@ -128,7 +128,7 @@
             <DynamicList
               v-bind:_label="t('optionsPage.exchanges.label')"
               v-bind:_list="settings.exchanges"
-              v-bind:_placeholder="CONS.DEFAULTS.STORAGE.exchanges[0]"
+              v-bind:_placeholder="CONS.DEFAULTS.STORAGE['sExchanges'][0]"
               v-bind:_store="CONS.SETTINGS.EX"
               v-bind:_title="t('optionsPage.exchanges.title')"
               v-bind:_toUpperCase="true"

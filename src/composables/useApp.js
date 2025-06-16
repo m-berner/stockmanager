@@ -140,15 +140,15 @@ export const useApp = () => {
             LANG: 'de',
             YEAR: 9999,
             STORAGE: {
-                service: { name: 'fnet', url: 'https://www.finanzen.net/aktienkurse/' },
-                skin: 'ocean',
-                indexes: ['dax', 'dow'],
-                materials: ['au', 'brent'],
-                markets: ['Frankfurt', 'XETRA'],
-                exchanges: ['EURUSD'],
-                partner: false,
-                items_per_page_stocks: 9,
-                items_per_page_transfers: 9
+                sService: { name: 'fnet', url: 'https://www.finanzen.net/aktienkurse/' },
+                sSkin: 'ocean',
+                sIndexes: ['dax', 'dow'],
+                sMaterials: ['au', 'brent'],
+                sMarkets: ['Frankfurt', 'XETRA'],
+                sExchanges: ['EURUSD'],
+                sPartner: false,
+                sItemsPerPageStocks: 9,
+                sItemsPerPageTransfers: 9
             },
             DRAWER_KEYS: [
                 'winloss',

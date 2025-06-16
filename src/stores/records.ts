@@ -43,7 +43,7 @@ interface IOnlineStockValues {
   pchange: number
 }
 
-const {appPort, CONS, notice, offset, migrateStock, migrateTransfer} = useApp()
+const {CONS, notice, offset, migrateStock, migrateTransfer} = useApp()
 
 export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = defineStore('records', {
   state: (): IRecordsStore => {
@@ -423,10 +423,26 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
       const readISIN = readIsin()
       if (readISIN.isin.length > 0) {
         runtime.setIsStocksLoading(true)
-        appPort().postMessage({type: CONS.FETCH_API.ASK__MIN_RATE_MAX, data: readISIN.isin})
+        const minMaxResponseString = await browser.runtime.sendMessage(JSON.stringify({
+          type: CONS.FETCH_API.ASK__MIN_RATE_MAX,
+          data: readISIN.isin
+        }))
+        const minMaxResponse = JSON.parse(minMaxResponseString)
+        runtime.setIsStocksLoading(false)
+        this.updatePage(minMaxResponse.data)
+        this.setDrawerDepot()
       }
       if (readISIN.isinDates.length > 0) {
-        appPort().postMessage({type: CONS.FETCH_API.ASK__DATES_DATA, data: readISIN.isinDates})
+        const dateResponseString = await browser.runtime.sendMessage(JSON.stringify({
+          type: CONS.FETCH_API.ASK__DATES_DATA,
+          data: readISIN.isinDates
+        }))
+        const dateResponse = JSON.parse(dateResponseString)
+        for (let i = 0; i < dateResponse.data.length; i++) {
+          const index = this._getActiveStocksIndexById(dateResponse.data[i].key)
+          this.setDates(index, dateResponse.data[i].value)
+        }
+        await this.storeIntoDatabase('update')
       }
     },
     async cleanStoreAndDatabase(): Promise<string> {
@@ -588,7 +604,7 @@ export const useRecordsStore: StoreDefinition<'records', IRecordsStore> = define
             delete transfer.mSortDate
             requestAddTransfer = requestTransaction.objectStore(CONS.DB.STORES.T).add({...transfer})
             requestAddTransfer.addEventListener(CONS.EVENTS.ERR, onError, false)
-          } 
+          }
         }
       })
     },

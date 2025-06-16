@@ -152,7 +152,6 @@ const ok = async (): Promise<void> => {
   if (validators.positiveInteger(state._count) !== true) {
     state._count = '0'
   }
-  console.error('SELLSTOCK:', validators.isoDate(state._date) )
   if (validators.positiveInteger(state._count) === true && validators.isoDate(state._date) === true) {
     await records.addTransfer(transfer)
     records.evaluateTransfers()

@@ -5,15 +5,15 @@ export const useSettingsStore = defineStore('settings', {
     state: () => {
         const { CONS } = useApp();
         return {
-            _service: CONS.DEFAULTS.STORAGE.service,
-            _skin: CONS.DEFAULTS.STORAGE.skin,
-            _indexes: CONS.DEFAULTS.STORAGE.indexes,
-            _materials: CONS.DEFAULTS.STORAGE.materials,
-            _markets: CONS.DEFAULTS.STORAGE.markets,
-            _exchanges: CONS.DEFAULTS.STORAGE.exchanges,
-            _partner: CONS.DEFAULTS.STORAGE.partner,
-            _items_per_page_transfers: CONS.DEFAULTS.STORAGE.items_per_page_transfers,
-            _items_per_page_stocks: CONS.DEFAULTS.STORAGE.items_per_page_stocks
+            _service: CONS.DEFAULTS.STORAGE['sService'],
+            _skin: CONS.DEFAULTS.STORAGE['sSkin'],
+            _indexes: CONS.DEFAULTS.STORAGE['sIndexes'],
+            _materials: CONS.DEFAULTS.STORAGE['sMaterials'],
+            _markets: CONS.DEFAULTS.STORAGE['sMarkets'],
+            _exchanges: CONS.DEFAULTS.STORAGE['sExchanges'],
+            _partner: CONS.DEFAULTS.STORAGE['sPartner'],
+            _items_per_page_transfers: CONS.DEFAULTS.STORAGE['sItemsPerPageTransfers'],
+            _items_per_page_stocks: CONS.DEFAULTS.STORAGE['sItemsPerPageStocks']
         };
     },
     getters: {
@@ -118,16 +118,16 @@ export const useSettingsStore = defineStore('settings', {
         async loadStorageIntoStore(theme) {
             console.log('SETTINGS: loadStorageIntoStore');
             const response = await browser.storage.local.get();
-            this.setServiceStoreOnly(response.service);
-            theme.global.name.value = response.skin ?? 'ocean';
-            this.setSkinStoreOnly(response.skin);
-            this.setIndexesStoreOnly(response.indexes);
-            this.setMaterialsStoreOnly(response.materials);
-            this.setMarketsStoreOnly(response.markets);
-            this.setExchangesStoreOnly(response.exchanges);
-            this.setPartnerStoreOnly(response.partner);
-            this.setItemsPerPageStocksStoreOnly(response.items_per_page_stocks);
-            this.setItemsPerPageTransfersStoreOnly(response.items_per_page_transfers);
+            this.setServiceStoreOnly(response['sService']);
+            theme.global.name.value = response['sSkin'] ?? 'ocean';
+            this.setSkinStoreOnly(response['sSkin']);
+            this.setIndexesStoreOnly(response['sIndexes']);
+            this.setMaterialsStoreOnly(response['sMaterials']);
+            this.setMarketsStoreOnly(response['sMarkets']);
+            this.setExchangesStoreOnly(response['sExchanges']);
+            this.setPartnerStoreOnly(response['sPartner']);
+            this.setItemsPerPageStocksStoreOnly(response['sItemsPerPageStocks']);
+            this.setItemsPerPageTransfersStoreOnly(response['sItemsPerPageTransfers']);
         },
         async toggleMaterials(keys, n) {
             let ind;
