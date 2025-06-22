@@ -574,7 +574,7 @@ export const useApp = (): IUseApp => {
       DAILYCHANGESALL: 'dailychangesall',
       EXPORTDB: 'exportdb',
       IMPORTDB: 'importdb',
-      SHOWACCOUNTING: 'showaccoutning',
+      SHOWACCOUNTING: 'showaccouting',
       DELETETRANSFER: 'deletetransfer',
       UPDATETRANSFER: 'updatetransfer',
       DELETESTOCK: 'deletestock',

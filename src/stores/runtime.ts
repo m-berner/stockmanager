@@ -10,6 +10,13 @@ import {ref, type Ref} from 'vue'
 import {VForm} from 'vuetify/components'
 import {useApp} from '@/background'
 
+interface ITelePort {
+  dialog_name: string
+  show_ok_button: boolean
+  show_header_dialog: boolean
+  show_option_dialog: boolean
+}
+
 interface IRuntimeStore {
   _is_stocks_loading: boolean
   _show_partial_drawer: boolean
@@ -21,6 +28,12 @@ interface IRuntimeStore {
     exchanges: Map<string, number>
     indexes: Map<string, number>
     materials: Map<string, number>
+  }
+  _teleport: {
+    dialog_name: string
+    show_ok_button: boolean
+    show_header_dialog: boolean
+    show_option_dialog: boolean
   }
 }
 
@@ -61,6 +74,12 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
         exchanges: new Map<string, number>(),
         indexes: new Map<string, number>(),
         materials: new Map<string, number>()
+      },
+      _teleport: {
+        dialog_name: '',
+        show_ok_button: true,
+        show_header_dialog: false,
+        show_option_dialog: false
       }
     }
   },
@@ -142,6 +161,9 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     },
     isConfigCompany(state: IRuntimeStore) {
       return state._dialogs._is_config_company
+    },
+    teleport(state: IRuntimeStore) {
+      return state._teleport
     }
   },
   actions: {
@@ -255,6 +277,17 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     },
     setIsStocksLoading(value: boolean) {
       this._is_stocks_loading = value
+    },
+    setTeleport(entry: ITelePort) {
+      this._teleport = entry
+    },
+    resetTeleport(): void {
+      this._teleport = {
+        dialog_name: '',
+        show_ok_button: true,
+        show_header_dialog: false,
+        show_option_dialog: false
+      }
     }
   }
 })

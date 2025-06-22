@@ -8,6 +8,7 @@
 <template>
   <v-app-bar :flat="true" app v-bind:height="75">
     <v-spacer></v-spacer>
+    <router-link class="router-link-active" to="/">
     <v-tooltip location="top" v-bind:text="t('headerBar.home')">
       <template v-slot:activator="{ props }">
         <v-app-bar-nav-icon
@@ -15,11 +16,12 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.setTable('StocksTable')"
         ></v-app-bar-nav-icon>
       </template>
     </v-tooltip>
+    </router-link>
     <v-spacer></v-spacer>
+    <router-link class="router-link-active" to="/transfers">
     <v-tooltip location="top" v-bind:text="t('headerBar.transfersTable')">
       <template v-slot:activator="{ props }">
         <v-app-bar-nav-icon
@@ -27,10 +29,10 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.setTable('TransfersTable')"
         ></v-app-bar-nav-icon>
       </template>
     </v-tooltip>
+    </router-link>
     <v-spacer></v-spacer>
     <v-spacer></v-spacer>
     <v-tooltip location="top" v-bind:text="t('headerBar.reload')">
@@ -53,10 +55,8 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
-        >
-          <v-icon class="put-into-background" icon="$addStock"></v-icon
-          >
+          v-on:click="onIconClick"
+        ><v-icon class="put-into-background" icon="$addStock"></v-icon>
         </v-app-bar-nav-icon>
       </template>
     </v-tooltip>
@@ -146,7 +146,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$exportDatabase"></v-icon
           >
@@ -161,7 +161,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$importDatabase"></v-icon
           >
@@ -177,7 +177,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$showAccounting"></v-icon
           >
@@ -199,11 +199,13 @@
     </v-tooltip>
     <v-spacer></v-spacer>
   </v-app-bar>
+  <DialogPort></DialogPort>
 </template>
 
 <script lang="ts" setup>
 import {useRuntimeStore} from '@/stores/runtime'
 import {useRecordsStore} from '@/stores/records'
+import DialogPort from '@/components/DialogPort.vue'
 import {useI18n} from 'vue-i18n'
 import {useApp} from '@/background'
 
@@ -219,6 +221,67 @@ const onUpdate = async (): Promise<void> => {
 }
 const onToggleSettings = async (): Promise<void> => {
   await browser.runtime.openOptionsPage()
+}
+
+const onIconClick = async (ev: Event): Promise<void> => {
+  console.log('HEADER_BAR: onIconClick')
+  const parse = async (elem: Element | null, loop = 0): Promise<void> => {
+    if (loop > 6 || elem === null) return
+    switch (elem!.id) {
+      case CONS.DIALOGS.ADDCOMPANY:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.ADDCOMPANY,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.DELETESTOCK:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.DELETESTOCK,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+
+
+      case CONS.DIALOGS.EXPORTDB:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.EXPORTDB,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.IMPORTDB:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.IMPORTDB,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.SHOWACCOUNTING:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.SHOWACCOUNTING,
+          showOkButton: false,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.SETTING:
+        await browser.runtime.openOptionsPage()
+        break
+      default:
+        loop += 1
+        console.error(elem!.parentElement)
+        await parse(elem!.parentElement, loop)
+    }
+  }
+  if (ev.target instanceof Element) {
+    await parse(ev.target)
+  }
 }
 
 console.log('--- HeaderBar.vue setup ---')

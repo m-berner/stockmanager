@@ -40,3 +40,7 @@ thead tr div.v-progress-linear {
 .color-black {
     color: black;
 }
+
+.router-link-active {
+    color: white;
+}

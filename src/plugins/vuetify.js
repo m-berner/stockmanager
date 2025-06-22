@@ -2,7 +2,7 @@ import {} from 'vue';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import { mdiCalculator, mdiCheck, mdiClose, mdiCog, mdiCopyright, mdiCurrencyEur, mdiDatabaseExport, mdiDatabaseImport, mdiDelete, mdiDotsVertical, mdiEmail, mdiFileDocumentEdit, mdiFileDocumentMinus, mdiFilterCog, mdiFilterPlus, mdiFilterRemove, mdiHelpCircle, mdiHome, mdiImage, mdiInfinity, mdiMagnify, mdiPlus, mdiReload, mdiShieldAccount, mdiTableLargeRemove, mdiBookPlus, mdiCreditCardEdit, mdiCreditCardPlus, mdiCreditCardRemove, mdiImageEdit, mdiImageMinus, mdiImagePlus } from '@mdi/js';
+import { mdiBasketPlus, mdiBasketMinus, mdiBasketFill, mdiGiftOutline, mdiHandshake, mdiFileCog, mdiCashPlus, mdiCashMinus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiCalculator, mdiCheck, mdiClose, mdiCog, mdiCopyright, mdiCurrencyEur, mdiDatabaseExport, mdiDatabaseImport, mdiDelete, mdiDomainPlus, mdiDomainRemove, mdiDomain, mdiDotsVertical, mdiEmail, mdiFileDocumentEdit, mdiFileDocumentMinus, mdiHelpCircle, mdiHome, mdiImage, mdiInfinity, mdiMagnify, mdiPlus, mdiReload, mdiShieldAccount, mdiTableLargeRemove, mdiTransfer } from '@mdi/js';
 export default {
     vuetify: createVuetify({
         theme: {
@@ -100,15 +100,24 @@ export default {
                 home: mdiHome,
                 euro: mdiCurrencyEur,
                 reload: mdiReload,
-                addBooking: mdiBookPlus,
-                addBookingType: mdiFilterPlus,
-                editBookingType: mdiFilterCog,
-                deleteBookingType: mdiFilterRemove,
+                addStock: mdiDomainPlus,
+                deleteStock: mdiDomainRemove,
+                fadeinStock: mdiDomain,
+                cashPlus: mdiCashPlus,
+                cashMinus: mdiCashMinus,
+                dailyChanges: mdiChartTimelineVariant,
+                dailyChangesAll: mdiChartTimelineVariantShimmer,
                 exportDatabase: mdiDatabaseExport,
                 importDatabase: mdiDatabaseImport,
+                transfersTable: mdiTransfer,
                 showAccounting: mdiCalculator,
                 settings: mdiCog,
                 copyright: mdiCopyright,
+                buyStock: mdiBasketPlus,
+                sellStock: mdiBasketMinus,
+                addDividend: mdiBasketFill,
+                showDividend: mdiGiftOutline,
+                configs: mdiFileCog,
                 link: mdiInfinity,
                 close: mdiClose,
                 add: mdiPlus,
@@ -120,14 +129,9 @@ export default {
                 editDocument: mdiFileDocumentEdit,
                 help: mdiHelpCircle,
                 privacy: mdiShieldAccount,
+                partner: mdiHandshake,
                 mail: mdiEmail,
-                magnify: mdiMagnify,
-                addAccount: mdiCreditCardPlus,
-                updateAccount: mdiCreditCardEdit,
-                deleteAccount: mdiCreditCardRemove,
-                addStock: mdiImagePlus,
-                updateStock: mdiImageEdit,
-                deleteStock: mdiImageMinus
+                magnify: mdiMagnify
             }
         }
     })

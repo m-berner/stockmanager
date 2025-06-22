@@ -39,6 +39,12 @@ export const useRuntimeStore = defineStore('runtime', {
                 exchanges: new Map(),
                 indexes: new Map(),
                 materials: new Map()
+            },
+            _teleport: {
+                dialog_name: '',
+                show_ok_button: true,
+                show_header_dialog: false,
+                show_option_dialog: false
             }
         };
     },
@@ -120,6 +126,9 @@ export const useRuntimeStore = defineStore('runtime', {
         },
         isConfigCompany(state) {
             return state._dialogs._is_config_company;
+        },
+        teleport(state) {
+            return state._teleport;
         }
     },
     actions: {
@@ -233,6 +242,17 @@ export const useRuntimeStore = defineStore('runtime', {
         },
         setIsStocksLoading(value) {
             this._is_stocks_loading = value;
+        },
+        setTeleport(entry) {
+            this._teleport = entry;
+        },
+        resetTeleport() {
+            this._teleport = {
+                dialog_name: '',
+                show_ok_button: true,
+                show_header_dialog: false,
+                show_option_dialog: false
+            };
         }
     }
 });

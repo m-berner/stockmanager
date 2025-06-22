@@ -27,6 +27,17 @@ export default<IRouter> {
         }
       },
       {
+        path: '/transfers',
+        name: 'transfers',
+        components: {
+          default: () => import('@/components/TransfersTable.vue'),
+          title: () => import('@/components/TitleBar.vue'),
+          header: () => import ('@/components/HeaderBar.vue'),
+          info: () => import ('@/components/InfoBar.vue'),
+          footer: () => import('@/components/FooterBar.vue')
+        }
+      },
+      {
         path: '/help',
         name: 'help',
         components: {
