@@ -207,6 +207,7 @@ declare global {
     DIALOGS: Record<string, string>
     EVENTS: Record<string, string>
     FETCH_API: Record<string, string>
+    MESSAGES: Record<string, string>
     SETTINGS: {
       MP: string
       EX: string
@@ -625,6 +626,14 @@ export const useApp = (): IUseApp => {
       END__DAILY_CHANGES_ALL: 'edca',
       FINISH__DAILY_CHANGES: '_fdc',
       FINISH__DAILY_CHANGES_ALL: '_fdca'
+    },
+    MESSAGES: {
+      SET__SETTINGS_SKIN: 'sss',
+      SET__SETTINGS_SERVICE: 'sssrv',
+      SET__SETTINGS_MARKETS: 'ssm',
+      SET__SETTINGS_MATERIALS: 'ssmat',
+      SET__SETTINGS_EXCHANGES: 'sse',
+      SET__SETTINGS_INDEXES: 'ssi'
     },
     SETTINGS: {
       MP: '__MP__',
@@ -1509,7 +1518,9 @@ const onInstall = (): void => {
   dbOpenRequest.addEventListener(CONS.EVENTS.SUC, onSuccess, CONS.SYSTEM.ONCE)
   dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE)
 }
-// TODO localStorage, optionspage, export correction? or add record correction? repair database!!!
+// TODO export correction? or add record correction? repair database!!!
+// TODO correct icons
+// TODO correct OptionMenu
 const onAppMessage = async (msg: object): Promise<unknown> => {
   console.info('BACKGROUND: onMessage', msg)
   const request = JSON.parse(msg.toString())
@@ -2166,8 +2177,18 @@ const onAppMessage = async (msg: object): Promise<unknown> => {
     return {key: obj.id, value: gmqf}
   }
 
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     let response: string
+    if (
+      request.type === CONS.MESSAGES.SET__SETTINGS_SKIN ||
+      request.type === CONS.MESSAGES.SET__SETINGS_SERVICE ||
+      request.type === CONS.MESSAGES.SET__SETTINGS_INDEXES ||
+      request.type === CONS.MESSAGES.SET__SETTINGS_MATERIALS ||
+      request.type === CONS.MESSAGES.SET__SETTINGS_MARKETS ||
+      request.type === CONS.MESSAGES.SET__SETTINGS_EXCHANGES
+    ) {
+      return
+    }
     switch (request.type) {
       case CONS.FETCH_API.ASK__DATES_DATA:
         const datesData: TFetch[] = []
@@ -2261,7 +2282,6 @@ const onAppMessage = async (msg: object): Promise<unknown> => {
         break
       default:
         console.error('BACKGROUND: Missing message type')
-        reject('Missing message type')
     }
   })
 }
@@ -2272,7 +2292,7 @@ const onStorageChange = async (change: Record<string, browser.storage.StorageCha
     switch (Object.keys(change)[0]) {
       case 'sService':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_SERVICE,
           data: {
             name: change['sService'].newValue.name,
             url: change['sService'].newValue.url
@@ -2281,25 +2301,25 @@ const onStorageChange = async (change: Record<string, browser.storage.StorageCha
         break
       case 'sSkin':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_SKIN,
           data: change['sSkin'].newValue
         }))
         break
       case 'sMarkets':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_MARKETS,
           data: change['sMarkets'].newValue
         }))
         break
       case 'sIndexes':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_INDEXES,
           data: change['sIndexes'].newValue
         }))
         break
       case 'sMaterials':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_MATERIALS,
           data: change['sMaterials'].newValue
         }))
         break
@@ -2314,7 +2334,7 @@ const onStorageChange = async (change: Record<string, browser.storage.StorageCha
       //   break
       case 'sExchanges':
         browser.tabs.sendMessage(tabId, JSON.stringify({
-          type: '',
+          type: CONS.MESSAGES.SET__SETTINGS_EXCHANGES,
           data: change['sExchanges'].newValue
         }))
         break

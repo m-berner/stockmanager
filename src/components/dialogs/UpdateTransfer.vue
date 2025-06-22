@@ -104,7 +104,7 @@
               density="compact"
               item-title="marketPlace"
               v-bind:clearable="true"
-              v-bind:items="state._markets"
+              v-bind:items="settings.markets"
               v-bind:label="t('dialogs.updateTransfer.marketPlace')"
               v-bind:return-object="true"
               variant="outlined"
@@ -131,7 +131,7 @@ import {onMounted, reactive, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useRecordsStore} from '@/stores/records'
 import {useRuntimeStore} from '@/stores/runtime'
-//import {useSettingsStore} from '@/stores/settings'
+import {useSettingsStore} from '@/stores/settings'
 
 interface IUpdateTransfer {
   _date: string
@@ -148,14 +148,13 @@ interface IUpdateTransfer {
   _type: number
   _market_place: string
   _description: string
-  _markets: string[]
 }
 
 const {t} = useI18n()
 const runtime = useRuntimeStore()
 const records = useRecordsStore()
-//const settings = useSettingsStore()
-const {CONS, dateToISO, getUI, notice, toNumber, validators} = useApp()
+const settings = useSettingsStore()
+const {dateToISO, getUI, notice, toNumber, validators} = useApp()
 const formRef = useTemplateRef('form-ref')
 const state: IUpdateTransfer = reactive({
   _date: '',
@@ -171,8 +170,7 @@ const state: IUpdateTransfer = reactive({
   _soli: 0,
   _type: 0,
   _market_place: '',
-  _description: '',
-  _markets: []
+  _description: ''
 })
 
 const setInitialTransfer = (value: ITransfer): void => {
@@ -222,9 +220,6 @@ defineExpose({ok, title, classes})
 
 onMounted(async () => {
   console.log('UPDATETRANSFER: onMounted')
-  const settingsResponseString = await browser.runtime.sendMessage(JSON.stringify({type: CONS.FETCH_API.ASK__SETTINGS}))
-  const settingsResponse = JSON.parse(settingsResponseString).data
-  state._markets = settingsResponse.markets
   setInitialTransfer(records.transfers.all[records.transfers.selected_index])
   runtime.setIsOk(true)
 })

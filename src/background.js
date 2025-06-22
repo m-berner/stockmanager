@@ -280,6 +280,14 @@ export const useApp = () => {
             FINISH__DAILY_CHANGES: '_fdc',
             FINISH__DAILY_CHANGES_ALL: '_fdca'
         },
+        MESSAGES: {
+            SET__SETTINGS_SKIN: 'sss',
+            SET__SETTINGS_SERVICE: 'sssrv',
+            SET__SETTINGS_MARKETS: 'ssm',
+            SET__SETTINGS_MATERIALS: 'ssmat',
+            SET__SETTINGS_EXCHANGES: 'sse',
+            SET__SETTINGS_INDEXES: 'ssi'
+        },
         SETTINGS: {
             MP: '__MP__',
             EX: '__EX__',
@@ -1620,8 +1628,16 @@ const onAppMessage = async (msg) => {
         }
         return { key: obj.id, value: gmqf };
     };
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
         let response;
+        if (request.type === CONS.MESSAGES.SET__SETTINGS_SKIN ||
+            request.type === CONS.MESSAGES.SET__SETINGS_SERVICE ||
+            request.type === CONS.MESSAGES.SET__SETTINGS_INDEXES ||
+            request.type === CONS.MESSAGES.SET__SETTINGS_MATERIALS ||
+            request.type === CONS.MESSAGES.SET__SETTINGS_MARKETS ||
+            request.type === CONS.MESSAGES.SET__SETTINGS_EXCHANGES) {
+            return;
+        }
         switch (request.type) {
             case CONS.FETCH_API.ASK__DATES_DATA:
                 const datesData = [];
@@ -1712,7 +1728,6 @@ const onAppMessage = async (msg) => {
                 break;
             default:
                 console.error('BACKGROUND: Missing message type');
-                reject('Missing message type');
         }
     });
 };
@@ -1723,7 +1738,7 @@ const onStorageChange = async (change) => {
         switch (Object.keys(change)[0]) {
             case 'sService':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_SERVICE,
                     data: {
                         name: change['sService'].newValue.name,
                         url: change['sService'].newValue.url
@@ -1732,31 +1747,31 @@ const onStorageChange = async (change) => {
                 break;
             case 'sSkin':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_SKIN,
                     data: change['sSkin'].newValue
                 }));
                 break;
             case 'sMarkets':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_MARKETS,
                     data: change['sMarkets'].newValue
                 }));
                 break;
             case 'sIndexes':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_INDEXES,
                     data: change['sIndexes'].newValue
                 }));
                 break;
             case 'sMaterials':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_MATERIALS,
                     data: change['sMaterials'].newValue
                 }));
                 break;
             case 'sExchanges':
                 browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: '',
+                    type: CONS.MESSAGES.SET__SETTINGS_EXCHANGES,
                     data: change['sExchanges'].newValue
                 }));
                 break;

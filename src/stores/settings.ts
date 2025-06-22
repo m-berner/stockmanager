@@ -10,6 +10,12 @@ import {type ThemeInstance} from 'vuetify'
 import {useApp} from '@/background'
 
 interface ISettingsStore {
+  _service: IUrlWithName
+  _skin: string
+  _indexes: string[]
+  _materials: string[]
+  _markets: string[]
+  _exchanges: string[]
   _partner: boolean
   _items_per_page_transfers: number
   _items_per_page_stocks: number
@@ -19,12 +25,36 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
   state: (): ISettingsStore => {
     const {CONS} = useApp()
     return {
-      _partner: CONS.DEFAULTS.STORAGE['sPartner'],
-      _items_per_page_transfers: CONS.DEFAULTS.STORAGE['sItemsPerPageTransfers'],
-      _items_per_page_stocks: CONS.DEFAULTS.STORAGE['sItemsPerPageStocks']
+      _service: CONS.DEFAULTS.STORAGE.sService,
+      _skin: CONS.DEFAULTS.STORAGE.sSkin,
+      _indexes: CONS.DEFAULTS.STORAGE.sIndexes,
+      _materials: CONS.DEFAULTS.STORAGE.sMaterials,
+      _markets: CONS.DEFAULTS.STORAGE.sMarkets,
+      _exchanges: CONS.DEFAULTS.STORAGE.sExchanges,
+      _partner: CONS.DEFAULTS.STORAGE.sPartner,
+      _items_per_page_transfers: CONS.DEFAULTS.STORAGE.sItemsPerPageTransfers,
+      _items_per_page_stocks: CONS.DEFAULTS.STORAGE.sItemsPerPageStocks
     }
   },
   getters: {
+    service(state: ISettingsStore) {
+      return state._service
+    },
+    skin(state: ISettingsStore) {
+      return state._skin
+    },
+    indexes(state: ISettingsStore) {
+      return state._indexes
+    },
+    materials(state: ISettingsStore) {
+      return state._materials
+    },
+    markets(state: ISettingsStore) {
+      return state._markets
+    },
+    exchanges(state: ISettingsStore) {
+      return state._exchanges
+    },
     partner(state: ISettingsStore) {
       return state._partner
     },
@@ -38,7 +68,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
   actions: {
     async setService(value: { name: string; url: string }): Promise<void> {
       this._service = value
-      await browser.storage.local.set({sService: value})
+      await browser.storage.local.set({service: value})
     },
     setServiceStoreOnly(value: { name: string; url: string }) {
       this._service = value
@@ -46,10 +76,9 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     async setSkin(value: string, theme: ThemeInstance): Promise<void> {
       theme.global.name.value = value // NOTE: change theme options instance
       this._skin = value
-      await browser.storage.local.set({sSkin: value})
+      await browser.storage.local.set({skin: value})
     },
-    setSkinStoreOnly(value: string, theme: ThemeInstance) {
-      theme.global.name.value = value
+    setSkinStoreOnly(value: string) {
       this._skin = value
     },
     async toggleIndexes(keys: string[], n: number): Promise<void> {
@@ -63,35 +92,26 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
       this._indexes = ar
       await browser.storage.local.set({indexes: ar})
     },
-    async setIndexes(value: string[] | boolean) {
-      this._indexes = value
-      await browser.storage.local.set({sIndexes: value})
-    },
     setIndexesStoreOnly(value: string[] | boolean) {
       this._indexes = value
-    },
-    async setMaterials(value: string[] | boolean) {
-      this._materials = value
-      await browser.storage.local.set({sMaterials: value})
     },
     setMaterialsStoreOnly(value: string[] | boolean) {
       this._materials = value
     },
     async setMarkets(value: string[] | boolean): Promise<void> {
       this._markets = value
-      await browser.storage.local.set({sMarkets: value})
+      await browser.storage.local.set({markets: value})
     },
     setMarketsStoreOnly(value: string[] | boolean) {
       this._markets = value
     },
     async setExchanges(value: string[] | boolean): Promise<void> {
       this._exchanges = value
-      await browser.storage.local.set({sExchanges: value})
+      await browser.storage.local.set({exchanges: value})
     },
     setExchangesStoreOnly(value: string[] | boolean) {
       this._exchanges = value
     },
-
     async togglePartner(): Promise<void> {
       const currentPartner = this._partner
       this._partner = !currentPartner
@@ -102,14 +122,14 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     },
     async setItemsPerPageTransfers(value: number): Promise<void> {
       this._items_per_page_transfers = value
-      await browser.storage.local.set({sItemsPerPageTransfers: value})
+      await browser.storage.local.set({itemsPerPageTransfers: value})
     },
     setItemsPerPageTransfersStoreOnly(value: number) {
       this._items_per_page_transfers = value
     },
     async setItemsPerPageStocks(value: number): Promise<void> {
       this._items_per_page_stocks = value
-      await browser.storage.local.set({sItemsPerPageStocks: value})
+      await browser.storage.local.set({itemsPerPageStocks: value})
     },
     setItemsPerPageStocksStoreOnly(value: number) {
       this._items_per_page_stocks = value
@@ -117,13 +137,13 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     async loadStorageIntoStore(theme: ThemeInstance): Promise<void> {
       console.log('SETTINGS: loadStorageIntoStore')
       const response: IStorageLocal = await browser.storage.local.get()
+      this.setServiceStoreOnly(response['sService'])
       theme.global.name.value = response['sSkin'] ?? 'ocean'
-      // this.setServiceStoreOnly(response['sService'])
-      // this.setSkinStoreOnly(response['sSkin'], theme)
-      // this.setIndexesStoreOnly(response['sIndexes'])
-      // this.setMaterialsStoreOnly(response['sMaterials'])
-      // this.setMarketsStoreOnly(response['sMarkets'])
-      // this.setExchangesStoreOnly(response['sExchanges'])
+      this.setSkinStoreOnly(response['sSkin'])
+      this.setIndexesStoreOnly(response['sIndexes'])
+      this.setMaterialsStoreOnly(response['sMaterials'])
+      this.setMarketsStoreOnly(response['sMarkets'])
+      this.setExchangesStoreOnly(response['sExchanges'])
       this.setPartnerStoreOnly(response['sPartner'])
       this.setItemsPerPageStocksStoreOnly(response['sItemsPerPageStocks'])
       this.setItemsPerPageTransfersStoreOnly(response['sItemsPerPageTransfers'])

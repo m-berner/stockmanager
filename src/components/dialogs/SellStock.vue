@@ -63,7 +63,7 @@
               density="compact"
               item-title="marketPlace"
               v-bind:clearable="true"
-              v-bind:items="state._markets"
+              v-bind:items="settings.markets"
               v-bind:label="t('dialogs.sellStock.marketplace')"
               v-bind:return-object="true"
               variant="outlined"
@@ -93,7 +93,7 @@
 
 <script lang="ts" setup>
 import CurrencyInput from '@/components/CurrencyInput.vue'
-//import {useSettingsStore} from '@/stores/settings'
+import {useSettingsStore} from '@/stores/settings'
 import {useApp} from '@/background'
 import {onMounted, reactive, useTemplateRef} from 'vue'
 import {useI18n} from 'vue-i18n'
@@ -109,13 +109,12 @@ interface ISellStock {
   _tax: number
   _soli: number
   _market_place: string
-  _markets: string[]
 }
 
 const {t} = useI18n()
 const runtime = useRuntimeStore()
 const records = useRecordsStore()
-//const settings = useSettingsStore()
+const settings = useSettingsStore()
 const {CONS, getUI, toNumber, validators} = useApp()
 const formRef = useTemplateRef('form-ref')
 const state: ISellStock = reactive({
@@ -126,8 +125,7 @@ const state: ISellStock = reactive({
   _stax: 0,
   _tax: 0,
   _soli: 0,
-  _market_place: '',
-  _markets: []
+  _market_place: ''
 })
 
 const ok = async (): Promise<void> => {
@@ -174,15 +172,11 @@ defineExpose({ok, title, classes})
 onMounted(async () => {
   console.log('SELLSTOCK: onMounted')
   formRef.value?.reset()
-  const settingsResponseString = await browser.runtime.sendMessage(JSON.stringify({type: CONS.FETCH_API.ASK__SETTINGS}))
-  const settingsResponse = JSON.parse(settingsResponseString).data
-
   state._unit_quotation = 0
   state._fees = 0
   state._stax = 0
   state._tax = 0
   state._soli = 0
-  state._markets = settingsResponse.markets
   runtime.setIsOk(true)
 })
 

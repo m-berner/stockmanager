@@ -32,11 +32,29 @@ const theme = useTheme()
 const {CONS, getUI} = useApp()
 
 browser.runtime.onMessage.addListener((message) => {
-  switch (message.type) {
-    case CONS.SET__SETTINGS_SKIN:
-      settings.setSkin(JSON.parse(message).data)
+  const msg = JSON.parse(message)
+  switch (msg.type) {
+    case CONS.MESSAGES.SET__SETTINGS_SKIN:
+      theme.global.name.value = msg.data
+      settings.setSkinStoreOnly(msg.data)
+      break
+    case CONS.MESSAGES.SET__SETTINGS_SERVICE:
+      settings.setServiceStoreOnly(msg.data)
+      break
+    case CONS.MESSAGES.SET__SETTINGS_MARKETS:
+      settings.setMarketsStoreOnly(msg.data)
+      break
+    case CONS.MESSAGES.SET__SETTINGS_INDEXES:
+      settings.setIndexesStoreOnly(msg.data)
+      break
+    case CONS.MESSAGES.SET__SETTINGS_MATERIALS:
+      settings.setMaterialsStoreOnly(msg.data)
+      break
+    case CONS.MESSAGES.SET__SETTINGS_EXCHANGES:
+      settings.setExchangesStoreOnly(msg.data)
       break
     default:
+      console.error('Set settings message not found')
   }
 })
 
@@ -58,7 +76,6 @@ onBeforeMount(async (): Promise<void> => {
       keyStrokeController.includes('Alt') &&
       ev.key === 't'
     ) {
-      // TODO sendMessage and set service!
       settings.setServiceStoreOnly({
         name: 'tgate',
         url: CONS.SERVICES.tgate.HOME,
