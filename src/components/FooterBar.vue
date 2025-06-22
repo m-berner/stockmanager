@@ -7,17 +7,21 @@
   -->
 <template>
   <v-bottom-navigation color="primary">
-    <v-btn color="white" v-on:click="runtime.setTable('HelpPage')">
+    <v-btn color="white">
+      <router-link class="router-link-active" to="/help">
       <v-icon icon="$help"></v-icon>
-      <span>{{ t('footer.help') }}</span>
+      <div>{{ t('footer.help') }}</div>
+      </router-link>
     </v-btn>
-    <v-btn color="white" v-on:click="runtime.setTable('PrivacyPage')">
+    <v-btn color="white">
+      <router-link class="router-link-active" to="/privacy">
       <v-icon icon="$privacy"></v-icon>
-      <span>{{ t('footer.privacy') }}</span>
+      <div>{{ t('footer.privacy') }}</div>
+      </router-link>
     </v-btn>
     <v-btn color="white" href="mailto:stockmanager@gmx.de">
       <v-icon icon="$mail"></v-icon>
-      <span>{{ t('footer.mail') }}</span>
+      <div>{{ t('footer.mail') }}</div>
     </v-btn>
     <v-btn color="white" v-bind:disabled="true">
       <v-icon icon="$copyright"></v-icon>
@@ -27,13 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-import {useRuntimeStore} from '@/stores/runtime'
 import {useI18n} from 'vue-i18n'
 import {useApp} from '@/background'
 
 const {t} = useI18n()
 const {CONS} = useApp()
-const runtime = useRuntimeStore()
 
 console.log('--- FooterBar.vue setup ---')
 </script>

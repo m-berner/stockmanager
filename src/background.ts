@@ -1518,9 +1518,7 @@ const onInstall = (): void => {
   dbOpenRequest.addEventListener(CONS.EVENTS.SUC, onSuccess, CONS.SYSTEM.ONCE)
   dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE)
 }
-// TODO export correction? or add record correction? repair database!!!
-// TODO correct icons
-// TODO correct OptionMenu
+// TODO export correction? or add record correction? repair database!
 const onAppMessage = async (msg: object): Promise<unknown> => {
   console.info('BACKGROUND: onMessage', msg)
   const request = JSON.parse(msg.toString())

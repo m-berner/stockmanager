@@ -68,7 +68,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$fadeinStock"></v-icon
           >
@@ -84,7 +84,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$cashPlus"></v-icon
           >
@@ -99,7 +99,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$cashMinus"></v-icon
           >
@@ -115,7 +115,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$dailyChanges"></v-icon
           >
@@ -130,7 +130,7 @@
           size="large"
           v-bind="props"
           variant="tonal"
-          v-on:click="runtime.toggleVisibility"
+          v-on:click="onIconClick"
         >
           <v-icon class="put-into-background" icon="$dailyChangesAll"></v-icon
           >
@@ -236,16 +236,46 @@ const onIconClick = async (ev: Event): Promise<void> => {
           showOptionDialog: false
         })
         break
-      case CONS.DIALOGS.DELETESTOCK:
+      case CONS.DIALOGS.FADEINSTOCK:
         runtime.setTeleport({
-          dialogName: CONS.DIALOGS.DELETESTOCK,
+          dialogName: CONS.DIALOGS.FADEINSTOCK,
           showOkButton: true,
           showHeaderDialog: true,
           showOptionDialog: false
         })
         break
-
-
+      case CONS.DIALOGS.DAILYCHANGES:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.DAILYCHANGES,
+          showOkButton: false,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.DAILYCHANGESALL:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.DAILYCHANGESALL,
+          showOkButton: false,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.ADDDEPOSIT:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.ADDDEPOSIT,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
+      case CONS.DIALOGS.ADDWITHDRAWAL:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.ADDWITHDRAWAL,
+          showOkButton: true,
+          showHeaderDialog: true,
+          showOptionDialog: false
+        })
+        break
       case CONS.DIALOGS.EXPORTDB:
         runtime.setTeleport({
           dialogName: CONS.DIALOGS.EXPORTDB,
