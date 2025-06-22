@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { useRuntimeStore } from '@/stores/runtime';
 import { useSettingsStore } from '@/stores/settings';
 import { toRaw } from 'vue';
-import { useApp } from '@/composables/useApp';
+import { useApp } from '@/background';
 const { CONS, notice, offset, migrateStock, migrateTransfer } = useApp();
 export const useRecordsStore = defineStore('records', {
     state: () => {

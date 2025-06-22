@@ -52,7 +52,7 @@ import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {useRecordsStore} from '@/stores/records'
 import {storeToRefs} from 'pinia'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 const {n, t} = useI18n()
 const {CONS} = useApp()

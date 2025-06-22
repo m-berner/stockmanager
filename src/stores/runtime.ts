@@ -8,7 +8,7 @@
 import {defineStore, type StoreDefinition} from 'pinia'
 import {ref, type Ref} from 'vue'
 import {VForm} from 'vuetify/components'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 interface IRuntimeStore {
   _is_stocks_loading: boolean

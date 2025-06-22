@@ -41,9 +41,9 @@
 </template>
 
 <script lang="ts" setup>
-import {useSettingsStore} from '@/stores/settings'
+//import {useSettingsStore} from '@/stores/settings'
 import {toRaw} from 'vue'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 interface DynamicListProps {
   _title: string
@@ -61,7 +61,7 @@ interface DynamicList extends DynamicListProps {
 }
 
 const {CONS} = useApp()
-const settings = useSettingsStore()
+//const settings = useSettingsStore()
 const _props = defineProps<DynamicListProps>()
 const state: DynamicList = {..._props, _newItem: ''}
 
@@ -75,11 +75,9 @@ const mAddItem = async (item: string): Promise<void> => {
     }
   }
   if (state._store === CONS.SETTINGS.EX) {
-    await settings.setExchanges(toRaw(state._list))
-    await browser.storage.local.set({exchanges: toRaw(state._list)})
+    await browser.storage.local.set({sExchanges: toRaw(state._list)})
   } else if (state._store === CONS.SETTINGS.MP) {
-    await settings.setMarkets(toRaw(state._list))
-    await browser.storage.local.set({markets: toRaw(state._list)})
+    await browser.storage.local.set({sMarkets: toRaw(state._list)})
   }
   state._newItem = ''
 }
@@ -88,12 +86,10 @@ const mRemoveItem = async (n: number): Promise<void> => {
   if (n > 0) {
     if (state._store === CONS.SETTINGS.EX) {
       state._list.splice(n, 1)
-      await settings.setExchanges(toRaw(state._list))
-      await browser.storage.local.set({exchanges: toRaw(state._list)})
+      await browser.storage.local.set({sExchanges: toRaw(state._list)})
     } else if (state._store === CONS.SETTINGS.MP) {
       state._list.splice(n, 1)
-      await settings.setMarkets(toRaw(state._list))
-      await browser.storage.local.set({markets: toRaw(state._list)})
+      await browser.storage.local.set({sMarkets: toRaw(state._list)})
     }
   }
 }

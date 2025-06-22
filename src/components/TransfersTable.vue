@@ -69,7 +69,7 @@ import {useI18n} from 'vue-i18n'
 import {ref} from 'vue'
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 const {d, n, rt, t, tm} = useI18n()
 const {CONS} = useApp()

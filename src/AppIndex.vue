@@ -7,17 +7,22 @@
   -->
 <template>
   <v-app v-bind:flat="true">
-    <component v-bind:is="layout"></component>
+    <router-view name="title"></router-view>
+    <router-view name="header"></router-view>
+    <router-view name="info"></router-view>
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+    <router-view name="footer"></router-view>
   </v-app>
 </template>
 
 <script lang="ts" setup>
 import {useRecordsStore} from '@/stores/records'
 import {useSettingsStore} from '@/stores/settings'
-import {onBeforeMount, ref, toRaw, watchEffect} from 'vue'
+import {onBeforeMount, toRaw} from 'vue'
 import {useTheme} from 'vuetify'
-import {useApp} from '@/composables/useApp'
-import {useRoute} from 'vue-router'
+import {useApp} from '@/background'
 import {useRuntimeStore} from '@/stores/runtime'
 
 const settings = useSettingsStore()
@@ -25,60 +30,19 @@ const records = useRecordsStore()
 const runtime = useRuntimeStore()
 const theme = useTheme()
 const {CONS, getUI} = useApp()
-const layout = ref()
-const route = useRoute()
 
-watchEffect(
-  () => {
-    if (route.meta.layout === undefined) {
-      layout.value = 'DefaultLayout'
-    } else {
-      layout.value = `${route.meta.layout}Layout`
-    }
+browser.runtime.onMessage.addListener((message) => {
+  switch (message.type) {
+    case CONS.SET__SETTINGS_SKIN:
+      settings.setSkin(JSON.parse(message).data)
+      break
+    default:
   }
-)
+})
+
 onBeforeMount(async (): Promise<void> => {
   console.log('APP: onBeforeMount')
   const keyStrokeController: string[] = []
-  const onStorageChange = async (change: Record<string, browser.storage.StorageChange>): Promise<void> => {
-    console.info('APP: onStorageChange', change)
-    // TODO FIRST Option Instance, APP Instance Problem
-    switch (Object.keys(change)[0]) {
-      case 'sService':
-        await settings.setService({
-          name: change['sService'].newValue.name,
-          url: change['sService'].newValue.url,
-        })
-        break
-      case 'sSkin':
-        theme.global.name.value = change['sSkin'].newValue
-        console.error('APP: onStorageChange---------', change['sSkin'])
-        //await settings.setSkin(change['sSkin'].newValue, theme)
-        break
-      case 'sMarkets':
-        await settings.setMarkets(change['sMarkets'].newValue)
-        break
-      case 'sIndexes':
-        settings.setIndexes(change['sIndexes'].newValue)
-        break
-      case 'sMaterials':
-        settings.setMaterials(change['sMaterials'].newValue)
-        break
-      case 'sExchanges':
-        settings.setExchanges(change['sExchanges'].newValue)
-        const exchangesResponseString = await browser.runtime.sendMessage(JSON.stringify({
-          type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
-          data: change['sExchanges'].newValue,
-        }))
-        const exchangesResponse = JSON.parse(exchangesResponseString)
-        console.error('äääääää', exchangesResponse)
-        break
-      // case 'sExchanges':
-      //   settings.setExchangesStoreOnly(change['sExchanges'].newValue)
-      //   break
-      default:
-    }
-  }
   const onBeforeOnload = async (): Promise<void> => {
     console.log('APP: onBeforeOnload')
     const foundTabs = await browser.tabs.query({url: 'about:addons'})
@@ -94,6 +58,7 @@ onBeforeMount(async (): Promise<void> => {
       keyStrokeController.includes('Alt') &&
       ev.key === 't'
     ) {
+      // TODO sendMessage and set service!
       settings.setServiceStoreOnly({
         name: 'tgate',
         url: CONS.SERVICES.tgate.HOME,
@@ -109,11 +74,6 @@ onBeforeMount(async (): Promise<void> => {
   }
   const onKeyUp = (ev: KeyboardEvent): void => {
     keyStrokeController.splice(keyStrokeController.indexOf(ev.key), 1)
-  }
-
-  if (!browser.storage.onChanged.hasListener(onStorageChange)) {
-    // noinspection JSDeprecatedSymbols
-    browser.storage.onChanged.addListener(onStorageChange)
   }
   /* Listen to onKeyup, onKeyDown:
    * - set the service to tgate if ctrl + alt + t is pressed.
@@ -173,6 +133,5 @@ onBeforeMount(async (): Promise<void> => {
   runtime.setIndexes(indexes)
 })
 
-
-console.log('--- App.vue setup ---', window.location.href)
+console.log('--- AppIndex.vue setup ---', window.location.href)
 </script>

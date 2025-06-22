@@ -35,7 +35,7 @@
   "options_ui": {
     "browser_style": false,
     "open_in_tab": false,
-    "page": "/app.html#/options"
+    "page": "options.html"
   },
   "browser_specific_settings": {
     "gecko": {

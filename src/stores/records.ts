@@ -9,7 +9,7 @@ import {defineStore, type StoreDefinition} from 'pinia'
 import {useRuntimeStore} from '@/stores/runtime'
 import {useSettingsStore} from '@/stores/settings'
 import {toRaw} from 'vue'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 interface IRecordsStore {
   _dbi: IDBDatabase | null

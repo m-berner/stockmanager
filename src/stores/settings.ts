@@ -7,15 +7,9 @@
  */
 import {defineStore, type StoreDefinition} from 'pinia'
 import {type ThemeInstance} from 'vuetify'
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 
 interface ISettingsStore {
-  _service: IUrlWithName
-  _skin: string
-  _indexes: string[]
-  _materials: string[]
-  _markets: string[]
-  _exchanges: string[]
   _partner: boolean
   _items_per_page_transfers: number
   _items_per_page_stocks: number
@@ -25,36 +19,12 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
   state: (): ISettingsStore => {
     const {CONS} = useApp()
     return {
-      _service: CONS.DEFAULTS.STORAGE['sService'],
-      _skin: CONS.DEFAULTS.STORAGE['sSkin'],
-      _indexes: CONS.DEFAULTS.STORAGE['sIndexes'],
-      _materials: CONS.DEFAULTS.STORAGE['sMaterials'],
-      _markets: CONS.DEFAULTS.STORAGE['sMarkets'],
-      _exchanges: CONS.DEFAULTS.STORAGE['sExchanges'],
       _partner: CONS.DEFAULTS.STORAGE['sPartner'],
       _items_per_page_transfers: CONS.DEFAULTS.STORAGE['sItemsPerPageTransfers'],
       _items_per_page_stocks: CONS.DEFAULTS.STORAGE['sItemsPerPageStocks']
     }
   },
   getters: {
-    service(state: ISettingsStore) {
-      return state._service
-    },
-    skin(state: ISettingsStore) {
-      return state._skin
-    },
-    indexes(state: ISettingsStore) {
-      return state._indexes
-    },
-    materials(state: ISettingsStore) {
-      return state._materials
-    },
-    markets(state: ISettingsStore) {
-      return state._markets
-    },
-    exchanges(state: ISettingsStore) {
-      return state._exchanges
-    },
     partner(state: ISettingsStore) {
       return state._partner
     },
@@ -148,12 +118,12 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
       console.log('SETTINGS: loadStorageIntoStore')
       const response: IStorageLocal = await browser.storage.local.get()
       theme.global.name.value = response['sSkin'] ?? 'ocean'
-      this.setServiceStoreOnly(response['sService'])
-      this.setSkinStoreOnly(response['sSkin'], theme)
-      this.setIndexesStoreOnly(response['sIndexes'])
-      this.setMaterialsStoreOnly(response['sMaterials'])
-      this.setMarketsStoreOnly(response['sMarkets'])
-      this.setExchangesStoreOnly(response['sExchanges'])
+      // this.setServiceStoreOnly(response['sService'])
+      // this.setSkinStoreOnly(response['sSkin'], theme)
+      // this.setIndexesStoreOnly(response['sIndexes'])
+      // this.setMaterialsStoreOnly(response['sMaterials'])
+      // this.setMarketsStoreOnly(response['sMarkets'])
+      // this.setExchangesStoreOnly(response['sExchanges'])
       this.setPartnerStoreOnly(response['sPartner'])
       this.setItemsPerPageStocksStoreOnly(response['sItemsPerPageStocks'])
       this.setItemsPerPageTransfersStoreOnly(response['sItemsPerPageTransfers'])

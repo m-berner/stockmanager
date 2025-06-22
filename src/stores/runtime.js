@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { VForm } from 'vuetify/components';
-import { useApp } from '@/composables/useApp';
+import { useApp } from '@/background';
 export const useRuntimeStore = defineStore('runtime', {
     state: () => {
         return {

@@ -18,26 +18,26 @@
       <v-window-item v-bind:value="1">
         <v-row>
           <v-col cols="12" md="6" sm="6">
-            <v-radio-group v-model="settings.skin" column>
+            <v-radio-group v-model="state._skin" column>
               <h2>{{ t('optionsPage.capitals.skins') }}</h2>
               <v-radio
                 v-for="i in state._theme_keys.length"
                 v-bind:key="i"
                 v-bind:label="t(`optionsPage.themeNames.${state._theme_keys[i - 1]}`)"
                 v-bind:value="state._theme_keys[i - 1]"
-                v-on:click="settings.setSkin(state._theme_keys[i - 1], theme)"
+                v-on:click="setSkin(state._theme_keys[i - 1], theme)"
               ></v-radio>
             </v-radio-group>
           </v-col>
           <v-col cols="12" md="6" sm="6">
-            <v-radio-group v-model="settings.service.name" column>
+            <v-radio-group v-model="state._service.name" column>
               <h2>{{ t('optionsPage.capitals.services') }}</h2>
               <v-radio
                 v-for="i in state._service_keys.length"
                 v-bind:key="i"
                 v-bind:label="CONS.SERVICES[state._service_keys[i - 1]].NAME"
                 v-bind:value="state._service_keys[i - 1]"
-                v-on:click="settings.setService(service(i))"
+                v-on:click="setService(service(i))"
               ></v-radio>
             </v-radio-group>
           </v-col>
@@ -48,7 +48,7 @@
           <v-col cols="12" md="10" sm="10">
             <DynamicList
               v-bind:_label="t('optionsPage.markets.label')"
-              v-bind:_list="settings.markets"
+              v-bind:_list="state._markets"
               v-bind:_store="CONS.SETTINGS.MP"
               v-bind:_title="t('optionsPage.markets.title')"
             ></DynamicList>
@@ -61,25 +61,25 @@
             <v-checkbox
               v-for="i in group(state._index_keys.length)[0]"
               v-bind:key="i"
-              v-model="_indexes"
+              v-model="state._indexes"
               hide-details
               v-bind:label="CONS.SETTINGS.INDEXES[state._index_keys[i - 1]]"
               v-bind:value="state._index_keys[i - 1]"
-              v-on:click="settings.toggleIndexes(state._index_keys, i - 1)"
+              v-on:click="toggleIndexes(state._index_keys, i - 1)"
             ></v-checkbox>
           </v-col>
           <v-col>
             <v-checkbox
               v-for="i in group(state._index_keys.length)[1]"
               v-bind:key="i"
-              v-model="_indexes"
+              v-model="state._indexes"
               hide-details
               v-bind:label="
                     CONS.SETTINGS.INDEXES[state._index_keys[i - 1 + group(state._index_keys.length)[1]]]
                   "
               v-bind:value="state._index_keys[i - 1 + group(state._index_keys.length)[1]]"
               v-on:click="
-                    settings.toggleIndexes(state._index_keys, i - 1 + group(state._index_keys.length)[1])
+                    toggleIndexes(state._index_keys, i - 1 + group(state._index_keys.length)[1])
                   "
             ></v-checkbox>
           </v-col>
@@ -91,18 +91,18 @@
             <v-checkbox
               v-for="i in group(state._material_keys.length)[0]"
               v-bind:key="i"
-              v-model="_materials"
+              v-model="state._materials"
               hide-details
               v-bind:label="t(`optionsPage.materials.${state._material_keys[i - 1]}`)"
               v-bind:value="state._material_keys[i - 1]"
-              v-on:click="settings.toggleMaterials(state._material_keys, i - 1)"
+              v-on:click="toggleMaterials(state._material_keys, i - 1)"
             ></v-checkbox>
           </v-col>
           <v-col>
             <v-checkbox
               v-for="i in group(state._material_keys.length)[1]"
               v-bind:key="i"
-              v-model="_materials"
+              v-model="state._materials"
               hide-details
               v-bind:label="
                     t(
@@ -113,7 +113,7 @@
                   "
               v-bind:value="state._material_keys[i - 1 + group(state._material_keys.length)[0]]"
               v-on:click="
-                    settings.toggleMaterials(
+                    toggleMaterials(
                       state._material_keys,
                       i - 1 + group(state._material_keys.length)[0]
                     )
@@ -127,7 +127,7 @@
           <v-col cols="12" md="10" sm="10">
             <DynamicList
               v-bind:_label="t('optionsPage.exchanges.label')"
-              v-bind:_list="settings.exchanges"
+              v-bind:_list="state._exchanges"
               v-bind:_placeholder="CONS.DEFAULTS.STORAGE['sExchanges'][0]"
               v-bind:_store="CONS.SETTINGS.EX"
               v-bind:_title="t('optionsPage.exchanges.title')"
@@ -142,11 +142,11 @@
 
 <script lang="ts" setup>
 import DynamicList from '@/components/DynamicList.vue'
-import {useSettingsStore} from '@/stores/settings'
+//import {useSettingsStore} from '@/stores/settings'
 import {useI18n} from 'vue-i18n'
-import {useTheme} from 'vuetify'
-import {storeToRefs} from 'pinia'
-import {useApp} from '@/composables/useApp'
+import {type ThemeInstance, useTheme} from 'vuetify'
+//import {storeToRefs} from 'pinia'
+import {useApp} from '@/background'
 import {onMounted, reactive, toRaw} from 'vue'
 
 interface IOptionsPage {
@@ -156,14 +156,20 @@ interface IOptionsPage {
   _service_keys: string[]
   _index_keys: string[]
   _material_keys: string[]
+  _service: { name: string, url: string }
+  _skin: string
+  _materials: string[]
+  _markets: string[]
+  _indexes: string[]
+  _exchanges: string[]
 }
 
 const {t, tm} = useI18n()
 const {CONS} = useApp()
 const {group} = useApp()
-const settings = useSettingsStore()
+//const settings = useSettingsStore()
 /* NOTE: the destructured variables are reactive! */
-const {_indexes, _materials} = storeToRefs(settings)
+//const {_indexes, _materials} = storeToRefs(settings)
 const theme = useTheme()
 const state: IOptionsPage = reactive({
   _tab: 0,
@@ -171,7 +177,13 @@ const state: IOptionsPage = reactive({
   _theme_keys: [],
   _service_keys: [],
   _index_keys: [],
-  _material_keys: []
+  _material_keys: [],
+  _service: {name: '', url: ''},
+  _skin: '',
+  _materials: [],
+  _markets: [],
+  _indexes: [],
+  _exchanges: []
 })
 
 const service = (i: number) => {
@@ -180,11 +192,41 @@ const service = (i: number) => {
     url: CONS.SERVICES[state._service_keys[i - 1]].HOME
   }
 }
+const toggleMaterials = async (keys: string[], n: number): Promise<void> => {
+  let ind: number
+  const ar = [...state._materials]
+  if ((ind = ar.indexOf(keys[n])) >= 0) {
+    ar.splice(ind, 1)
+  } else {
+    ar.push(keys[n])
+  }
+  state._materials = ar
+  await browser.storage.local.set({materials: ar})
+}
+const toggleIndexes = async (keys: string[], n: number): Promise<void> => {
+  let ind: number
+  const ar = [...state._indexes]
+  if ((ind = ar.indexOf(keys[n])) >= 0) {
+    ar.splice(ind, 1)
+  } else {
+    ar.push(keys[n])
+  }
+  state._indexes = ar
+  await browser.storage.local.set({indexes: ar})
+}
+const setService = async (value: { name: string; url: string }): Promise<void> => {
+  state._service = value
+  await browser.storage.local.set({sService: value})
+}
+const setSkin = async (value: string, theme: ThemeInstance): Promise<void> => {
+  theme.global.name.value = value // NOTE: change theme options instance
+  state._skin = value
+  await browser.storage.local.set({sSkin: value})
+}
 
-onMounted(() => {
-  console.log('OPTIONSPAGE: onMounted', settings)
-  // TODO mount with values from localStorage!!! adjust state ...
-  // All communication has to be done via localStorage...
+onMounted(async () => {
+  console.log('OPTIONSPAGE: onMounted')
+  const storageLocal: IStorageLocal = await browser.storage.local.get()
   const labelsOptionsPage: Record<string, string> = tm('optionsPage')
   const serviceKeys = Object.keys(CONS.SERVICES)
   serviceKeys.pop()
@@ -195,7 +237,13 @@ onMounted(() => {
   state._service_keys = serviceKeys
   state._index_keys = Object.keys(CONS.SETTINGS.INDEXES)
   state._material_keys = Object.keys(toRaw(labelsOptionsPage.materials))
+  state._service = storageLocal['sService']
+  state._skin = storageLocal['sSkin']
+  state._indexes = storageLocal['sIndexes']
+  state._exchanges = storageLocal['sExchanges']
+  state._materials = storageLocal['sMaterials']
+  state._markets = storageLocal['sMarkets']
 })
 
-console.log('--- OptionsPage.vue setup ---')
+console.log('--- OptionsIndex.vue setup ---')
 </script>

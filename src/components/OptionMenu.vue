@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useApp} from '@/composables/useApp'
+import {useApp} from '@/background'
 import {useRecordsStore} from '@/stores/records'
 import {useI18n} from 'vue-i18n'
 import {useRuntimeStore} from '@/stores/runtime'

@@ -81,7 +81,7 @@ const helpPageToolbar: Record<string, string>[] = tm('helpPage.toolBar')
 const helpPageCompanybar: Record<string, string>[] = tm('helpPage.companyBar')
 const helpPageTransferbar: Record<string, string>[] = tm('helpPage.transferBar')
 
-console.log('--- HelpPage.vue setup ---')
+console.log('--- HelpContent.vue setup ---')
 </script>
 
 <style scoped>
