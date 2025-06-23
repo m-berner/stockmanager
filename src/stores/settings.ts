@@ -68,7 +68,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
   actions: {
     async setService(value: { name: string; url: string }): Promise<void> {
       this._service = value
-      await browser.storage.local.set({service: value})
+      await browser.storage.local.set({sService: value})
     },
     setServiceStoreOnly(value: { name: string; url: string }) {
       this._service = value
@@ -76,7 +76,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     async setSkin(value: string, theme: ThemeInstance): Promise<void> {
       theme.global.name.value = value // NOTE: change theme options instance
       this._skin = value
-      await browser.storage.local.set({skin: value})
+      await browser.storage.local.set({sSkin: value})
     },
     setSkinStoreOnly(value: string) {
       this._skin = value
@@ -90,7 +90,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
         ar.push(keys[n])
       }
       this._indexes = ar
-      await browser.storage.local.set({indexes: ar})
+      await browser.storage.local.set({sIndexes: ar})
     },
     setIndexesStoreOnly(value: string[] | boolean) {
       this._indexes = value
@@ -100,14 +100,14 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     },
     async setMarkets(value: string[] | boolean): Promise<void> {
       this._markets = value
-      await browser.storage.local.set({markets: value})
+      await browser.storage.local.set({sMarkets: value})
     },
     setMarketsStoreOnly(value: string[] | boolean) {
       this._markets = value
     },
     async setExchanges(value: string[] | boolean): Promise<void> {
       this._exchanges = value
-      await browser.storage.local.set({exchanges: value})
+      await browser.storage.local.set({sExchanges: value})
     },
     setExchangesStoreOnly(value: string[] | boolean) {
       this._exchanges = value
@@ -115,21 +115,21 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     async togglePartner(): Promise<void> {
       const currentPartner = this._partner
       this._partner = !currentPartner
-      await browser.storage.local.set({partner: !currentPartner})
+      await browser.storage.local.set({sPartner: !currentPartner})
     },
     setPartnerStoreOnly(value: string[] | boolean) {
       this._partner = value
     },
     async setItemsPerPageTransfers(value: number): Promise<void> {
       this._items_per_page_transfers = value
-      await browser.storage.local.set({itemsPerPageTransfers: value})
+      await browser.storage.local.set({sItemsPerPageTransfers: value})
     },
     setItemsPerPageTransfersStoreOnly(value: number) {
       this._items_per_page_transfers = value
     },
     async setItemsPerPageStocks(value: number): Promise<void> {
       this._items_per_page_stocks = value
-      await browser.storage.local.set({itemsPerPageStocks: value})
+      await browser.storage.local.set({sItemsPerPageStocks: value})
     },
     setItemsPerPageStocksStoreOnly(value: number) {
       this._items_per_page_stocks = value
@@ -157,7 +157,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
         ar.push(keys[n])
       }
       this._materials = ar
-      await browser.storage.local.set({materials: ar})
+      await browser.storage.local.set({sMaterials: ar})
     }
   }
 })

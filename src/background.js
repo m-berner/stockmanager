@@ -768,6 +768,7 @@ export const useApp = () => {
             transfer.cSoli = transfer.cSoli ?? 0;
             transfer.cDate = transfer.cDate > 0 ? transfer.cDate - offset() : 0;
             transfer.cExDay = transfer.cExDay > 0 ? transfer.cExDay - offset() : 0;
+            transfer.cType = transfer.cCount < 0 ? 2 : transfer.cType;
             const props = Object.keys(transfer);
             for (let i = 0; i < props.length; i++) {
                 if (!CONS.DB.STORES.TC.includes(props[i])) {

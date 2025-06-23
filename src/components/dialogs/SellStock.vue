@@ -142,7 +142,7 @@ const ok = async (): Promise<void> => {
     cFTax: -0,
     cTax: -state._tax,
     cSoli: -state._soli,
-    cType: CONS.DB.RECORD_TYPES.BUY,
+    cType: CONS.DB.RECORD_TYPES.SELL,
     cMarketPlace: state._market_place,
     cDescription: ''
   }

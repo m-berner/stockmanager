@@ -6,7 +6,6 @@
   -- Copyright (c) 2014-2025, Martin Berner, stockmanager@gmx.de. All rights reserved.
   -->
 <template>
-  <v-sheet class="sheet" color="surface-light">
     <v-container>
       <v-row justify="center">
         <v-col cols="8" s="8">
@@ -69,7 +68,6 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-sheet>
 </template>
 
 <script lang="ts" setup>
@@ -83,10 +81,3 @@ const helpPageTransferbar: Record<string, string>[] = tm('helpPage.transferBar')
 
 console.log('--- HelpContent.vue setup ---')
 </script>
-
-<style scoped>
-.sheet {
-  overflow: auto;
-  height: calc(100vh - 300px);
-}
-</style>

@@ -76,15 +76,11 @@ const ok = async (): Promise<void> => {
   })
   records.loadBkupObjectIntoStore()
   records.setActiveStocksPage(1)
-  await records.updateWrapper()
   const result = await records.storeIntoDatabase()
+  await records.updateWrapper()
   if (result !== '') {
-    console.info('IMPORTDATABASE: onLoad', result)
-    runtime.toggleVisibility()
-    //return Promise.resolve()
-  } else {
     notice(['IMPORTDATABASE: onLoad', result])
-    //return Promise.reject('ERROR: database could not be loaded!')
+    console.info('IMPORTDATABASE: onLoad', result)
   }
 }
 const title = (): string => {
@@ -99,6 +95,6 @@ onMounted(() => {
   console.log('IMPORTDATABASE: onMounted')
   runtime.setIsOk(true)
 })
-
+// TODO Aktienkauf cType? Verkauf cType?
 console.log('--- ImportDatabase.vue setup ---')
 </script>

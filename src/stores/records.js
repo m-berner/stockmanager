@@ -185,7 +185,7 @@ export const useRecordsStore = defineStore('records', {
             });
         },
         evaluateTransfers(year = CONS.DEFAULTS.YEAR) {
-            console.info('RECORDS: evaluateTransfers', year);
+            console.info('RECORDS: evaluateTransfers', year, this.transfers);
             const oldestTransferFirst = [...this._transfers.all];
             oldestTransferFirst.sort((a, b) => {
                 return (a.mSortDate ?? 0) - (b.mSortDate ?? 0);
@@ -310,18 +310,18 @@ export const useRecordsStore = defineStore('records', {
             let stock;
             let transfer;
             let addStock;
-            let newTransfer;
+            let addTransfer;
             let currentStock;
             for (stock of this._bkup_object.stocks) {
                 addStock = migrateStock({ ...stock });
                 this._loadStockIntoStore(addStock);
             }
             for (transfer of this._bkup_object.transfers) {
-                newTransfer = migrateTransfer({ ...transfer });
+                addTransfer = migrateTransfer({ ...transfer });
                 currentStock = this._stocks.all.filter((stock) => {
-                    return stock.cID === newTransfer.cStockID;
+                    return stock.cID === addTransfer.cStockID;
                 });
-                this._loadTransferIntoStore(currentStock, newTransfer);
+                this._loadTransferIntoStore(currentStock, addTransfer);
             }
             this.evaluateTransfers();
             this._sortActiveStocks();
@@ -391,10 +391,10 @@ export const useRecordsStore = defineStore('records', {
                     type: CONS.FETCH_API.ASK__DATES_DATA,
                     data: readISIN.isinDates
                 }));
-                const dateResponse = JSON.parse(dateResponseString);
-                for (let i = 0; i < dateResponse.data.length; i++) {
-                    const index = this._getActiveStocksIndexById(dateResponse.data[i].key);
-                    this.setDates(index, dateResponse.data[i].value);
+                const dateResponse = JSON.parse(dateResponseString).data;
+                for (let i = 0; i < dateResponse.length; i++) {
+                    const index = this._getActiveStocksIndexById(dateResponse[i].key);
+                    this.setDates(index, dateResponse[i].value);
                 }
                 await this.storeIntoDatabase('update');
             }
@@ -456,7 +456,7 @@ export const useRecordsStore = defineStore('records', {
             return new Promise((resolve, reject) => {
                 const requestTransaction = this._dbi.transaction([CONS.DB.STORES.S, CONS.DB.STORES.T], 'readonly');
                 const onComplete = async () => {
-                    console.info('RECORDS: loadDatabaseIntoStore: all records loaded!');
+                    console.info('RECORDS: loadDatabaseIntoStore: all records loaded!', this._transfers.all);
                     this.evaluateTransfers();
                     this._sortActiveStocks();
                     this.setActiveStocksPage(1);
@@ -509,15 +509,17 @@ export const useRecordsStore = defineStore('records', {
             console.info('RECORDS: storeIntoDatabase', store);
             return new Promise((resolve, reject) => {
                 let requestAddStock;
+                let requestUpdateStock;
                 let requestAddTransfer;
                 const onComplete = () => {
-                    requestAddStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
                     if (store === 'load') {
+                        requestAddStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
                         requestAddTransfer.removeEventListener(CONS.EVENTS.ERR, onError, false);
                         notice(['All stocks and transfers are added to the database!']);
                         resolve('RECORDS: storeIntoDatabase: all stocks and transfers are added to the database!');
                     }
                     else {
+                        requestUpdateStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
                         resolve('RECORDS: storeIntoDatabase: stocks updated in database!');
                     }
                 };
@@ -533,6 +535,8 @@ export const useRecordsStore = defineStore('records', {
                 requestTransaction.addEventListener(CONS.EVENTS.ABORT, onAbort, CONS.SYSTEM.ONCE);
                 for (let i = 0; i < this._stocks.all.length; i++) {
                     const stock = { ...this._stocks.all[i] };
+                    delete stock.mAskDates;
+                    delete stock.mDeleteable;
                     delete stock.mBuyValue;
                     delete stock.mRealBuyValue;
                     delete stock.mPortfolio;
@@ -547,19 +551,20 @@ export const useRecordsStore = defineStore('records', {
                     delete stock.mChange;
                     delete stock.mEuroChange;
                     if (store === 'load') {
-                        requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).add({ ...stock });
+                        requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).add(stock);
+                        requestAddStock.addEventListener(CONS.EVENTS.ERR, onError, false);
                     }
                     else {
-                        requestAddStock = requestTransaction.objectStore(CONS.DB.STORES.S).put({ ...stock });
+                        requestUpdateStock = requestTransaction.objectStore(CONS.DB.STORES.S).put(stock);
+                        requestUpdateStock.addEventListener(CONS.EVENTS.ERR, onError, false);
                     }
-                    requestAddStock.addEventListener(CONS.EVENTS.ERR, onError, false);
                 }
                 if (store === 'load') {
                     for (let i = 0; i < this._transfers.all.length; i++) {
                         const transfer = { ...this._transfers.all[i] };
                         delete transfer.mCompany;
                         delete transfer.mSortDate;
-                        requestAddTransfer = requestTransaction.objectStore(CONS.DB.STORES.T).add({ ...transfer });
+                        requestAddTransfer = requestTransaction.objectStore(CONS.DB.STORES.T).add(transfer);
                         requestAddTransfer.addEventListener(CONS.EVENTS.ERR, onError, false);
                     }
                 }
