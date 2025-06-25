@@ -181,11 +181,9 @@ const ok = async (): Promise<void> => {
     notice(['CONFIGSTOCK: validation failed!'])
   }
 }
-const title = () => {
-  return t('dialogs.configStock.title', {
+const title = t('dialogs.configStock.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return ''
 }

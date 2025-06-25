@@ -39,11 +39,9 @@ const ok = async (): Promise<void> => {
   await records.deleteStock(records.stocks.active[records.stocks.active_index].cID)
   runtime.toggleVisibility()
 }
-const title = () => {
-  return t('dialogs.deleteStock.title', {
+const title = t('dialogs.deleteStock.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return 'align-center justify-content'
 }

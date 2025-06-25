@@ -162,11 +162,9 @@ const ok = async (): Promise<void> => {
     notice(['ADDDIVIDEND: invalid input'])
   }
 }
-const title = () => {
-  return t('dialogs.addDividend.title', {
+const title = t('dialogs.addDividend.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return 'align-center justify-content'
 }

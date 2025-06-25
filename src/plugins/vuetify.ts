@@ -44,7 +44,8 @@ import {
   mdiPlus,
   mdiReload,
   mdiShieldAccount,
-  mdiTableLargeRemove,
+  mdiTableRemove,
+  mdiTableEdit,
   mdiTransfer
 } from '@mdi/js'
 
@@ -173,7 +174,8 @@ export default<IVuetify> {
         remove: mdiDelete,
         check: mdiCheck,
         dots: mdiDotsVertical,
-        tableRemove: mdiTableLargeRemove,
+        tableRemove: mdiTableRemove,
+        tableEdit: mdiTableEdit,
         removeDocument: mdiFileDocumentMinus,
         editDocument: mdiFileDocumentEdit,
         help: mdiHelpCircle,

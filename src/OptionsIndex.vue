@@ -142,10 +142,8 @@
 
 <script lang="ts" setup>
 import DynamicList from '@/components/DynamicList.vue'
-//import {useSettingsStore} from '@/stores/settings'
 import {useI18n} from 'vue-i18n'
 import {type ThemeInstance, useTheme} from 'vuetify'
-//import {storeToRefs} from 'pinia'
 import {useApp} from '@/background'
 import {onMounted, reactive, toRaw} from 'vue'
 
@@ -167,9 +165,6 @@ interface IOptionsPage {
 const {t, tm} = useI18n()
 const {CONS} = useApp()
 const {group} = useApp()
-//const settings = useSettingsStore()
-/* NOTE: the destructured variables are reactive! */
-//const {_indexes, _materials} = storeToRefs(settings)
 const theme = useTheme()
 const state: IOptionsPage = reactive({
   _tab: 0,
@@ -200,8 +195,9 @@ const toggleMaterials = async (keys: string[], n: number): Promise<void> => {
   } else {
     ar.push(keys[n])
   }
+  console.error('SDFSASF', ar)
   state._materials = ar
-  await browser.storage.local.set({materials: ar})
+  await browser.storage.local.set({sMaterials: ar})
 }
 const toggleIndexes = async (keys: string[], n: number): Promise<void> => {
   let ind: number
@@ -212,7 +208,7 @@ const toggleIndexes = async (keys: string[], n: number): Promise<void> => {
     ar.push(keys[n])
   }
   state._indexes = ar
-  await browser.storage.local.set({indexes: ar})
+  await browser.storage.local.set({sIndexes: ar})
 }
 const setService = async (value: { name: string; url: string }): Promise<void> => {
   state._service = value

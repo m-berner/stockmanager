@@ -55,9 +55,7 @@ const ok = async (): Promise<void> => {
   await records.updateStock(state._selected)
   runtime.toggleVisibility()
 }
-const title = () => {
-  return t('dialogs.fadeinStock.title')
-}
+const title = t('dialogs.fadeinStock.title')
 const classes = () => {
   return ''
 }

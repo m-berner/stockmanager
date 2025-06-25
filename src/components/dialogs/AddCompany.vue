@@ -111,9 +111,7 @@ const ok = async (): Promise<void> => {
     runtime.toggleVisibility(CONS.DIALOGS.ADDCOMPANY)
   }
 }
-const title = () => {
-  return t('dialogs.addStock.title')
-}
+const title = t('dialogs.addStock.title')
 const classes = () => {
   return ''
 }

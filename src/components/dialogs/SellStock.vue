@@ -159,11 +159,9 @@ const ok = async (): Promise<void> => {
     runtime.toggleVisibility()
   }
 }
-const title = () => {
-  return t('dialogs.sellStock.title', {
+const title = t('dialogs.sellStock.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return ''
 }

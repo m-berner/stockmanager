@@ -582,7 +582,6 @@ export const useApp = (): IUseApp => {
       ADDDIVIDEND: 'AddDividend',
       SHOWDIVIDEND: 'ShowDividend',
       CONFIGSTOCK: 'ConfigCompany',
-      // TODO infinity icon
       //
       DELETETRANSFER: 'DeleteTransfer',
       UPDATETRANSFER: 'UpdateTransfer'
@@ -1008,7 +1007,9 @@ export const useApp = (): IUseApp => {
       }
     }
   })
-  // TODO sync en-US.json
+  // TODO Update button rates
+  // TODO change setting -> reload infobar, new currency
+  // TODO daily changes small big
   const offset = (): number => {
     return new Date().getTimezoneOffset() * 60000
     // - 7.200.000 we are UTC/GMT + 2

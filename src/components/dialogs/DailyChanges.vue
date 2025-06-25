@@ -118,13 +118,12 @@ const getDailyChanges = async (): Promise<void> => {
   })
   state._progress = false
 }
-const title = () => {
+let title = ''
   if (runtime.changesMode === CONS.DIALOGS.DAILYCHANGES) {
-    return t('dialogs.dailyChanges.title')
+    title = t('dialogs.dailyChanges.title')
   } else {
-    return t('dialogs.dailyChangesAll.title')
+    title = t('dialogs.dailyChangesAll.title')
   }
-}
 const classes = () => {
   return ''
 }

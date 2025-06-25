@@ -125,9 +125,7 @@ const ok = () => {
     })
   runtime.toggleVisibility()
 }
-const title = () => {
-  return t('dialogs.exportDatabase.title')
-}
+const title = t('dialogs.exportDatabase.title')
 const classes = () => {
   return ''
 }

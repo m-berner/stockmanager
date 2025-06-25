@@ -141,11 +141,9 @@ const ok = async (): Promise<void> => {
     notice(['BUYSTOCK: invalid input'])
   }
 }
-const title = () => {
-  return t('dialogs.buyStock.title', {
+const title = t('dialogs.buyStock.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return ''
 }

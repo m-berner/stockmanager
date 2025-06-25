@@ -152,33 +152,39 @@
     ],
     "menuItems": [
       {
+        "id": "DeleteStock",
         "title": "Delete company",
         "icon": "$tableRemove"
       },
       {
+        "id": "BuyStock",
         "title": "Buy stocks",
         "icon": "$tableRemove"
       },
       {
+        "id": "SellStock",
         "title": "Sell stocks",
         "icon": "$tableRemove"
       },
       {
+        "id": "AddDividend",
         "title": "New dividend",
         "icon": "$tableRemove"
       },
       {
+        "id": "ShowDividend",
         "title": "Dividend overview",
         "icon": "$tableRemove"
       },
       {
+        "id": "ConfigCompany",
         "title": "Configure company",
         "icon": "$tableRemove"
       },
       {
+        "id": "ExternalLink",
         "title": "Open external link",
-        "icon": "$tableRemove",
-        "url": ""
+        "icon": "$tableRemove"
       }
     ],
     "noDataText": "No entries found. ",
@@ -280,10 +286,12 @@
     ],
     "menuItems": [
       {
+        "id": "DeleteTransfer",
         "title": "Delete booking",
         "icon": "$tableRemove"
       },
       {
+        "id": "UpdateTransfer",
         "title": "Correct booking",
         "icon": "$close"
       }

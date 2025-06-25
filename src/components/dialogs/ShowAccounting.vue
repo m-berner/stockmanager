@@ -165,9 +165,7 @@ const onUpdate = (): void => {
   state._earnings = a.earnings - b.earnings
   state._deposits = a.deposits - b.deposits
 }
-const title = () => {
-  return t('dialogs.showAccounting.title')
-}
+const title = t('dialogs.showAccounting.title')
 const classes = () => {
   return ''
 }

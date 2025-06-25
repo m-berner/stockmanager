@@ -139,9 +139,7 @@ const ok = async (): Promise<void> => {
     notice(['ADDWITHDRAWAL: Invalid date'])
   }
 }
-const title = () => {
-  return t('dialogs.addWithdrawal.title')
-}
+const title = t('dialogs.addWithdrawal.title')
 const classes = () => {
   return ''
 }

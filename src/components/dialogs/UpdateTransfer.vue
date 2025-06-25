@@ -210,9 +210,7 @@ const ok = async (): Promise<void> => {
     notice(['UPDATETRANSFER: invalid input'])
   }
 }
-const title = () => {
-  return t('dialogs.updateTransfer.title')
-}
+const title = t('dialogs.updateTransfer.title')
 const classes = () => {
   return ''
 }

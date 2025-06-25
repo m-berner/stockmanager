@@ -159,32 +159,32 @@
       {
         "id": "BuyStock",
         "title": "Aktien kaufen",
-        "icon": "$tableRemove"
+        "icon": "$buyStock"
       },
       {
         "id": "SellStock",
         "title": "Aktien verkaufen",
-        "icon": "$tableRemove"
+        "icon": "$sellStock"
       },
       {
         "id": "AddDividend",
         "title": "Neue Dividende",
-        "icon": "$tableRemove"
+        "icon": "$addDividend"
       },
       {
         "id": "ShowDividend",
         "title": "Dividenden Übersicht",
-        "icon": "$tableRemove"
+        "icon": "$showDividend"
       },
       {
         "id": "ConfigCompany",
         "title": "Unternehmen konfigurieren",
-        "icon": "$tableRemove"
+        "icon": "$tableEdit"
       },
       {
         "id": "ExternalLink",
         "title": "Externen Link öffnen",
-        "icon": "$tableRemove"
+        "icon": "$link"
       }
     ],
     "noDataText": "Keine Einträge gefunden. Importieren Sie eine Datenbank oder legen Sie manuell neue Einträge an.",
@@ -293,7 +293,7 @@
       {
         "id": "UpdateTransfer",
         "title": "Buchung korrigieren",
-        "icon": "$close"
+        "icon": "$tableEdit"
       }
     ],
     "noDataText": "Keine Einträge gefunden.",

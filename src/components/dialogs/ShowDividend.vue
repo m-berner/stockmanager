@@ -33,11 +33,9 @@ const {d, n, t} = useI18n()
 const records = useRecordsStore()
 const runtime = useRuntimeStore()
 
-const title = () => {
-  return t('dialogs.viewDividend.title', {
+const title = t('dialogs.viewDividend.title', {
     company: records.stocks.active[records.stocks.active_index].cCompany
   })
-}
 const classes = () => {
   return ''
 }

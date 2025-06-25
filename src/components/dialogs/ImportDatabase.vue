@@ -83,9 +83,7 @@ const ok = async (): Promise<void> => {
     console.info('IMPORTDATABASE: onLoad', result)
   }
 }
-const title = (): string => {
-  return t('dialogs.importDatabase.title')
-}
+const title = t('dialogs.importDatabase.title')
 const classes = (): string => {
   return ''
 }
@@ -95,6 +93,6 @@ onMounted(() => {
   console.log('IMPORTDATABASE: onMounted')
   runtime.setIsOk(true)
 })
-// TODO Aktienkauf cType? Verkauf cType?
+
 console.log('--- ImportDatabase.vue setup ---')
 </script>

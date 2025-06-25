@@ -141,9 +141,7 @@ const ok = async (): Promise<void> => {
     notice(['ADDDEPOSIT: invalid input'])
   }
 }
-const title = () => {
-  return t('dialogs.addDeposit.title')
-}
+const title = t('dialogs.addDeposit.title')
 const classes = () => {
   return ''
 }

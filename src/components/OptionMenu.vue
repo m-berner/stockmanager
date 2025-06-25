@@ -53,7 +53,7 @@ interface PropsOptionMenu {
 
 const _props = defineProps<PropsOptionMenu>()
 const {rt} = useI18n()
-const {CONS} = useApp()
+const {CONS, notice} = useApp()
 const records = useRecordsStore()
 const runtime = useRuntimeStore()
 
@@ -73,6 +73,14 @@ const onIconClick = async (ev: Event): Promise<void> => {
       case CONS.DIALOGS.BUYSTOCK:
         runtime.setTeleport({
           dialogName: CONS.DIALOGS.BUYSTOCK,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
+        break
+      case CONS.DIALOGS.SELLSTOCK:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.SELLSTOCK,
           showOkButton: true,
           showOptionDialog: true,
           showHeaderDialog: false
@@ -119,7 +127,12 @@ const onIconClick = async (ev: Event): Promise<void> => {
         })
         break
       case 'ExternalLink':
-        console.error('SFDSDFSFSFSFSF-----------')
+        const stockUrl = records.stocks.active[records.stocks.active_index].cURL
+        if (stockUrl === '') {
+          notice(['No URL available'])
+        } else {
+          window.open(stockUrl, '_blank', 'noreferrer')
+        }
         break
       default:
         loop += 1

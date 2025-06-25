@@ -37,9 +37,7 @@ const ok = async (): Promise<void> => {
   }
   runtime.toggleVisibility('')
 }
-const title = () => {
-  return t('dialogs.deleteTransfer.title')
-}
+const title = t('dialogs.deleteTransfer.title')
 const classes = () => {
   return 'align-center justify-content'
 }

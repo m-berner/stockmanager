@@ -2,7 +2,7 @@ import {} from 'vue';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import { mdiBasketPlus, mdiBasketMinus, mdiBasketFill, mdiGiftOutline, mdiHandshake, mdiFileCog, mdiCashPlus, mdiCashMinus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiCalculator, mdiCheck, mdiClose, mdiCog, mdiCopyright, mdiCurrencyEur, mdiDatabaseExport, mdiDatabaseImport, mdiDelete, mdiDomainPlus, mdiDomainRemove, mdiDomain, mdiDotsVertical, mdiEmail, mdiFileDocumentEdit, mdiFileDocumentMinus, mdiHelpCircle, mdiHome, mdiImage, mdiInfinity, mdiMagnify, mdiPlus, mdiReload, mdiShieldAccount, mdiTableLargeRemove, mdiTransfer } from '@mdi/js';
+import { mdiBasketPlus, mdiBasketMinus, mdiBasketFill, mdiGiftOutline, mdiHandshake, mdiFileCog, mdiCashPlus, mdiCashMinus, mdiChartTimelineVariant, mdiChartTimelineVariantShimmer, mdiCalculator, mdiCheck, mdiClose, mdiCog, mdiCopyright, mdiCurrencyEur, mdiDatabaseExport, mdiDatabaseImport, mdiDelete, mdiDomainPlus, mdiDomainRemove, mdiDomain, mdiDotsVertical, mdiEmail, mdiFileDocumentEdit, mdiFileDocumentMinus, mdiHelpCircle, mdiHome, mdiImage, mdiInfinity, mdiMagnify, mdiPlus, mdiReload, mdiShieldAccount, mdiTableRemove, mdiTableEdit, mdiTransfer } from '@mdi/js';
 export default {
     vuetify: createVuetify({
         theme: {
@@ -124,7 +124,8 @@ export default {
                 remove: mdiDelete,
                 check: mdiCheck,
                 dots: mdiDotsVertical,
-                tableRemove: mdiTableLargeRemove,
+                tableRemove: mdiTableRemove,
+                tableEdit: mdiTableEdit,
                 removeDocument: mdiFileDocumentMinus,
                 editDocument: mdiFileDocumentEdit,
                 help: mdiHelpCircle,
