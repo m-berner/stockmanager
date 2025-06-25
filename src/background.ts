@@ -575,14 +575,17 @@ export const useApp = (): IUseApp => {
       EXPORTDB: 'exportdb',
       IMPORTDB: 'importdb',
       SHOWACCOUNTING: 'showaccouting',
-      DELETETRANSFER: 'deletetransfer',
-      UPDATETRANSFER: 'updatetransfer',
-      DELETESTOCK: 'deletestock',
-      BUYSTOCK: 'buystock',
-      SELLSTOCK: 'sellstock',
-      ADDDIVIDEND: 'adddividend',
-      SHOWDIVIDEND: 'showdividend',
-      CONFIGSTOCK: 'configstock'
+      //
+      DELETESTOCK: 'DeleteStock',
+      BUYSTOCK: 'BuyStock',
+      SELLSTOCK: 'SellStock',
+      ADDDIVIDEND: 'AddDividend',
+      SHOWDIVIDEND: 'ShowDividend',
+      CONFIGSTOCK: 'ConfigCompany',
+      // TODO infinity icon
+      //
+      DELETETRANSFER: 'DeleteTransfer',
+      UPDATETRANSFER: 'UpdateTransfer'
     },
     EVENTS: {
       ABORT: 'abort',
@@ -1005,6 +1008,7 @@ export const useApp = (): IUseApp => {
       }
     }
   })
+  // TODO sync en-US.json
   const offset = (): number => {
     return new Date().getTimezoneOffset() * 60000
     // - 7.200.000 we are UTC/GMT + 2
@@ -1520,7 +1524,6 @@ const onInstall = (): void => {
   dbOpenRequest.addEventListener(CONS.EVENTS.SUC, onSuccess, CONS.SYSTEM.ONCE)
   dbOpenRequest.addEventListener(CONS.EVENTS.UPG, onUpgradeNeeded, CONS.SYSTEM.ONCE)
 }
-// TODO export correction? or add record correction? repair database!
 const onAppMessage = async (msg: object): Promise<unknown> => {
   console.info('BACKGROUND: onMessage', msg)
   const request = JSON.parse(msg.toString())

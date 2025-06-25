@@ -152,33 +152,39 @@
     ],
     "menuItems": [
       {
+        "id": "DeleteStock",
         "title": "Unternehmen löschen",
         "icon": "$tableRemove"
       },
       {
+        "id": "BuyStock",
         "title": "Aktien kaufen",
         "icon": "$tableRemove"
       },
       {
+        "id": "SellStock",
         "title": "Aktien verkaufen",
         "icon": "$tableRemove"
       },
       {
+        "id": "AddDividend",
         "title": "Neue Dividende",
         "icon": "$tableRemove"
       },
       {
+        "id": "ShowDividend",
         "title": "Dividenden Übersicht",
         "icon": "$tableRemove"
       },
       {
+        "id": "ConfigCompany",
         "title": "Unternehmen konfigurieren",
         "icon": "$tableRemove"
       },
       {
+        "id": "ExternalLink",
         "title": "Externen Link öffnen",
-        "icon": "$tableRemove",
-        "url": ""
+        "icon": "$tableRemove"
       }
     ],
     "noDataText": "Keine Einträge gefunden. Importieren Sie eine Datenbank oder legen Sie manuell neue Einträge an.",
@@ -280,10 +286,12 @@
     ],
     "menuItems": [
       {
+        "id": "DeleteTransfer",
         "title": "Buchung löschen",
         "icon": "$tableRemove"
       },
       {
+        "id": "UpdateTransfer",
         "title": "Buchung korrigieren",
         "icon": "$close"
       }

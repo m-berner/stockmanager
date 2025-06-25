@@ -23,12 +23,15 @@
         settings.setItemsPerPageStocks(count)
       }
     "
-    v-on:update:page="(page) => onUpdatePageHandler(page)"
-  >
+    v-on:update:page="(page) => onUpdatePageHandler(page)">
     <template v-slot:[`item`]="{ item }">
       <tr class="table-row">
         <td>
-          <OptionMenu menuType="stocks" v-bind:menuItems="options" v-bind:recordID="item.cID"></OptionMenu>
+          <OptionMenu
+            menuType="stocks"
+            v-bind:menuItems="tm('stocksTable.menuItems')"
+            v-bind:recordID="item.cID">
+          </OptionMenu>
         </td>
         <td>{{ item.cCompany }}</td>
         <td>{{ item.cISIN }}</td>
@@ -79,7 +82,7 @@ const tableHeaders = headers.map((item: { title: string, align: string, sortable
     key: rt(item.key)
   }
 })
-const options: Record<string, string>[] = tm('stocksTable.menuItems')
+
 const setDynamicStyleWinLoss = (el: HTMLElement | null): void => {
   if (el !== null) {
     if (toNumber(el.textContent) < 0) {

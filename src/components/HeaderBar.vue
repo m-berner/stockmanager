@@ -56,7 +56,7 @@
           v-bind="props"
           variant="tonal"
           v-on:click="onIconClick"
-        ><v-icon class="put-into-background" icon="$addStock"></v-icon>
+        ><v-icon icon="$addStock"></v-icon>
         </v-app-bar-nav-icon>
       </template>
     </v-tooltip>
@@ -70,7 +70,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$fadeinStock"></v-icon
+          <v-icon icon="$fadeinStock"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -86,7 +86,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$cashPlus"></v-icon
+          <v-icon icon="$cashPlus"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -101,7 +101,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$cashMinus"></v-icon
+          <v-icon icon="$cashMinus"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -117,7 +117,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$dailyChanges"></v-icon
+          <v-icon icon="$dailyChanges"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -132,7 +132,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$dailyChangesAll"></v-icon
+          <v-icon icon="$dailyChangesAll"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -148,7 +148,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$exportDatabase"></v-icon
+          <v-icon icon="$exportDatabase"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -163,7 +163,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$importDatabase"></v-icon
+          <v-icon icon="$importDatabase"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -179,7 +179,7 @@
           variant="tonal"
           v-on:click="onIconClick"
         >
-          <v-icon class="put-into-background" icon="$showAccounting"></v-icon
+          <v-icon icon="$showAccounting"></v-icon
           >
         </v-app-bar-nav-icon>
       </template>
@@ -316,9 +316,3 @@ const onIconClick = async (ev: Event): Promise<void> => {
 
 console.log('--- HeaderBar.vue setup ---')
 </script>
-
-<style scoped>
-.put-into-background {
-  z-index: -500;
-}
-</style>

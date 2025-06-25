@@ -228,14 +228,14 @@ export const useApp = () => {
             EXPORTDB: 'exportdb',
             IMPORTDB: 'importdb',
             SHOWACCOUNTING: 'showaccouting',
-            DELETETRANSFER: 'deletetransfer',
-            UPDATETRANSFER: 'updatetransfer',
-            DELETESTOCK: 'deletestock',
-            BUYSTOCK: 'buystock',
-            SELLSTOCK: 'sellstock',
-            ADDDIVIDEND: 'adddividend',
-            SHOWDIVIDEND: 'showdividend',
-            CONFIGSTOCK: 'configstock'
+            DELETESTOCK: 'DeleteStock',
+            BUYSTOCK: 'BuyStock',
+            SELLSTOCK: 'SellStock',
+            ADDDIVIDEND: 'AddDividend',
+            SHOWDIVIDEND: 'ShowDividend',
+            CONFIGSTOCK: 'ConfigCompany',
+            DELETETRANSFER: 'DeleteTransfer',
+            UPDATETRANSFER: 'UpdateTransfer'
         },
         EVENTS: {
             ABORT: 'abort',

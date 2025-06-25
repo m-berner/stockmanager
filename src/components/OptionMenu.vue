@@ -24,14 +24,15 @@
     <v-list>
       <v-hover v-slot:default="{ props, isHovering }">
         <v-list-item
-          v-for="(item, i) in _props.menuItems" v-bind:id="setId(i)"
-          v-bind:key="item.title"
+          v-for="item in _props.menuItems"
+          v-bind:id="rt(item.id)"
+          v-bind:key="rt(item.title)"
           class="pointer"
           v-bind="props"
           v-bind:base-color="isHovering ? 'orange' : ''"
           v-bind:prepend-icon="rt(item.icon)"
           v-bind:title="rt(item.title)"
-          v-on:click="selectOption(i)"
+          v-on:click="onIconClick"
         ></v-list-item>
       </v-hover>
     </v-list>
@@ -44,12 +45,6 @@ import {useRecordsStore} from '@/stores/records'
 import {useI18n} from 'vue-i18n'
 import {useRuntimeStore} from '@/stores/runtime'
 
-const {rt} = useI18n()
-const {CONS} = useApp()
-const {notice} = useApp()
-const records = useRecordsStore()
-const runtime = useRuntimeStore()
-
 interface PropsOptionMenu {
   recordID: number
   menuItems: Record<string, string>[]
@@ -57,91 +52,83 @@ interface PropsOptionMenu {
 }
 
 const _props = defineProps<PropsOptionMenu>()
+const {rt} = useI18n()
+const {CONS} = useApp()
+const records = useRecordsStore()
+const runtime = useRuntimeStore()
 
-const selectOption = (optionIndex = -1): void => {
-  console.info('OPTIONMENU selectOption', optionIndex)
-  if (_props.menuType === 'stocks') {
-    const stockUrl: string = optionIndex === 6 ? records.stocks.active[records.stocks.active_index].cURL : ''
-    switch (optionIndex) {
-      case 0:
-        runtime.toggleVisibility(CONS.DIALOGS.DELETESTOCK)
+const onIconClick = async (ev: Event): Promise<void> => {
+  console.log('OPTION_MENU: onIconClick', {info: ev.target})
+  const parse = async (elem: Element | null, loop = 0): Promise<void> => {
+    if (loop > 6 || elem === null) return
+    switch (elem!.id) {
+      case CONS.DIALOGS.DELETESTOCK:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.DELETESTOCK,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 1:
-        runtime.toggleVisibility(CONS.DIALOGS.BUYSTOCK)
+      case CONS.DIALOGS.BUYSTOCK:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.BUYSTOCK,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 2:
-        runtime.toggleVisibility(CONS.DIALOGS.SELLSTOCK)
+      case CONS.DIALOGS.ADDDIVIDEND:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.ADDDIVIDEND,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 3:
-        runtime.toggleVisibility(CONS.DIALOGS.ADDDIVIDEND)
+      case CONS.DIALOGS.SHOWDIVIDEND:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.SHOWDIVIDEND,
+          showOkButton: false,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 4:
-        runtime.toggleVisibility(CONS.DIALOGS.SHOWDIVIDEND)
+      case CONS.DIALOGS.CONFIGSTOCK:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.CONFIGSTOCK,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 5:
-        runtime.toggleVisibility(CONS.DIALOGS.CONFIGSTOCK)
+      case CONS.DIALOGS.DELETETRANSFER:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.DELETETRANSFER,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      case 6:
-        if (stockUrl === '') {
-          notice(['No URL available'])
-        } else {
-          window.open(stockUrl, '_blank', 'noreferrer')
-        }
+      case CONS.DIALOGS.UPDATETRANSFER:
+        runtime.setTeleport({
+          dialogName: CONS.DIALOGS.UPDATETRANSFER,
+          showOkButton: true,
+          showOptionDialog: true,
+          showHeaderDialog: false
+        })
         break
-      default:
-        break
-    }
-  } else {
-    switch (optionIndex) {
-      case 0:
-        runtime.toggleVisibility(CONS.DIALOGS.DELETETRANSFER)
-        break
-      case 1:
-        runtime.toggleVisibility(CONS.DIALOGS.UPDATETRANSFER)
-        break
-      default:
-        break
-    }
-  }
-}
-const setId = (optionIndex = -1): string => {
-  let resultId: string = ''
-  if (_props.menuType === 'stocks') {
-    switch (optionIndex) {
-      case 0:
-        resultId = CONS.DIALOGS.DELETESTOCK
-        break
-      case 1:
-        resultId = CONS.DIALOGS.BUYSTOCK
-        break
-      case 2:
-        resultId = CONS.DIALOGS.SELLSTOCK
-        break
-      case 3:
-        resultId = CONS.DIALOGS.ADDDIVIDEND
-        break
-      case 4:
-        resultId = CONS.DIALOGS.SHOWDIVIDEND
-        break
-      case 5:
-        resultId = CONS.DIALOGS.CONFIGSTOCK
+      case 'ExternalLink':
+        console.error('SFDSDFSFSFSFSF-----------')
         break
       default:
-        break
-    }
-  } else {
-    switch (optionIndex) {
-      case 0:
-        resultId = CONS.DIALOGS.DELETETRANSFER
-        break
-      case 1:
-        resultId = CONS.DIALOGS.UPDATETRANSFER
-        break
-      default:
-        break
+        loop += 1
+        await parse(elem!.parentElement, loop)
     }
   }
-  return resultId
+  if (ev.target instanceof Element) {
+    await parse(ev.target)
+  }
 }
 
 console.log('--- OptionMenu.vue setup ---')
