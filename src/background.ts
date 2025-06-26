@@ -1007,7 +1007,6 @@ export const useApp = (): IUseApp => {
       }
     }
   })
-  // TODO Update button rates
   // TODO change setting -> reload infobar, new currency
   // TODO daily changes small big
   const offset = (): number => {
@@ -1923,6 +1922,7 @@ const onAppMessage = async (msg: object): Promise<unknown> => {
         }
         _changes.push({...entry})
       }
+      console.error(trCollection, _changes)
     }
     return _changes
   }

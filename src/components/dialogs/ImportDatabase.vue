@@ -40,7 +40,7 @@ const state: IImportDatabase = {
 }
 
 const ok = async (): Promise<void> => {
-  console.log('IMPORTDATABASE: ok', state._choosen_file)
+  console.log('IMPORT_DATABASE: ok', state._choosen_file)
   const {CONS, notice} = useApp()
   const records = useRecordsStore()
   // NOTE: only database version 21.0 or newer could be restored
@@ -52,18 +52,18 @@ const ok = async (): Promise<void> => {
       reject(err.message)
     }
     const onLoadBackup = (): void => {
-      console.log('HEADERBAR: onLoadBackup')
+      console.log('IMPORT_DATABASE: onLoadBackup')
       if (typeof fr.result === 'string') {
         const bkupObject: IBackup = JSON.parse(fr.result)
         if (bkupObject.sm.cDBVersion < CONS.DB.MINVERSION) {
-          notice(['HEADERBAR:onLoadBackup', 'Invalid backup file version'])
+          notice(['Invalid backup file version'])
           reject(new Error('Invalid backup file version'))
         } else {
           records.setBkupObject(bkupObject)
           resolve('Backup file loaded successfully!')
         }
       } else {
-        notice(['HOMEPAGE:onLoadBackup', 'Could not read backup file'])
+        notice(['Could not read backup file'])
         reject(new Error('Could not read backup file!'))
       }
     }
@@ -79,8 +79,8 @@ const ok = async (): Promise<void> => {
   const result = await records.storeIntoDatabase()
   await records.updateWrapper()
   if (result !== '') {
-    notice(['IMPORTDATABASE: onLoad', result])
-    console.info('IMPORTDATABASE: onLoad', result)
+    notice([result])
+    console.info('IMPORT_DATABASE: onLoad', result)
   }
 }
 const title = t('dialogs.importDatabase.title')
@@ -90,7 +90,7 @@ const classes = (): string => {
 defineExpose({ok, title, classes})
 
 onMounted(() => {
-  console.log('IMPORTDATABASE: onMounted')
+  console.log('IMPORT_DATABASE: onMounted')
   runtime.setIsOk(true)
 })
 

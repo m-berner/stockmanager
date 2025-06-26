@@ -132,6 +132,9 @@ export const useRuntimeStore = defineStore('runtime', {
         }
     },
     actions: {
+        setChangesMode(value) {
+            this._dialogs._changes_mode = value;
+        },
         setExchanges(entry) {
             this._info_bar.exchanges = entry;
         },

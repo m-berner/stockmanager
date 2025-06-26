@@ -245,6 +245,7 @@ const onIconClick = async (ev: Event): Promise<void> => {
         })
         break
       case CONS.DIALOGS.DAILYCHANGES:
+        runtime.setChangesMode(CONS.DIALOGS.DAILYCHANGES)
         runtime.setTeleport({
           dialogName: CONS.DIALOGS.DAILYCHANGES,
           showOkButton: false,
@@ -253,6 +254,7 @@ const onIconClick = async (ev: Event): Promise<void> => {
         })
         break
       case CONS.DIALOGS.DAILYCHANGESALL:
+        runtime.setChangesMode(CONS.DIALOGS.DAILYCHANGESALL)
         runtime.setTeleport({
           dialogName: CONS.DIALOGS.DAILYCHANGESALL,
           showOkButton: false,

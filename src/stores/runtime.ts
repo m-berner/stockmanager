@@ -167,6 +167,9 @@ export const useRuntimeStore: StoreDefinition<'runtime', IRuntimeStore> = define
     }
   },
   actions: {
+    setChangesMode(value: string) {
+      this._dialogs._changes_mode = value
+    },
     setExchanges(entry: Map<string, number>) {
       this._info_bar.exchanges = entry
     },

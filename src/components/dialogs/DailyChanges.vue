@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onBeforeMount, onMounted, reactive, toRaw} from 'vue'
+import {onBeforeMount, reactive, toRaw} from 'vue'
 import {useI18n} from 'vue-i18n'
 import {useApp} from '@/background'
 import {useRuntimeStore} from '@/stores/runtime'
@@ -119,11 +119,11 @@ const getDailyChanges = async (): Promise<void> => {
   state._progress = false
 }
 let title = ''
-  if (runtime.changesMode === CONS.DIALOGS.DAILYCHANGES) {
-    title = t('dialogs.dailyChanges.title')
-  } else {
-    title = t('dialogs.dailyChangesAll.title')
-  }
+if (runtime.changesMode === CONS.DIALOGS.DAILYCHANGES) {
+  title = t('dialogs.dailyChanges.title')
+} else {
+  title = t('dialogs.dailyChangesAll.title')
+}
 const classes = () => {
   return ''
 }
@@ -134,10 +134,10 @@ onBeforeMount(async (): Promise<void> => {
   await getDailyChanges()
 })
 
-onMounted(() => {
-  console.log('DAILYCHANGES: onMounted')
-  runtime.setIsOk(false)
-})
+// onMounted(() => {
+//   console.log('DAILYCHANGES: onMounted')
+//   runtime.setIsOk(false)
+// })
 
 console.log('--- DailyChanges.vue setup ---')
 </script>

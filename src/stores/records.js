@@ -282,11 +282,11 @@ export const useRecordsStore = defineStore('records', {
                 const idValues = data.filter((obj) => {
                     return obj.id === id;
                 });
-                const buyValue = this._stocks.active[i].mBuyValue ?? 0;
-                const portfolio = this._stocks.active[i].mPortfolio ?? 0;
-                const euroChange = (toNumber(idValues[0].rate) - buyValue) * portfolio;
-                const percentChange = buyValue * portfolio !== 0 ? (euroChange * 100) / (buyValue * portfolio) : 0;
                 if (idValues.length > 0) {
+                    const buyValue = this._stocks.active[i].mBuyValue ?? 0;
+                    const portfolio = this._stocks.active[i].mPortfolio ?? 0;
+                    const euroChange = (toNumber(idValues[0].rate) - buyValue) * portfolio;
+                    const percentChange = buyValue * portfolio !== 0 ? (euroChange * 100) / (buyValue * portfolio) : 0;
                     if (idValues[0].cur?.includes('USD')) {
                         factor = runtime.exchangesCurUsd;
                     }
@@ -515,12 +515,11 @@ export const useRecordsStore = defineStore('records', {
                     if (store === 'load') {
                         requestAddStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
                         requestAddTransfer.removeEventListener(CONS.EVENTS.ERR, onError, false);
-                        notice(['All stocks and transfers are added to the database!']);
-                        resolve('RECORDS: storeIntoDatabase: all stocks and transfers are added to the database!');
+                        resolve('All stocks and transfers are added to the database!');
                     }
                     else {
                         requestUpdateStock.removeEventListener(CONS.EVENTS.ERR, onError, false);
-                        resolve('RECORDS: storeIntoDatabase: stocks updated in database!');
+                        resolve('Stocks updated in database!');
                     }
                 };
                 const onAbort = () => {

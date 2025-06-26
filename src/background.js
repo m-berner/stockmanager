@@ -1419,6 +1419,7 @@ const onAppMessage = async (msg) => {
                 };
                 _changes.push({ ...entry });
             }
+            console.error(trCollection, _changes);
         }
         return _changes;
     };
