@@ -908,7 +908,18 @@ export const useApp = (): IUseApp => {
         'reset',
         'itemsPerPage',
         'cb',
-        'tb'
+        'tb',
+        'partner',
+        'items_per_page_stocks',
+        'itemsPerPageStocks',
+        'items_per_page_transfers',
+        'itemsPerPageTransfers',
+        'indexes',
+        'materials',
+        'exchanges',
+        'markets',
+        'skin',
+        'service'
       ],
       TYPE: 599,
       ONCE: {once: true}
@@ -1335,42 +1346,42 @@ const onInstall = (): void => {
           sService: CONS.DEFAULTS.STORAGE['sService']
         })
       }
-      if (storageLocal.skin === undefined) {
+      if (storageLocal['sSkin'] === undefined) {
         await browser.storage.local.set({
           sSkin: CONS.DEFAULTS.STORAGE['sSkin']
         })
       }
-      if (storageLocal.indexes === undefined) {
+      if (storageLocal['sIndexes'] === undefined) {
         await browser.storage.local.set({
           sIndexes: CONS.DEFAULTS.STORAGE['sIndexes']
         })
       }
-      if (storageLocal.materials === undefined) {
+      if (storageLocal['sMaterials'] === undefined) {
         await browser.storage.local.set({
           sMaterials: CONS.DEFAULTS.STORAGE['sMaterials']
         })
       }
-      if (storageLocal.markets === undefined) {
+      if (storageLocal['sMmarkets'] === undefined) {
         await browser.storage.local.set({
           sMarkets: CONS.DEFAULTS.STORAGE['sMarkets']
         })
       }
-      if (storageLocal.exchanges === undefined) {
+      if (storageLocal['sExchanges'] === undefined) {
         await browser.storage.local.set({
           sExchanges: CONS.DEFAULTS.STORAGE['sExchanges']
         })
       }
-      if (storageLocal.partner === undefined) {
+      if (storageLocal['sPartner'] === undefined) {
         await browser.storage.local.set({
           sPartner: CONS.DEFAULTS.STORAGE['sPartner']
         })
       }
-      if (storageLocal.items_per_page_stocks === undefined) {
+      if (storageLocal['sItemsPerPageStocks'] === undefined) {
         await browser.storage.local.set({
           sItemsPerPageStocks: CONS.DEFAULTS.STORAGE['sItemsPerPageStocks']
         })
       }
-      if (storageLocal.items_per_page_transfers === undefined) {
+      if (storageLocal['sItemsPerPageTransfers'] === undefined) {
         await browser.storage.local.set({
           sItemsPerPageTransfers: CONS.DEFAULTS.STORAGE['sItemsPerPageTransfers']
         })
