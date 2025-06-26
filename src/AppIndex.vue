@@ -31,32 +31,71 @@ const runtime = useRuntimeStore()
 const theme = useTheme()
 const {CONS, getUI} = useApp()
 
-browser.runtime.onMessage.addListener((message) => {
-  const msg = JSON.parse(message)
-  switch (msg.type) {
-    case CONS.MESSAGES.SET__SETTINGS_SKIN:
-      theme.global.name.value = msg.data
-      settings.setSkinStoreOnly(msg.data)
-      break
-    case CONS.MESSAGES.SET__SETTINGS_SERVICE:
-      settings.setServiceStoreOnly(msg.data)
-      break
-    case CONS.MESSAGES.SET__SETTINGS_MARKETS:
-      settings.setMarketsStoreOnly(msg.data)
-      break
-    case CONS.MESSAGES.SET__SETTINGS_INDEXES:
-      settings.setIndexesStoreOnly(msg.data)
-      break
-    case CONS.MESSAGES.SET__SETTINGS_MATERIALS:
-      settings.setMaterialsStoreOnly(msg.data)
-      break
-    case CONS.MESSAGES.SET__SETTINGS_EXCHANGES:
-      settings.setExchangesStoreOnly(msg.data)
-      break
-    default:
-      console.error('Set settings message not found')
-  }
-})
+// browser.runtime.onMessage.addListener((message) => {
+//   const msg = JSON.parse(message)
+//   switch (msg.type) {
+//     case CONS.MESSAGES.SET__SETTINGS_SKIN:
+//       theme.global.name.value = msg.data
+//       settings.setSkinStoreOnly(msg.data)
+//       break
+//     case CONS.MESSAGES.SET__SETTINGS_SERVICE:
+//       settings.setServiceStoreOnly(msg.data)
+//       break
+//     case CONS.MESSAGES.SET__SETTINGS_MARKETS:
+//       settings.setMarketsStoreOnly(msg.data)
+//       break
+//     case CONS.MESSAGES.SET__SETTINGS_INDEXES:
+//       settings.setIndexesStoreOnly(msg.data)
+//       break
+//     case CONS.MESSAGES.SET__SETTINGS_MATERIALS:
+//       settings.setMaterialsStoreOnly(msg.data)
+//       break
+//     case CONS.MESSAGES.SET__SETTINGS_EXCHANGES:
+//       settings.setExchangesStoreOnly(msg.data)
+//       break
+//     default:
+//       console.error('Set settings message not found')
+//   }
+// })
+
+const onStorageChange = async (change: Record<string, browser.storage.StorageChange>): Promise<void> => {
+  console.info('APP: onStorageChange', change)
+    switch (Object.keys(change)[0]) {
+      case 'sService':
+        settings.setServiceStoreOnly({name: change['sService'].newValue.name, url: change['sService'].newValue.url})
+        break
+      case 'sSkin':
+        settings.setSkinStoreOnly(change['sSkin'].newValue, theme)
+        break
+      case 'sMarkets':
+        settings.setMarketsStoreOnly(change['sMarkets'].newValue)
+        break
+      case 'sIndexes':
+        settings.setIndexesStoreOnly(change['sIndexes'].newValue)
+        break
+      case 'sMaterials':
+        settings.setMaterialsStoreOnly(change['sMaterials'].newValue)
+        break
+      // case 'sExchanges':
+      //   settings.setExchanges(change['sExchanges'].newValue)
+      //   const exchangesResponseString = await browser.runtime.sendMessage(JSON.stringify({
+      //     type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
+      //     data: change['sExchanges'].newValue,
+      //   }))
+      //   const exchangesResponse = JSON.parse(exchangesResponseString)
+      //   console.error('äääääää', exchangesResponse)
+      //   break
+      case 'sExchanges':
+        settings.setExchangesStoreOnly(change['sExchanges'].newValue)
+        break
+      default:
+    }
+}
+
+if (!browser.storage.onChanged.hasListener(onStorageChange)) {
+  // noinspection JSDeprecatedSymbols
+  browser.storage.onChanged.addListener(onStorageChange)
+}
 
 onBeforeMount(async (): Promise<void> => {
   console.log('APP: onBeforeMount')

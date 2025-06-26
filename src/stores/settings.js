@@ -46,49 +46,30 @@ export const useSettingsStore = defineStore('settings', {
         }
     },
     actions: {
-        async setService(value) {
-            this._service = value;
-            await browser.storage.local.set({ sService: value });
-        },
         setServiceStoreOnly(value) {
             this._service = value;
         },
-        async setSkin(value, theme) {
+        setSkinStoreOnly(value, theme) {
             theme.global.name.value = value;
             this._skin = value;
-            await browser.storage.local.set({ sSkin: value });
         },
-        setSkinStoreOnly(value) {
-            this._skin = value;
+        setIndexesStoreOnly(value) {
+            console.error('ööööööööööööö', value);
+            this._indexes = value;
         },
-        async toggleIndexes(keys, n) {
+        setMaterialsStoreOnly(value, n) {
             let ind;
-            const ar = [...this._indexes];
-            if ((ind = ar.indexOf(keys[n])) >= 0) {
+            const ar = [...this._materials];
+            if ((ind = ar.indexOf(value[n])) >= 0) {
                 ar.splice(ind, 1);
             }
             else {
-                ar.push(keys[n]);
+                ar.push(value[n]);
             }
-            this._indexes = ar;
-            await browser.storage.local.set({ sIndexes: ar });
-        },
-        setIndexesStoreOnly(value) {
-            this._indexes = value;
-        },
-        setMaterialsStoreOnly(value) {
-            this._materials = value;
-        },
-        async setMarkets(value) {
-            this._markets = value;
-            await browser.storage.local.set({ sMarkets: value });
+            this._materials = ar;
         },
         setMarketsStoreOnly(value) {
             this._markets = value;
-        },
-        async setExchanges(value) {
-            this._exchanges = value;
-            await browser.storage.local.set({ sExchanges: value });
         },
         setExchangesStoreOnly(value) {
             this._exchanges = value;
@@ -120,7 +101,7 @@ export const useSettingsStore = defineStore('settings', {
             const response = await browser.storage.local.get();
             this.setServiceStoreOnly(response['sService']);
             theme.global.name.value = response['sSkin'] ?? 'ocean';
-            this.setSkinStoreOnly(response['sSkin']);
+            this.setSkinStoreOnly(response['sSkin'], theme);
             this.setIndexesStoreOnly(response['sIndexes']);
             this.setMaterialsStoreOnly(response['sMaterials']);
             this.setMarketsStoreOnly(response['sMarkets']);
@@ -128,18 +109,6 @@ export const useSettingsStore = defineStore('settings', {
             this.setPartnerStoreOnly(response['sPartner']);
             this.setItemsPerPageStocksStoreOnly(response['sItemsPerPageStocks']);
             this.setItemsPerPageTransfersStoreOnly(response['sItemsPerPageTransfers']);
-        },
-        async toggleMaterials(keys, n) {
-            let ind;
-            const ar = [...this._materials];
-            if ((ind = ar.indexOf(keys[n])) >= 0) {
-                ar.splice(ind, 1);
-            }
-            else {
-                ar.push(keys[n]);
-            }
-            this._materials = ar;
-            await browser.storage.local.set({ sMaterials: ar });
         }
     }
 });

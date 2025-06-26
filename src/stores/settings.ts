@@ -66,48 +66,36 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
     }
   },
   actions: {
-    async setService(value: { name: string; url: string }): Promise<void> {
-      this._service = value
-      await browser.storage.local.set({sService: value})
-    },
     setServiceStoreOnly(value: { name: string; url: string }) {
       this._service = value
     },
-    async setSkin(value: string, theme: ThemeInstance): Promise<void> {
-      theme.global.name.value = value // NOTE: change theme options instance
-      this._skin = value
-      await browser.storage.local.set({sSkin: value})
-    },
-    setSkinStoreOnly(value: string) {
+    setSkinStoreOnly(value: string, theme: ThemeInstance) {
+      theme.global.name.value = value
       this._skin = value
     },
-    async toggleIndexes(keys: string[], n: number): Promise<void> {
-      let ind: number
-      const ar = [...this._indexes]
-      if ((ind = ar.indexOf(keys[n])) >= 0) {
-        ar.splice(ind, 1)
-      } else {
-        ar.push(keys[n])
-      }
-      this._indexes = ar
-      await browser.storage.local.set({sIndexes: ar})
-    },
-    setIndexesStoreOnly(value: string[] | boolean) {
+    setIndexesStoreOnly(value: string[]) {
+      //let ind: number
+      //const ar = [...this._indexes]
+      console.error('ööööööööööööö', value)
+      // if ((ind = ar.indexOf(value)) >= 0) {
+      //   ar.splice(ind, 1)
+      // } else {
+      //   ar.push(value)
+      // }
       this._indexes = value
     },
-    setMaterialsStoreOnly(value: string[] | boolean) {
-      this._materials = value
-    },
-    async setMarkets(value: string[] | boolean): Promise<void> {
-      this._markets = value
-      await browser.storage.local.set({sMarkets: value})
+    setMaterialsStoreOnly(value: string[] | boolean, n: number) {
+      let ind: number
+      const ar = [...this._materials]
+      if ((ind = ar.indexOf(value[n])) >= 0) {
+        ar.splice(ind, 1)
+      } else {
+        ar.push(value[n])
+      }
+      this._materials = ar
     },
     setMarketsStoreOnly(value: string[] | boolean) {
       this._markets = value
-    },
-    async setExchanges(value: string[] | boolean): Promise<void> {
-      this._exchanges = value
-      await browser.storage.local.set({sExchanges: value})
     },
     setExchangesStoreOnly(value: string[] | boolean) {
       this._exchanges = value
@@ -139,7 +127,7 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
       const response: IStorageLocal = await browser.storage.local.get()
       this.setServiceStoreOnly(response['sService'])
       theme.global.name.value = response['sSkin'] ?? 'ocean'
-      this.setSkinStoreOnly(response['sSkin'])
+      this.setSkinStoreOnly(response['sSkin'], theme)
       this.setIndexesStoreOnly(response['sIndexes'])
       this.setMaterialsStoreOnly(response['sMaterials'])
       this.setMarketsStoreOnly(response['sMarkets'])
@@ -147,17 +135,6 @@ export const useSettingsStore: StoreDefinition<'settings', ISettingsStore> = def
       this.setPartnerStoreOnly(response['sPartner'])
       this.setItemsPerPageStocksStoreOnly(response['sItemsPerPageStocks'])
       this.setItemsPerPageTransfersStoreOnly(response['sItemsPerPageTransfers'])
-    },
-    async toggleMaterials(keys: string[], n: number): Promise<void> {
-      let ind: number
-      const ar = [...this._materials]
-      if ((ind = ar.indexOf(keys[n])) >= 0) {
-        ar.splice(ind, 1)
-      } else {
-        ar.push(keys[n])
-      }
-      this._materials = ar
-      await browser.storage.local.set({sMaterials: ar})
     }
   }
 })

@@ -200,15 +200,20 @@ const toggleMaterials = async (keys: string[], n: number): Promise<void> => {
   await browser.storage.local.set({sMaterials: ar})
 }
 const toggleIndexes = async (keys: string[], n: number): Promise<void> => {
-  let ind: number
-  const ar = [...state._indexes]
-  if ((ind = ar.indexOf(keys[n])) >= 0) {
-    ar.splice(ind, 1)
-  } else {
-    ar.push(keys[n])
-  }
-  state._indexes = ar
-  await browser.storage.local.set({sIndexes: ar})
+  // let ind: number
+  // if (state._indexes !== undefined) {
+  //   const ar = [...state._indexes]
+  //   if ((ind = ar.indexOf(keys[n])) >= 0) {
+  //     ar.splice(ind, 1)
+  //   } else {
+  //     ar.push(keys[n])
+  //   }
+  //   state._indexes = ar
+  // } else {
+  //   state._indexes = CONS.DEFAULTS.STORAGE['sIndexes']
+  // }
+  console.error('Options State', state._indexes, keys, n)
+  await browser.storage.local.set({sIndexes: state._indexes})
 }
 const setService = async (value: { name: string; url: string }): Promise<void> => {
   state._service = value

@@ -1702,28 +1702,32 @@ const onAppMessage = async (msg) => {
                 break;
             case CONS.FETCH_API.ASK__DAILY_CHANGES:
                 const dailyChangesData = await fetchDailyChangesData(request.data);
-                response = JSON.stringify({
-                    type: CONS.FETCH_API.ANSWER__DAILY_CHANGES,
-                    data: dailyChangesData
-                });
-                if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHS.length - 1) {
+                if (Number.parseInt(request.data.lastEventId) === CONS.SERVICES.tgate.CHS.length - 1) {
                     response = JSON.stringify({
                         type: CONS.FETCH_API.FINISH__DAILY_CHANGES,
                         data: []
+                    });
+                }
+                else {
+                    response = JSON.stringify({
+                        type: CONS.FETCH_API.ANSWER__DAILY_CHANGES,
+                        data: dailyChangesData
                     });
                 }
                 resolve(response);
                 break;
             case CONS.FETCH_API.ASK__DAILY_CHANGES_ALL:
                 const dailyChangesDataAll = await fetchDailyChangesData(request.data, CONS.SERVICES.tgate.CHANGES.BIG);
-                response = JSON.stringify({
-                    type: CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL,
-                    data: dailyChangesDataAll
-                });
-                if (Number.parseInt(request.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
+                if (Number.parseInt(request.data.lastEventId) === CONS.SERVICES.tgate.CHB.length - 1) {
                     response = JSON.stringify({
                         type: CONS.FETCH_API.FINISH__DAILY_CHANGES_ALL,
                         data: []
+                    });
+                }
+                else {
+                    response = JSON.stringify({
+                        type: CONS.FETCH_API.ANSWER__DAILY_CHANGES_ALL,
+                        data: dailyChangesDataAll
                     });
                 }
                 resolve(response);
@@ -1733,57 +1737,6 @@ const onAppMessage = async (msg) => {
         }
     });
 };
-const onStorageChange = async (change) => {
-    console.info('APP: onStorageChange', change);
-    const tabId = Number.parseInt(sessionStorage.getItem('sExtensionTabId') ?? '-1');
-    if (tabId > 0) {
-        switch (Object.keys(change)[0]) {
-            case 'sService':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_SERVICE,
-                    data: {
-                        name: change['sService'].newValue.name,
-                        url: change['sService'].newValue.url
-                    }
-                }));
-                break;
-            case 'sSkin':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_SKIN,
-                    data: change['sSkin'].newValue
-                }));
-                break;
-            case 'sMarkets':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_MARKETS,
-                    data: change['sMarkets'].newValue
-                }));
-                break;
-            case 'sIndexes':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_INDEXES,
-                    data: change['sIndexes'].newValue
-                }));
-                break;
-            case 'sMaterials':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_MATERIALS,
-                    data: change['sMaterials'].newValue
-                }));
-                break;
-            case 'sExchanges':
-                browser.tabs.sendMessage(tabId, JSON.stringify({
-                    type: CONS.MESSAGES.SET__SETTINGS_EXCHANGES,
-                    data: change['sExchanges'].newValue
-                }));
-                break;
-            default:
-        }
-    }
-};
-if (!browser.storage.onChanged.hasListener(onStorageChange)) {
-    browser.storage.onChanged.addListener(onStorageChange);
-}
 if (!browser.runtime.onMessage.hasListener(onAppMessage)) {
     browser.runtime.onMessage.addListener(onAppMessage);
 }
