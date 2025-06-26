@@ -65,7 +65,7 @@
               hide-details
               v-bind:label="CONS.SETTINGS.INDEXES[state._index_keys[i - 1]]"
               v-bind:value="state._index_keys[i - 1]"
-              v-on:click="toggleIndexes(state._index_keys, i - 1)"
+              v-on:click="toggleIndexes"
             ></v-checkbox>
           </v-col>
           <v-col>
@@ -78,9 +78,7 @@
                     CONS.SETTINGS.INDEXES[state._index_keys[i - 1 + group(state._index_keys.length)[1]]]
                   "
               v-bind:value="state._index_keys[i - 1 + group(state._index_keys.length)[1]]"
-              v-on:click="
-                    toggleIndexes(state._index_keys, i - 1 + group(state._index_keys.length)[1])
-                  "
+              v-on:click="toggleIndexes"
             ></v-checkbox>
           </v-col>
         </v-row>
@@ -95,7 +93,7 @@
               hide-details
               v-bind:label="t(`optionsPage.materials.${state._material_keys[i - 1]}`)"
               v-bind:value="state._material_keys[i - 1]"
-              v-on:click="toggleMaterials(state._material_keys, i - 1)"
+              v-on:click="toggleMaterials"
             ></v-checkbox>
           </v-col>
           <v-col>
@@ -112,12 +110,7 @@
                     )
                   "
               v-bind:value="state._material_keys[i - 1 + group(state._material_keys.length)[0]]"
-              v-on:click="
-                    toggleMaterials(
-                      state._material_keys,
-                      i - 1 + group(state._material_keys.length)[0]
-                    )
-                  "
+              v-on:click="toggleMaterials"
             ></v-checkbox>
           </v-col>
         </v-row>
@@ -187,33 +180,33 @@ const service = (i: number) => {
     url: CONS.SERVICES[state._service_keys[i - 1]].HOME
   }
 }
-const toggleMaterials = async (keys: string[], n: number): Promise<void> => {
-  let ind: number
-  const ar = [...state._materials]
-  if ((ind = ar.indexOf(keys[n])) >= 0) {
-    ar.splice(ind, 1)
-  } else {
-    ar.push(keys[n])
+const toggleMaterials = async (ev: Event): Promise<void> => {
+  ev.preventDefault()
+  if (ev.target instanceof HTMLInputElement) {
+    let ind: number
+    const ar = [...state._materials]
+    if ((ind = ar.indexOf(ev.target.value)) >= 0) {
+      ar.splice(ind, 1)
+    } else {
+      ar.push(ev.target.value)
+    }
+    state._materials = [...ar]
+    await browser.storage.local.set({sMaterials: ar})
   }
-  console.error('SDFSASF', ar)
-  state._materials = ar
-  await browser.storage.local.set({sMaterials: ar})
 }
-const toggleIndexes = async (keys: string[], n: number): Promise<void> => {
-  // let ind: number
-  // if (state._indexes !== undefined) {
-  //   const ar = [...state._indexes]
-  //   if ((ind = ar.indexOf(keys[n])) >= 0) {
-  //     ar.splice(ind, 1)
-  //   } else {
-  //     ar.push(keys[n])
-  //   }
-  //   state._indexes = ar
-  // } else {
-  //   state._indexes = CONS.DEFAULTS.STORAGE['sIndexes']
-  // }
-  console.error('Options State', state._indexes, keys, n)
-  await browser.storage.local.set({sIndexes: state._indexes})
+const toggleIndexes = async (ev: Event): Promise<void> => {
+  ev.preventDefault()
+  if (ev.target instanceof HTMLInputElement) {
+    let ind: number
+    const ar = [...state._indexes]
+    if ((ind = ar.indexOf(ev.target.value)) >= 0) {
+      ar.splice(ind, 1)
+    } else {
+      ar.push(ev.target.value)
+    }
+    state._indexes = [...ar]
+    await browser.storage.local.set({sIndexes: ar})
+  }
 }
 const setService = async (value: { name: string; url: string }): Promise<void> => {
   state._service = value
@@ -238,12 +231,12 @@ onMounted(async () => {
   state._service_keys = serviceKeys
   state._index_keys = Object.keys(CONS.SETTINGS.INDEXES)
   state._material_keys = Object.keys(toRaw(labelsOptionsPage.materials))
-  state._service = storageLocal['sService']
-  state._skin = storageLocal['sSkin']
-  state._indexes = storageLocal['sIndexes']
-  state._exchanges = storageLocal['sExchanges']
-  state._materials = storageLocal['sMaterials']
-  state._markets = storageLocal['sMarkets']
+  state._service = storageLocal['sService'] ?? CONS.DEFAULTS.STORAGE.sService
+  state._skin = storageLocal['sSkin'] ?? CONS.DEFAULTS.STORAGE.sSkin
+  state._indexes = storageLocal['sIndexes'] ?? CONS.DEFAULTS.STORAGE.sIndexes
+  state._exchanges = storageLocal['sExchanges'] ?? CONS.DEFAULTS.STORAGE.sExchanges
+  state._materials = storageLocal['sMaterials'] ?? CONS.DEFAULTS.STORAGE.sMaterials
+  state._markets = storageLocal['sMarkets'] ?? CONS.DEFAULTS.STORAGE.sMarkets
 })
 
 console.log('--- OptionsIndex.vue setup ---')

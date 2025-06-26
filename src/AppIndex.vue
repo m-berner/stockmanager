@@ -76,17 +76,19 @@ const onStorageChange = async (change: Record<string, browser.storage.StorageCha
       case 'sMaterials':
         settings.setMaterialsStoreOnly(change['sMaterials'].newValue)
         break
-      // case 'sExchanges':
-      //   settings.setExchanges(change['sExchanges'].newValue)
-      //   const exchangesResponseString = await browser.runtime.sendMessage(JSON.stringify({
-      //     type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
-      //     data: change['sExchanges'].newValue,
-      //   }))
-      //   const exchangesResponse = JSON.parse(exchangesResponseString)
-      //   console.error('äääääää', exchangesResponse)
-      //   break
       case 'sExchanges':
+        const exchanges = new Map<string, number>()
         settings.setExchangesStoreOnly(change['sExchanges'].newValue)
+        const exchangesDataResponseString = await browser.runtime.sendMessage(JSON.stringify({
+          type: CONS.FETCH_API.ASK__EXCHANGES_DATA,
+          data: change['sExchanges'].newValue,
+        }))
+        const exchangesDataResponse = JSON.parse(exchangesDataResponseString)
+        for (let i = 0; i < exchangesDataResponse.data.length; i++) {
+          exchanges.set(exchangesDataResponse.data[i].key, exchangesDataResponse.data[i].value)
+        }
+        runtime.setExchanges(exchanges)
+        console.error('äääääää', runtime.exchanges.get('EURUSD'))
         break
       default:
     }

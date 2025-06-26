@@ -54,19 +54,10 @@ export const useSettingsStore = defineStore('settings', {
             this._skin = value;
         },
         setIndexesStoreOnly(value) {
-            console.error('ööööööööööööö', value);
             this._indexes = value;
         },
-        setMaterialsStoreOnly(value, n) {
-            let ind;
-            const ar = [...this._materials];
-            if ((ind = ar.indexOf(value[n])) >= 0) {
-                ar.splice(ind, 1);
-            }
-            else {
-                ar.push(value[n]);
-            }
-            this._materials = ar;
+        setMaterialsStoreOnly(value) {
+            this._materials = value;
         },
         setMarketsStoreOnly(value) {
             this._markets = value;
